@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+import webarchive
+import subprocess as sp
+import sys
+
+path = webarchive.__file__
+args = sys.argv
+args.pop(0)
+sp.call([path] + args)

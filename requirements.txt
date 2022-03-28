@@ -1,0 +1,4 @@
+selenium
+Pillow
+webdriver-manager
+piexif
