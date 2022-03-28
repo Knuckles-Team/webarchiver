@@ -20,7 +20,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-class Webarchive:
+class Webarchiver:
     home = os.path.expanduser("~")
     SAVE_PATH = os.path.join(home, "Downloads")
     driver = []
@@ -695,7 +695,7 @@ def usage():
           f'-t | --type      [ Save images as PNG or JPEG ]\n'
           f'-z | --zoom      [ The zoom to use on the browser ]\n'
           f'\n'
-          f'python3 webpage_archive.py -c -f <links_file.txt> '
+          f'webarchiver -c -f <links_file.txt> '
           '-l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')
 
 

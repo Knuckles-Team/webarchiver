@@ -1,5 +1,5 @@
 # Webarchive
-*Version 0.1.0*
+*Version 0.1.1*
 
 Python tool that allows you to take full page screenshots of pages without ads
 
@@ -23,7 +23,7 @@ Supports batching by adding multiple links in a text file, or my adding links to
 
 ### Example:
 ```bash
-python3 webpage_archive.py -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1
+webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1
 ```
 
 #### Build Instructions

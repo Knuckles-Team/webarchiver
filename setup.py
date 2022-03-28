@@ -4,8 +4,8 @@
 from setuptools import setup
 
 setup(
-    name='webarchive',
-    version="0.1.0",
+    name='webarchiver',
+    version="0.1.1",
     description='Python tool that allows you to take multiple full page screenshots of web pages without ads.',
     url='https://github.com/Knucklessg1/webarchive',
     author='Audel Rouhi',
@@ -13,8 +13,8 @@ setup(
     license='Unlicense',
     packages=[],
     install_requires=['selenium', 'Pillow', 'webdriver-manager', 'piexif'],
-    scripts=['webarchive.py', 'webarchive'],
-    package_data={'webarchive': ['webarchive']},
+    scripts=['webarchiver.py', 'webarchiver'],
+    package_data={'webarchiver': ['webarchiver']},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: Public Domain',
