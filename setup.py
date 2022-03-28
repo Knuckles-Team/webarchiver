@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='webarchiver',
-    version="0.1.1",
+    version="0.1.2",
     description='Python tool that allows you to take multiple full page screenshots of web pages without ads.',
     url='https://github.com/Knucklessg1/webarchive',
     author='Audel Rouhi',

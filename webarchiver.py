@@ -197,8 +197,8 @@ class Webarchiver:
                 title = title.replace(" ", "_")
                 title = (title[:140]) if len(title) > 140 else title
         zeroth_ifd = {
-            piexif.ImageIFD.Make: u"Webarchive",
-            piexif.ImageIFD.Software: u"Webarchive",
+            piexif.ImageIFD.Make: u"Webarchiver",
+            piexif.ImageIFD.Software: u"Webarchiver",
             piexif.ImageIFD.ImageDescription: f"{url}".encode('utf-8'),
         }
         exif_ifd = {
@@ -211,8 +211,8 @@ class Webarchiver:
             piexif.GPSIFD.GPSDateStamp: u"1999:99:99 99:99:99",
         }
         first_ifd = {
-            piexif.ImageIFD.Make: u"Webarchive",
-            piexif.ImageIFD.Software: u"Webarchive"
+            piexif.ImageIFD.Make: u"Webarchiver",
+            piexif.ImageIFD.Software: u"Webarchiver"
         }
         scroll_to_js = 'window.scrollTo(0, {});'
         exif_dict = {"0th": zeroth_ifd, "Exif": exif_ifd, "GPS": gps_ifd, "1st": first_ifd}  # , "thumbnail": thumbnail}
@@ -629,7 +629,7 @@ class StreamToLogger(object):
 
 def main(argv):
     filename = "./links.txt"
-    archive = Webarchive()
+    archive = Webarchiver()
     clean_flag = False
     file_flag = False
     zoom_level = 100
