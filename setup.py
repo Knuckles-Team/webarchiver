@@ -5,10 +5,10 @@ from setuptools import setup
 
 setup(
     name='webarchiver',
-    version="0.1.3",
+    version="0.1.5",
     description='Python tool that allows you to take multiple full page screenshots of web pages without ads.',
     long_description='''# Webarchive
-*Version 0.1.4*
+*Version 0.1.5*
 
 Python tool that allows you to take full page screenshots of pages without ads
 
