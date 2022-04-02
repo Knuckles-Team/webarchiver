@@ -3,12 +3,14 @@
 
 from setuptools import setup
 
+version = "0.1.7"
+
 setup(
     name='webarchiver',
-    version="0.1.5",
+    version=f"{version}",
     description='Python tool that allows you to take multiple full page screenshots of web pages without ads.',
-    long_description='''# Webarchive
-*Version 0.1.5*
+    long_description=f'''# Webarchive
+*Version {version}*
 
 Python tool that allows you to take full page screenshots of pages without ads
 

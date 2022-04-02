@@ -63,23 +63,29 @@ class Webarchiver:
             "profile.default_content_setting_values.notifications": 2
         })
         # Add Ublock Origin to Chrome
+        parent_dir = os.path.abspath(os.path.dirname(__file__))
+        lib_dir = os.path.join(parent_dir, 'lib')
+        # print("Library Directory: ", lib_dir)
+        sys.path.append(lib_dir)
         path = os.path.realpath(__file__)
         path = Path(path)
-        print("PATH: ", path)
+        # print("PATH: ", path)
         parent = path.parent.absolute()
-        print("PARENT: ", parent)
-        adblock_path = f'{path.parent.absolute()}/lib/uBlock-Origin_v1.27.0.crx'
+        # print("PARENT: ", parent)
+        adblock_path = f'{lib_dir}/uBlock-Origin_v1.27.0.crx'
+        # print(f"uBlock Origin Path: {adblock_path}")
         if os.path.isfile(adblock_path):
             self.log.info(f"uBlock Origin Found: {adblock_path}")
+            # print(f"uBlock Origin Found: {adblock_path}")
             self.chrome_options.add_extension(adblock_path)
         elif os.path.isfile(f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'):
             adblock_path = f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'
             self.log.info(f"uBlock Origin Found: {adblock_path}")
+            # print(f"uBlock Origin Found: {adblock_path}")
             self.chrome_options.add_extension(adblock_path)
         else:
-            adblock_path = f'{os.path.dirname(sys.path[0])}/lib/uBlock-Origin_v1.27.0.crx'
-            self.log.info(f"uBlock Origin Found: {adblock_path}")
-            self.chrome_options.add_extension(adblock_path)
+            # print("AdBlock was not found")
+            self.log.info(f"uBlock Origin was not found")
         self.chrome_options.add_argument('--disable-gpu')
         self.chrome_options.add_argument('--start-maximized')
         self.chrome_options.add_argument('--hide-scrollbars')
@@ -566,10 +572,10 @@ class Log:
     def init_logging(self):
         # Creating an object
         self.logger = logging.getLogger()
-        # Setting the threshold of logger to DEBUG
-        self.logger.setLevel(logging.DEBUG)
+        # Setting the threshold of logger to INFO
+        self.logger.setLevel(logging.INFO)
         # Test messages
-        self.logger.debug("Debug: Initialized")
+        # self.logger.debug("Debug: Initialized")
         self.logger.info("Info: Initialized")
         self.logger.warning("Warning: Initialized")
         self.logger.error("Error: Initialized")
