@@ -10,6 +10,7 @@ import re
 import piexif
 import logging
 import shutil
+from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageChops
 from selenium import webdriver
@@ -62,7 +63,12 @@ class Webarchiver:
             "profile.default_content_setting_values.notifications": 2
         })
         # Add Ublock Origin to Chrome
-        adblock_path = f'{os.pardir}/lib/uBlock-Origin_v1.27.0.crx'
+        path = os.path.realpath(__file__)
+        path = Path(path)
+        print("PATH: ", path)
+        parent = path.parent.absolute()
+        print("PARENT: ", parent)
+        adblock_path = f'{path.parent.absolute()}/lib/uBlock-Origin_v1.27.0.crx'
         if os.path.isfile(adblock_path):
             self.log.info(f"uBlock Origin Found: {adblock_path}")
             self.chrome_options.add_extension(adblock_path)
