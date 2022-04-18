@@ -1,5 +1,5 @@
 # Webarchive
-*Version 0.1.7*
+*Version: 0.1.8*
 
 Python tool that allows you to take full page screenshots of pages without ads
 

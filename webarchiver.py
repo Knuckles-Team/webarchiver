@@ -639,7 +639,7 @@ class StreamToLogger(object):
             self.logger.log(self.log_level, line.rstrip())
 
 
-def main(argv):
+def webarchiver(argv):
     filename = "./links.txt"
     archive = Webarchiver()
     clean_flag = False
@@ -711,8 +711,15 @@ def usage():
           '-l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')
 
 
+def main():
+    if len(sys.argv) < 2:
+        usage()
+        sys.exit(2)
+    webarchiver(sys.argv[1:])
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         usage()
         sys.exit(2)
-    main(sys.argv[1:])
+    webarchiver(sys.argv[1:])

@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+# coding: utf-8
+from version import __version__, __author__, __credits__
+
 """
 webarchiver
 
 A web page full page screenshooting tool.
 """
 
-__version__ = "0.1.7"
-__author__ = 'Audel Rouhi'
-__credits__ = 'Audel Rouhi'
+__version__ = __version__
+__author__ = __author__
+__credits__ = __credits__
