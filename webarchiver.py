@@ -46,7 +46,7 @@ class Webarchiver:
         if logger:
             self.log = logger
         else:
-            self.log = Log()
+            self.log = Log(logging_dir=self.SAVE_PATH)
             self.log.init_logging()
         self.log.info("Initializing Web Archive Complete!")
 
@@ -550,16 +550,13 @@ class Log:
     logging_dir = ""
 
     # Initialize the Class
-    def __init__(self):
-        if not os.path.exists(f"{os.pardir}/logs/log.log"):
-            if not os.path.exists(f"{os.pardir}/logs/"):
-                os.makedirs(f"{os.pardir}/logs/")
-            with open(f"{os.pardir}/logs/log.log", 'w'):
-                pass
-
+    def __init__(self, logging_dir=""):
         # Set logging directory to users' home directory
-        self.logging_dir = f"{os.path.expanduser('~')}"
-        self.logging_file = f"{self.logging_dir}/webarchive.log"
+        if logging_dir == "":
+            self.logging_dir = f"{os.path.expanduser('~/Downloads')}"
+        else:
+            self.logging_dir = logging_dir
+        self.logging_file = f"{self.logging_dir}/webarchiver.log"
         if os.path.isdir(self.logging_dir):
             print("Log File: ", self.logging_file)
         else:
