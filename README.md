@@ -1,5 +1,5 @@
 # Webarchiver
-*Version: 0.2.1*
+*Version: 0.2.2*
 
 Python tool that allows you to take full page screenshots of pages without ads
 
@@ -31,7 +31,7 @@ Build Python Package
 
 ```bash
 sudo chmod +x ./*.py
-sudo pip install .
+pip install .
 python setup.py bdist_wheel --universal
 # Test Pypi
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*

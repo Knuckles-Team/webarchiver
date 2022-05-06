@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from setuptools import setup
-from version import __version__, __author__, __credits__
+from webarchiver.version import __version__, __author__, __credits__
 from pathlib import Path
 import re
 
@@ -24,11 +24,11 @@ setup(
     author=__author__,
     author_email='knucklessg1@gmail.com',
     license='Unlicense',
-    packages=[],
+    packages=['webarchiver'],
     include_package_data=True,
     install_requires=['selenium', 'Pillow', 'webdriver-manager', 'piexif'],
     py_modules=['webarchiver'],
-    data_files=[("webarchiver",  ["lib/uBlock-Origin_v1.27.0.crx"])],
+    data_files=[("webarchiver",  ["webarchiver/lib/uBlock-Origin_v1.27.0.crx"])],
     package_data={'webarchiver': ['webarchiver']},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -38,5 +38,5 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    entry_points={'console_scripts': ['webarchiver = webarchiver:main']},
+    entry_points={'console_scripts': ['webarchiver = webarchiver.webarchiver:main']},
 )
