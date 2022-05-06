@@ -416,6 +416,9 @@ class Webarchiver:
     def set_save_path(self, save_path):
         self.SAVE_PATH = save_path
         self.SAVE_PATH = self.SAVE_PATH.replace(os.sep, '/')
+        self.log.info(f"Save Path: {self.SAVE_PATH }")
+        if save_path is None or save_path == "":
+            self.SAVE_PATH = os.path.join(os.path.expanduser("~"), "Downloads")
         if not os.path.exists(self.SAVE_PATH):
             os.makedirs(self.SAVE_PATH)
 
@@ -644,7 +647,7 @@ def webarchiver(argv):
     zoom_level = 100
 
     try:
-        opts, args = getopt.getopt(argv, "hcd:f:l:t:z:", ["help", "clean", "directory", "dpi=", "file=", "links=",
+        opts, args = getopt.getopt(argv, "hcd:f:l:t:z:", ["help", "clean", "directory=", "dpi=", "file=", "links=",
                                                           "type=", "zoom="])
     except getopt.GetoptError:
         usage()
@@ -656,6 +659,7 @@ def webarchiver(argv):
         elif opt in ("-c", "--clean"):
             clean_flag = True
         elif opt in ("-d", "--directory"):
+            print(f"ARG: {arg}")
             archive.set_save_path(arg)
         elif opt == "--dpi":
             archive.set_dpi_level(int(arg))
