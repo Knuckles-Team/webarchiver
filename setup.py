@@ -25,8 +25,10 @@ setup(
     author_email='knucklessg1@gmail.com',
     license='Unlicense',
     packages=[],
+    include_package_data=True,
     install_requires=['selenium', 'Pillow', 'webdriver-manager', 'piexif'],
     py_modules=['webarchiver'],
+    data_files=[("webarchiver",  ["lib/uBlock-Origin_v1.27.0.crx"])],
     package_data={'webarchiver': ['webarchiver']},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
