@@ -659,7 +659,6 @@ def webarchiver(argv):
         elif opt in ("-c", "--clean"):
             clean_flag = True
         elif opt in ("-d", "--directory"):
-            print(f"ARG: {arg}")
             archive.set_save_path(arg)
         elif opt == "--dpi":
             archive.set_dpi_level(int(arg))
