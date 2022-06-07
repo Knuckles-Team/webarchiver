@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 from webarchiver.version import __version__, __author__, __credits__
+from webarchiver.webarchiver import Webarchiver
 
 """
 webarchiver
