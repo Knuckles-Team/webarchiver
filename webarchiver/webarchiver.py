@@ -8,8 +8,6 @@ import os
 import math
 import re
 import piexif
-import logging
-import shutil
 from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageChops
@@ -27,13 +25,11 @@ class Webarchiver:
     driver = []
     capabilities = None
     chrome_options = webdriver.ChromeOptions()
-    # screenshotter = None
     DEFAULT_IMAGE_FORMAT = 'PNG'
     DEFAULT_IMAGE_QUALITY = 80
     urls = []
     twitter_urls = []
     twitter_df = None
-    log = None
     HIDDEN_SCROLL_BAR = 'hidden'
     DEFAULT_SCROLL_BAR = 'visible'
     screenshot_success = False
@@ -42,13 +38,8 @@ class Webarchiver:
     dpi = 1.0
     max_scroll_height = 369369
 
-    def __init__(self, logger=None):
-        if logger:
-            self.log = logger
-        else:
-            self.log = Log(logging_dir=self.SAVE_PATH)
-            self.log.init_logging()
-        self.log.info("Initializing Web Archive Complete!")
+    def __init__(self):
+        pass
 
     def launch_browser(self):
         self.capabilities = {
@@ -65,27 +56,17 @@ class Webarchiver:
         # Add Ublock Origin to Chrome
         parent_dir = os.path.abspath(os.path.dirname(__file__))
         lib_dir = os.path.join(parent_dir, 'lib')
-        # print("Library Directory: ", lib_dir)
         sys.path.append(lib_dir)
-        path = os.path.realpath(__file__)
-        path = Path(path)
-        # print("PATH: ", path)
-        parent = path.parent.absolute()
-        # print("PARENT: ", parent)
         adblock_path = f'{lib_dir}/uBlock-Origin_v1.27.0.crx'
-        # print(f"uBlock Origin Path: {adblock_path}")
         if os.path.isfile(adblock_path):
-            self.log.info(f"uBlock Origin Found: {adblock_path}")
-            # print(f"uBlock Origin Found: {adblock_path}")
+            print(f"uBlock Origin Found: {adblock_path}")
             self.chrome_options.add_extension(adblock_path)
         elif os.path.isfile(f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'):
             adblock_path = f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'
-            self.log.info(f"uBlock Origin Found: {adblock_path}")
-            # print(f"uBlock Origin Found: {adblock_path}")
+            print(f"uBlock Origin Found: {adblock_path}")
             self.chrome_options.add_extension(adblock_path)
         else:
-            # print("AdBlock was not found")
-            self.log.info(f"uBlock Origin was not found")
+            print(f"uBlock Origin was not found")
         self.chrome_options.add_argument('--disable-gpu')
         self.chrome_options.add_argument('--start-maximized')
         self.chrome_options.add_argument('--hide-scrollbars')
@@ -104,7 +85,7 @@ class Webarchiver:
             scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.HIDDEN_SCROLL_BAR)
             self.driver.execute_script(scrollbar_js)
         except Exception as e:
-            self.log.info("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
+            print("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
             exit()
 
     def open_file(self, file):
@@ -113,7 +94,7 @@ class Webarchiver:
             self.append_link(url)
 
     def append_link(self, url):
-        self.log.info(f"URL Appended: {url}")
+        print(f"URL Appended: {url}")
         self.urls.append(url)
         self.urls = list(dict.fromkeys(self.urls))
 
@@ -121,7 +102,7 @@ class Webarchiver:
         return self.urls
 
     def reset_links(self):
-        self.log.info("Links Reset")
+        print("Links Reset")
         self.urls = []
 
     def set_zoom_level(self, zoom_percentage=100):
@@ -136,20 +117,20 @@ class Webarchiver:
             self.driver.execute_script(f"document.body.style.zoom='{zoom_percentage}%'")
             self.driver.execute_script('return document.readyState;')
         except Exception as e:
-            self.log.info(f"Could not access website: {e}")
+            print(f"Could not access website: {e}")
         # Tries to Remove any alerts that may appear on the page
         try:
             WebDriverWait(self.driver, 4).until(ec.alert_is_present(), 'Timed out waiting for any notification alerts')
             alert = self.driver.switch_to.alert
             alert.accept()
-            self.log.info("WebPage Alert Accepted!")
+            print("WebPage Alert Accepted!")
         except Exception as e:
-            self.log.info(f"No WebPage Alert! {e}")
+            print(f"No WebPage Alert! {e}")
         time.sleep(1)
         # Tries to remove any persistent scrolling headers/fixed/sticky'd elements on the page
-        self.log.info("Removing Fixed Elements Scrub 1")
+        print("Removing Fixed Elements Scrub 1")
         self.remove_fixed_elements(url)
-        self.log.info("Removing Fixed Elements Scrub 2")
+        print("Removing Fixed Elements Scrub 2")
         self.remove_fixed_elements(url)
 
     def clean_url(self):
@@ -164,24 +145,24 @@ class Webarchiver:
         try:
             self.urls.remove('\n')
         except ValueError:
-            self.log.info("No Newlines Found")
+            print("No Newlines Found")
         try:
             self.urls.remove('')
         except ValueError:
-            self.log.info("No Empty Strings Found")
+            print("No Empty Strings Found")
         self.urls = list(dict.fromkeys(filter(None, self.urls)))
 
     def screenshot(self, url, zoom_percentage=100, filename=None, filetype=DEFAULT_IMAGE_FORMAT,
                    quality=DEFAULT_IMAGE_QUALITY):
         self.read_url(url, zoom_percentage)
-        self.log.info(f"Quality: {quality}")
+        print(f"Quality: {quality}")
         if filename:
             title = re.sub('[\\\\/:"*?<>|\']', '', filename)
             title = (title[:140]) if len(title) > 140 else title
             self.driver.save_screenshot(f'{self.SAVE_PATH}/{title}.{filetype}')
         else:
-            self.log.info(f"driver title {self.driver.title}")
-            self.log.info(f"URL, {url}")
+            print(f"Driver Title: {self.driver.title}")
+            print(f"URL, {url}")
             if self.driver.title:
                 title = re.sub('[\\\\/:"*?<>|\']', '', self.driver.title)
                 title = title.replace(" ", "_")
@@ -238,33 +219,33 @@ class Webarchiver:
         # Changes the ratio of the screen of the device.
         device_pixel_ratio_js = 'return window.devicePixelRatio;'
         device_pixel_ratio = self.driver.execute_script(device_pixel_ratio_js)
-        self.log.info(f"Pixel Ratio: {device_pixel_ratio}")
+        print(f"Pixel Ratio: {device_pixel_ratio}")
         inner_height_js = 'return window.innerHeight;'
         inner_height = self.driver.execute_script(inner_height_js)
         try:
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         except Exception as e:
-            self.log.info(f"Error reading scroll height. {e}")
+            print(f"Error reading scroll height. {e}")
         self.driver.execute_script("window.scrollTo(0, 0)")
         scroll_height_js = 'return document.body.scrollHeight;'
         scroll_height = self.driver.execute_script(scroll_height_js)
         if scroll_height <= 0:
-            self.log.info("Getting alternative scroll height")
+            print("Getting alternative scroll height")
             self.driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
             self.driver.execute_script("window.scrollTo(0, 0)")
             scroll_height_js = 'return document.documentElement.scrollHeight;'
             scroll_height = self.driver.execute_script(scroll_height_js)
-            self.log.info(
+            print(
                 f"Scroll Height read as 0, Reading scroll height with alternative method. New height: {scroll_height}")
 
         if scroll_height > self.max_scroll_height:
-            self.log.info(f"Original scroll height: {scroll_height} Maximum: {self.max_scroll_height}")
+            print(f"Original scroll height: {scroll_height} Maximum: {self.max_scroll_height}")
             scroll_height = self.max_scroll_height
         y_offset_js = 'return window.pageYOffset;'
         initial_offset = self.driver.execute_script(y_offset_js)
         actual_page_size = math.ceil(scroll_height * device_pixel_ratio)
         # Screenshot all slices
-        self.log.info("Making Screen Slices")
+        print("Making Screen Slices")
         slices = []
         slice_count = 0
         for offset in range(0, scroll_height + 1, inner_height):
@@ -278,15 +259,13 @@ class Webarchiver:
             percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
             total = '{0: <15}'.format(f"Total: {offset}/{scroll_height}")
             print(f"{screenshot_processed} | {percentage_display} | {total}")
-            self.log.info(f"{screenshot_processed} | {percentage_display} | {total}")
         percentage = '%.3f' % 100
         screenshot_processed = '{0: <25}'.format(f"Screenshot Processed: {slice_count + 1}")
         percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
         total = '{0: <15}'.format(f"Total: {scroll_height}/{scroll_height}")
         print(f"{screenshot_processed} | {percentage_display} | {total}")
-        self.log.info(f"{screenshot_processed} | {percentage_display} | {total}")
         # Glue Slices together
-        self.log.info("Glueing Slices")
+        print("Glueing Slices")
         image_file = Image.new('RGB', (slices[0].size[0], actual_page_size))
         for i, img in enumerate(slices[:-1]):
             image_file.paste(img, (0, math.ceil(i * inner_height * device_pixel_ratio)))
@@ -296,11 +275,11 @@ class Webarchiver:
             image_file.save(f'{self.SAVE_PATH}/{title}.{filetype}', **image_options)
             self.screenshot_success = True
         except Exception as e:
-            self.log.info("Could not save image error: ", e)
+            print("Could not save image error: ", e)
             try:
                 os.remove(f'{self.SAVE_PATH}/{title}.{filetype}')
             except Exception as e:
-                self.log.info(f"Could not remove file, does it exist? {e}")
+                print(f"Could not remove file, does it exist? {e}")
             self.screenshot_success = False
 
         y_offset_js = 'return window.pageYOffset;'
@@ -350,7 +329,6 @@ class Webarchiver:
         filetype = kwargs.get('format') or self.DEFAULT_IMAGE_FORMAT
         quality = kwargs.get('quality') or self.DEFAULT_IMAGE_QUALITY
         print("Attempting alternative screenshot method")
-        self.log.info("Attempting alternative screenshot method")
         self.driver.execute_script(f"window.scrollTo({0}, {0})")
         total_width = self.driver.execute_script("return document.body.offsetWidth")
         total_height = self.driver.execute_script("return document.body.parentNode.scrollHeight")
@@ -391,32 +369,27 @@ class Webarchiver:
             part = part + 1
             previous = rectangle
         print(f"Saving image to: {self.SAVE_PATH}/{filename}.{filetype}'")
-        self.log.info(f"Saving image to: {self.SAVE_PATH}/{filename}.{filetype}'")
         try:
             stitched_image.save(f"{self.SAVE_PATH}/{filename}.{filetype}", **image_options)
             self.screenshot_success_alt = True
         except Exception as e:
             print("Could not save image error in alternative form: ", e)
-            self.log.info("Could not save image error in alternative form: ", e)
             try:
                 os.remove(f'{self.SAVE_PATH}/{filename}.{filetype}')
             except Exception as e:
                 print(f"Could not remove file, does it exist? {e}")
-                self.log.info(f"Could not remove file, does it exist? {e}")
             self.screenshot_success_alt = False
 
         print("Finishing chrome full page screenshot workaround...")
-        self.log.info("Finishing chrome full page screenshot workaround...")
         if not ImageChops.invert(stitched_image).getbbox() or not stitched_image.getbbox() or self.screenshot_success_alt is False:
             print("Could not save full page screenshot, saving single page screenshot instead")
-            self.log.info("Could not save full page screenshot, saving single page screenshot instead")
             self.screenshot(url=f'{url}', zoom_percentage=zoom_percentage, filename=filename, filetype=filetype,
                             quality=quality)
 
     def set_save_path(self, save_path):
         self.SAVE_PATH = save_path
         self.SAVE_PATH = self.SAVE_PATH.replace(os.sep, '/')
-        self.log.info(f"Save Path: {self.SAVE_PATH }")
+        print(f"Save Path: {self.SAVE_PATH }")
         if save_path is None or save_path == "":
             self.SAVE_PATH = f"{os.path.expanduser('~')}".replace("\\", "/")
         if not os.path.exists(self.SAVE_PATH):
@@ -427,19 +400,17 @@ class Webarchiver:
             self.driver.execute_script("window.scrollTo(0, 0)")
         except Exception as e:
             print(f"Unable to remove fixed elements {e}")
-            self.log.info(f"Unable to remove fixed elements {e}")
 
         try:
             # Try to scroll to bottom of page.
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         except Exception as e:
             print("Unable to remove fixed elements")
-            self.log.info("Unable to remove fixed elements")
-            self.log.info(e)
+            print(e)
             self.driver.get(url)
             self.driver.execute_script('return document.readyState;')
 
-        self.log.info("Clicking Escape to clear popups")
+        print("Clicking Escape to clear popups")
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
@@ -449,7 +420,7 @@ class Webarchiver:
         scroll_height_js = 'return document.body.scrollHeight;'
         scroll_height = self.driver.execute_script(scroll_height_js)
         if scroll_height > self.max_scroll_height:
-            self.log.info(f"Original scroll height: {scroll_height} Maximum: {self.max_scroll_height}")
+            print(f"Original scroll height: {scroll_height} Maximum: {self.max_scroll_height}")
             scroll_height = self.max_scroll_height
         elif scroll_height == 0:
             scroll_height = 1080
@@ -471,8 +442,8 @@ class Webarchiver:
                   document.querySelector('html').style.position = 'relative';
                 })();""")
             except Exception as e:
-                self.log.info(e)
-            self.log.info("Changed elements from to overflow scroll")
+                print(e)
+            print("Changed elements from to overflow scroll")
 
             # Removes Any Fixed Elements from body at top of page
             try:
@@ -486,8 +457,8 @@ class Webarchiver:
                   }
                 })();""")
             except Exception as e:
-                self.log.info(e)
-            self.log.info("Removed elements from body")
+                print(e)
+            print("Removed elements from body")
 
             # Removes Any Fixed Elements from any div at top of page
             try:
@@ -501,8 +472,8 @@ class Webarchiver:
                           }
                         })();""")
             except Exception as e:
-                self.log.info(e)
-            self.log.info("Removed elements from all divs")
+                print(e)
+            print("Removed elements from all divs")
             try:
                 # Removes Any Fixed Elements from any html main at top of page
                 self.driver.execute_script("""(function () {
@@ -515,128 +486,31 @@ class Webarchiver:
                                  }
                                })();""")
             except Exception as e:
-                self.log.info(e)
-            self.log.info("Removed elements from html")
+                print(e)
+            print("Removed elements from html")
 
             percentage = '%.3f' % ((offset / scroll_height) * 100)
             prcessing_percentage = '{0: <48}'.format(f"Web Elements Processed Percentage: {percentage}%")
             total = '{0: <15}'.format(f"Total: {offset}/{scroll_height}")
             print(f"{prcessing_percentage} | {total}")
-            self.log.info(f"{prcessing_percentage} | {total}")
+            print(f"{prcessing_percentage} | {total}")
         percentage = '%.3f' % 100
         prcessing_percentage = '{0: <48}'.format(f"Web Elements Processed Percentage: {percentage}%")
         total = '{0: <15}'.format(f"Total: {scroll_height}/{scroll_height}")
         print(f"{prcessing_percentage} | {total}")
-        self.log.info(f"{prcessing_percentage} | {total}")
         self.driver.execute_script("window.scrollTo(0, 0)")
 
     def enable_scroll(self):
         print("Attempting to re-enable scroll bar")
-        self.log.info("Attempting to re-enable scroll bar")
         body = self.driver.find_element_by_xpath('/html/body')
         self.driver.execute_script("arguments[0].setAttribute('style', 'overflow: scroll; overflow-x: scroll')", body)
         html = self.driver.find_element_by_xpath('/html')
         self.driver.execute_script("arguments[0].setAttribute('style', 'overflow: scroll; overflow-x: scroll')", html)
         print("Set scrolls override")
-        self.log.info("Set scrolls override")
 
     def quit_driver(self):
         print("Chrome Driver Closed")
-        self.log.info("Chrome Driver Closed")
         self.driver.quit()
-
-
-# This creates the log object
-class Log:
-    logger = None
-    logging_file = ""
-    logging_dir = ""
-
-    # Initialize the Class
-    def __init__(self, logging_dir=""):
-        # Set logging directory to users' home directory
-        if logging_dir == "":
-            self.logging_dir = f"{os.path.expanduser('~')}".replace("\\", "/")
-        else:
-            self.logging_dir = logging_dir
-        self.logging_file = f"{self.logging_dir}/webarchiver.log"
-        if os.path.isdir(self.logging_dir):
-            print("Log File: ", self.logging_file)
-        else:
-            self.logging_file = f"{os.curdir}/log.log"
-            print("Log File: ", self.logging_file)
-        logging.basicConfig(filename=self.logging_file, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s',
-                            filemode='w', level=logging.DEBUG)
-
-    # Kick Off Log Initializing
-    def init_logging(self):
-        # Creating an object
-        self.logger = logging.getLogger()
-        # Setting the threshold of logger to INFO
-        self.logger.setLevel(logging.INFO)
-        # Test messages
-        # self.logger.debug("Debug: Initialized")
-        self.logger.info("Info: Initialized")
-        self.logger.warning("Warning: Initialized")
-        self.logger.error("Error: Initialized")
-        self.logger.critical("Critical: Initialized")
-        self.logger.info("Logging Module: Initializing")
-
-    def log_stdout(self):
-        stdout_logger = logging.getLogger('STDOUT')
-        sl = StreamToLogger(stdout_logger, logging.INFO)
-        sys.stdout = sl
-        self.logger.debug(sys.stdout)
-
-    def log_stderr(self):
-        stderr_logger = logging.getLogger('STDERR')
-        sl = StreamToLogger(stderr_logger, logging.ERROR)
-        sys.stderr = sl
-        self.logger.warning(sys.stderr)
-
-    # Write msg to Log as Debug Line
-    def debug(self, msg):
-        self.logger.debug(msg)
-
-    # Write msg to Log as Info Line
-    def info(self, msg):
-        self.logger.info(msg)
-
-    # Write msg to Log as Warning Line
-    def warning(self, msg):
-        self.logger.warning(msg)
-
-    # Write msg to Log as Error Line
-    def error(self, msg):
-        self.logger.error(msg)
-
-    # Write msg to Log as Critical Line
-    def critical(self, msg):
-        self.logger.critical(msg)
-
-    # Set logwriter file location
-    def set_logfile(self, filepath):
-        self.logging_file = filepath
-
-    # Get logwriter file location
-    def get_logfile(self):
-        return self.logging_file
-
-    # Log Dump
-    def get_log_dump(self):
-        shutil.copy(self.logging_file, f"{self.logging_dir}log_dump.txt")
-
-
-# This class will write to the logfile in stream format
-class StreamToLogger(object):
-    def __init__(self, logger, log_level=logging.INFO):
-        self.logger = logger
-        self.log_level = log_level
-        self.linebuf = ''
-
-    def write(self, buf):
-        for line in buf.rstrip().splitlines():
-            self.logger.log(self.log_level, line.rstrip())
 
 
 def webarchiver(argv):
