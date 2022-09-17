@@ -418,7 +418,7 @@ class Webarchiver:
         self.SAVE_PATH = self.SAVE_PATH.replace(os.sep, '/')
         self.log.info(f"Save Path: {self.SAVE_PATH }")
         if save_path is None or save_path == "":
-            self.SAVE_PATH = os.path.join(os.path.expanduser("~"), "Downloads")
+            self.SAVE_PATH = f"{os.path.expanduser('~')}".replace("\\", "/")
         if not os.path.exists(self.SAVE_PATH):
             os.makedirs(self.SAVE_PATH)
 
@@ -556,7 +556,7 @@ class Log:
     def __init__(self, logging_dir=""):
         # Set logging directory to users' home directory
         if logging_dir == "":
-            self.logging_dir = f"{os.path.expanduser('~')}"
+            self.logging_dir = f"{os.path.expanduser('~')}".replace("\\", "/")
         else:
             self.logging_dir = logging_dir
         self.logging_file = f"{self.logging_dir}/webarchiver.log"
