@@ -666,7 +666,8 @@ def webarchiver(argv):
             file_flag = True
             filename = arg
         elif opt in ("-l", "--links"):
-            url_list = arg.split(",")
+            url_list = arg.replace(" ", "")
+            url_list = url_list.split(",")
             for url in url_list:
                 archive.append_link(url)
         elif opt in ("-t", "--type"):
@@ -708,7 +709,7 @@ def usage():
           f'-z | --zoom      [ The zoom to use on the browser ]\n'
           f'\n'
           f'webarchiver -c -f <links_file.txt> '
-          '-l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')
+          '-l "<URL1, URL2, URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')
 
 
 def main():
