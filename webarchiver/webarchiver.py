@@ -556,7 +556,7 @@ class Log:
     def __init__(self, logging_dir=""):
         # Set logging directory to users' home directory
         if logging_dir == "":
-            self.logging_dir = f"{os.path.expanduser('~/Downloads')}"
+            self.logging_dir = f"{os.path.expanduser('~')}"
         else:
             self.logging_dir = logging_dir
         self.logging_file = f"{self.logging_dir}/webarchiver.log"
