@@ -26,6 +26,13 @@ Supports batching by adding multiple links in a text file, or my adding links to
 webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1
 ```
 
+#### Install Instructions
+Install Python Package
+
+```bash
+python -m pip install webarchiver
+```
+
 #### Build Instructions
 Build Python Package
 
