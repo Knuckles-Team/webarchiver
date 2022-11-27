@@ -1,5 +1,5 @@
 # Webarchiver
-*Version: 0.2.5*
+*Version: 0.3.0*
 
 Python tool that allows you to take full page screenshots of pages without ads
 
