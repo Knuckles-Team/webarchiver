@@ -393,7 +393,8 @@ class Webarchiver:
             self.screenshot_success_alt = False
 
         print("Finishing chrome full page screenshot workaround...")
-        if not ImageChops.invert(stitched_image).getbbox() or not stitched_image.getbbox() or self.screenshot_success_alt is False:
+        if not ImageChops.invert(
+                stitched_image).getbbox() or not stitched_image.getbbox() or self.screenshot_success_alt is False:
             print("Could not save full page screenshot, saving single page screenshot instead")
             self.screenshot(url=f'{url}', zoom_percentage=zoom_percentage, filename=filename, filetype=filetype,
                             quality=quality)
@@ -588,7 +589,8 @@ class Webarchiver:
             if not os.path.isdir(os.path.normpath(os.path.join(self.save_path, site_folder))):
                 os.mkdir(os.path.normpath(os.path.join(self.save_path, site_folder)))
             if not os.path.isfile(os.path.normpath(os.path.join(self.save_path, site_folder, file_name))):
-                with urllib.request.urlopen(url) as response, open(os.path.normpath(os.path.join(self.save_path, site_folder, file_name)), 'wb') as out_file:
+                with urllib.request.urlopen(url) as response, open(
+                        os.path.normpath(os.path.join(self.save_path, site_folder, file_name)), 'wb') as out_file:
                     shutil.copyfileobj(response, out_file)
                 print(f"\tDownloaded ({self.file_urls.index(url)}/{len(self.file_urls)}): "
                       f"{os.path.normpath(os.path.join(self.save_path, site_folder, file_name))}")
@@ -612,8 +614,8 @@ def webarchiver(argv):
 
     try:
         opts, args = getopt.getopt(argv, "hcd:f:l:i:st:u:z:", ["help", "clean", "directory=", "dpi=", "file=",
-                                                             "links=", "image-type=", "scrape", "threads=",
-                                                             "url-filter=", "zoom="])
+                                                               "links=", "image-type=", "scrape", "threads=",
+                                                               "url-filter=", "zoom="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -661,7 +663,7 @@ def webarchiver(argv):
             archive.set_zoom_level(zoom_level)
             archive.full_page_screenshot(url=f'{url}', zoom_percentage=zoom_level)
             url_count = url_count + 1
-            percentage = '%.3f' % ((url_count/len(archive.urls))*100)
+            percentage = '%.3f' % ((url_count / len(archive.urls)) * 100)
             urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
             percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
             total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
@@ -677,14 +679,16 @@ def webarchiver(argv):
 
 def usage():
     print(f'Usage:\n'
-          f'-h | --help      [ See usage ]\n'
-          f'-c | --clean     [ Convert mobile sites to regular site ]\n'
-          f'-d | --directory [ Location where the images will be saved ]\n'
-          f'     --dpi       [ DPI for the image ]\n'
-          f'-f | --file      [ Text file to read the URLs from ]\n'
-          f'-l | --links     [ Comma separated URLs (No spaces) ]\n'
-          f'-t | --type      [ Save images as PNG or JPEG ]\n'
-          f'-z | --zoom      [ The zoom to use on the browser ]\n'
+          f'-h | --help       [ See usage ]\n'
+          f'-c | --clean      [ Convert mobile sites to regular site ]\n'
+          f'-d | --directory  [ Location where the images will be saved ]\n'
+          f'     --dpi        [ DPI for the image ]\n'
+          f'-f | --file       [ Text file to read the URLs from ]\n'
+          f'-l | --links      [ Comma separated URLs (No spaces) ]\n'
+          f'-i | --image-type [ Save images as PNG or JPEG ]\n'
+          f'-t | --threads    [ Number of threads to run scrape and download ]\n'
+          f'-u | --url-filter [ Only filter for specific files that contain this string ]\n'
+          f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'
           f'webarchiver -c -f <links_file.txt> '
           '-l "<URL1, URL2, URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')

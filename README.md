@@ -9,16 +9,18 @@ Supports batching by adding multiple links in a text file, or my adding links to
 - Chrome/Chomium browser
 
 ### Usage:
-| Short Flag | Long Flag   | Description                             |
-|------------|-------------|-----------------------------------------|
-| -h         | --help      | See Usage                               |
-| -c         | --clean     | Convert mobile sites to regular site    |
-| -d         | --directory | Location where the images will be saved |
-|            | --dpi       | DPI for the image                       |
-| -f         | --file      | Text file to read the URLs from         |
-| -l         | --links     | Comma separated URLs (No spaces)        |
-| -t         | --type      | Save images as PNG or JPEG              |
-| -z         | --zoom      | The zoom to use on the browser          |
+| Short Flag | Long Flag    | Description                             |
+|------------|--------------|-----------------------------------------|
+| -h         | --help       | See Usage                               |
+| -c         | --clean      | Convert mobile sites to regular site    |
+| -d         | --directory  | Location where the images will be saved |
+|            | --dpi        | DPI for the image                       |
+| -f         | --file       | Text file to read the URLs from         |
+| -l         | --links      | Comma separated URLs (No spaces)        |
+| -i         | --image-type | Save images as PNG or JPEG              |
+| -t         | --threads    | Number of threads to run concurrently   |
+| -u         | --url-filter | Filter URLs that contain this string    |
+| -z         | --zoom       | The zoom to use on the browser          |
 
 
 ### Example:
