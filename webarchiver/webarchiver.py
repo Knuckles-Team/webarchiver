@@ -8,10 +8,16 @@ import os
 import math
 import re
 import piexif
+import requests
+import urllib.request
+import shutil
+from multiprocessing import Pool
+from bs4 import BeautifulSoup
 from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageChops
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -20,26 +26,24 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 class Webarchiver:
-    home = os.path.expanduser("~")
-    SAVE_PATH = os.path.join(home, "Downloads")
-    driver = []
-    capabilities = None
-    chrome_options = webdriver.ChromeOptions()
-    DEFAULT_IMAGE_FORMAT = 'PNG'
-    DEFAULT_IMAGE_QUALITY = 80
-    urls = []
-    twitter_urls = []
-    twitter_df = None
-    HIDDEN_SCROLL_BAR = 'hidden'
-    DEFAULT_SCROLL_BAR = 'visible'
-    screenshot_success = False
-    screenshot_success_alt = False
-    zoom_level = 100
-    dpi = 1.0
-    max_scroll_height = 369369
-
     def __init__(self):
-        pass
+        self.urls = []
+        self.file_urls = []
+        self.driver = None
+        self.home = os.path.expanduser("~")
+        self.save_path = os.path.join(self.home, "Downloads")
+        self.capabilities = None
+        self.chrome_options = webdriver.ChromeOptions()
+        self.image_format = 'PNG'
+        self.image_quality = 80
+        self.hidden_scroll_bar = 'hidden'
+        self.screenshot_success = False
+        self.screenshot_success_alt = False
+        self.zoom_level = 100
+        self.dpi = 1.0
+        self.max_scroll_height = 369369
+        self.threads = os.cpu_count()
+        self.url_filter = None
 
     def launch_browser(self):
         self.capabilities = {
@@ -82,7 +86,7 @@ class Webarchiver:
                                            desired_capabilities=self.capabilities,
                                            options=self.chrome_options)
             # Hide the scrollbar
-            scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.HIDDEN_SCROLL_BAR)
+            scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.hidden_scroll_bar)
             self.driver.execute_script(scrollbar_js)
         except Exception as e:
             print("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
@@ -94,9 +98,19 @@ class Webarchiver:
             self.append_link(url)
 
     def append_link(self, url):
-        print(f"URL Appended: {url}")
+        # print(f"URL Appended: {url}")
         self.urls.append(url)
         self.urls = list(dict.fromkeys(self.urls))
+
+    def append_file_link(self, url):
+        # print(f"FILE URL Appended: {url}")
+        self.file_urls.append(url)
+        self.file_urls = list(dict.fromkeys(self.file_urls))
+
+    def set_file_links(self, urls):
+        # print(f"FILE URL Appended: {url}")
+        self.file_urls = urls
+        self.file_urls = list(dict.fromkeys(self.file_urls))
 
     def get_links(self):
         return self.urls
@@ -152,14 +166,13 @@ class Webarchiver:
             print("No Empty Strings Found")
         self.urls = list(dict.fromkeys(filter(None, self.urls)))
 
-    def screenshot(self, url, zoom_percentage=100, filename=None, filetype=DEFAULT_IMAGE_FORMAT,
-                   quality=DEFAULT_IMAGE_QUALITY):
+    def screenshot(self, url, zoom_percentage=100, filename=None, filetype=None, quality=None):
         self.read_url(url, zoom_percentage)
         print(f"Quality: {quality}")
         if filename:
             title = re.sub('[\\\\/:"*?<>|\']', '', filename)
             title = (title[:140]) if len(title) > 140 else title
-            self.driver.save_screenshot(f'{self.SAVE_PATH}/{title}.{filetype}')
+            self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
         else:
             print(f"Driver Title: {self.driver.title}")
             print(f"URL, {url}")
@@ -167,15 +180,14 @@ class Webarchiver:
                 title = re.sub('[\\\\/:"*?<>|\']', '', self.driver.title)
                 title = title.replace(" ", "_")
                 title = (title[:140]) if len(title) > 140 else title
-                self.driver.save_screenshot(f'{self.SAVE_PATH}/{title}.{filetype}')
+                self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
             else:
                 title = re.sub('[\\\\/:"*?<>|.,\']', '', url)
                 title = title.replace(" ", "_")
                 title = (title[:140]) if len(title) > 140 else title
-                self.driver.save_screenshot(f'{self.SAVE_PATH}/{title}.{filetype}')
+                self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
 
-    def fullpage_screenshot(self, url, zoom_percentage=100, filename=None, filetype=DEFAULT_IMAGE_FORMAT,
-                            quality=DEFAULT_IMAGE_QUALITY):
+    def full_page_screenshot(self, url, zoom_percentage=100, filename=None, filetype=None, quality=None):
         self.read_url(url, zoom_percentage)
         if filename:
             title = re.sub('[\\\\/:"*?<>|.,\']', '', filename)
@@ -272,12 +284,12 @@ class Webarchiver:
         else:
             image_file.paste(slices[-1], (0, math.ceil((scroll_height - inner_height) * device_pixel_ratio)))
         try:
-            image_file.save(f'{self.SAVE_PATH}/{title}.{filetype}', **image_options)
+            image_file.save(f'{self.save_path}/{title}.{filetype}', **image_options)
             self.screenshot_success = True
         except Exception as e:
             print("Could not save image error: ", e)
             try:
-                os.remove(f'{self.SAVE_PATH}/{title}.{filetype}')
+                os.remove(f'{self.save_path}/{title}.{filetype}')
             except Exception as e:
                 print(f"Could not remove file, does it exist? {e}")
             self.screenshot_success = False
@@ -289,10 +301,10 @@ class Webarchiver:
             self.driver.execute_script(scroll_to_js.format(initial_offset))
 
         if not self.screenshot_success:
-            self.fullpage_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}',
-                                                 filetype=filetype, quality=quality)
+            self.full_page_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}',
+                                                  filetype=filetype, quality=quality)
 
-    def fullpage_screenshot_alternative(self, url, zoom_percentage=100, filename=None, **kwargs):
+    def full_page_screenshot_alternative(self, url, zoom_percentage=100, filename=None, **kwargs):
         zeroth_ifd = {
             piexif.ImageIFD.Make: u"GeniusBot",
             # piexif.ImageIFD.XResolution: (96, 1),
@@ -324,10 +336,10 @@ class Webarchiver:
         image_options = dict()
         # This will add the URL of the webite to the description
         image_options['exif'] = exif_bytes
-        image_options['format'] = kwargs.get('format') or self.DEFAULT_IMAGE_FORMAT
-        image_options['quality'] = kwargs.get('quality') or self.DEFAULT_IMAGE_QUALITY
-        filetype = kwargs.get('format') or self.DEFAULT_IMAGE_FORMAT
-        quality = kwargs.get('quality') or self.DEFAULT_IMAGE_QUALITY
+        image_options['format'] = kwargs.get('format') or self.image_format
+        image_options['quality'] = kwargs.get('quality') or self.image_quality
+        filetype = kwargs.get('format') or self.image_format
+        quality = kwargs.get('quality') or self.image_quality
         print("Attempting alternative screenshot method")
         self.driver.execute_script(f"window.scrollTo({0}, {0})")
         total_width = self.driver.execute_script("return document.body.offsetWidth")
@@ -368,14 +380,14 @@ class Webarchiver:
             os.remove(file_name)
             part = part + 1
             previous = rectangle
-        print(f"Saving image to: {self.SAVE_PATH}/{filename}.{filetype}'")
+        print(f"Saving image to: {self.save_path}/{filename}.{filetype}'")
         try:
-            stitched_image.save(f"{self.SAVE_PATH}/{filename}.{filetype}", **image_options)
+            stitched_image.save(f"{self.save_path}/{filename}.{filetype}", **image_options)
             self.screenshot_success_alt = True
         except Exception as e:
             print("Could not save image error in alternative form: ", e)
             try:
-                os.remove(f'{self.SAVE_PATH}/{filename}.{filetype}')
+                os.remove(f'{self.save_path}/{filename}.{filetype}')
             except Exception as e:
                 print(f"Could not remove file, does it exist? {e}")
             self.screenshot_success_alt = False
@@ -387,13 +399,13 @@ class Webarchiver:
                             quality=quality)
 
     def set_save_path(self, save_path):
-        self.SAVE_PATH = save_path
-        self.SAVE_PATH = self.SAVE_PATH.replace(os.sep, '/')
-        print(f"Save Path: {self.SAVE_PATH }")
+        self.save_path = save_path
+        self.save_path = self.save_path.replace(os.sep, '/')
+        # print(f"Save Path: {self.save_path }")
         if save_path is None or save_path == "":
-            self.SAVE_PATH = f"{os.path.expanduser('~')}".replace("\\", "/")
-        if not os.path.exists(self.SAVE_PATH):
-            os.makedirs(self.SAVE_PATH)
+            self.save_path = f"{os.path.expanduser('~')}".replace("\\", "/")
+        if not os.path.exists(self.save_path):
+            os.makedirs(self.save_path)
 
     def remove_fixed_elements(self, url):
         try:
@@ -502,15 +514,89 @@ class Webarchiver:
 
     def enable_scroll(self):
         print("Attempting to re-enable scroll bar")
-        body = self.driver.find_element_by_xpath('/html/body')
+        body = self.driver.find_element(By.XPATH, '/html/body')
         self.driver.execute_script("arguments[0].setAttribute('style', 'overflow: scroll; overflow-x: scroll')", body)
-        html = self.driver.find_element_by_xpath('/html')
+        html = self.driver.find_element(By.XPATH, '/html')
         self.driver.execute_script("arguments[0].setAttribute('style', 'overflow: scroll; overflow-x: scroll')", html)
         print("Set scrolls override")
 
     def quit_driver(self):
         print("Chrome Driver Closed")
         self.driver.quit()
+
+    def set_threads(self, threads):
+        try:
+            threads = int(threads)
+            if threads > 0 or threads < os.cpu_count():
+                self.threads = threads
+            else:
+                print(f"Did not recognize {threads} as a valid value, defaulting to CPU Count: {os.cpu_count()}")
+                self.threads = os.cpu_count()
+        except Exception as e:
+            print(
+                f"Did not recognize {threads} as a valid value, defaulting to CPU Count: {os.cpu_count()}\nError: {e}")
+            self.threads = os.cpu_count()
+
+    def set_url_filter(self, url_filter):
+        self.url_filter = url_filter
+
+    def scrape_urls_in_parallel(self):
+        print("Scraping for URL(s)")
+        scrape_pool = Pool(processes=self.threads)
+        results = scrape_pool.map(self.scrape_urls, self.urls)
+        final_result = [x for res in results for x in res]
+        self.set_file_links(urls=final_result)
+        print(f"Found {len(self.file_urls)} file(s)")
+
+    def scrape_urls(self, url):
+        url = url.strip()
+        reqs = requests.get(url)
+        soup = BeautifulSoup(reqs.text, 'html.parser')
+        file_link = []
+        links = soup.find_all('a')
+        for link in links:
+            if link.get('href'):
+                artifact_link = link.get('href').rstrip('/')
+            else:
+                continue
+            if self.url_filter:
+                if self.url_filter in url:
+                    print(f"\tAdding ({len(self.urls)}-{len(self.file_urls)}): {url}/{artifact_link}")
+                    file_link.append(f"{url}/{artifact_link}")
+                else:
+                    print(f"\tSkipping: {url}/{artifact_link}")
+            else:
+                print(f"\tAdding ({len(self.urls)}-{len(self.file_urls)}): {url}/{artifact_link}")
+                file_link.append(f"{url}/{artifact_link}")
+        return file_link
+
+    def download_urls_in_parallel(self):
+        print(f"Downloading {len(self.file_urls)} URL(s)")
+        download_pool = Pool(processes=self.threads)
+        download_pool.map(self.download_urls, self.file_urls)
+        print("Cleaning empty directories")
+        folders = list(os.walk(self.save_path))[1:]
+        for folder in folders:
+            if not folder[2]:
+                os.rmdir(folder[0])
+
+    def download_urls(self, url):
+        file_name = re.sub("[&*!@#$%^(), ]*", "", url.rsplit('/', 1)[-1])
+        try:
+            site_folder = url.rsplit('/', 1)[-2]
+            site_folder = re.sub("[&*!@#$%^(), ]*", "", os.path.basename(site_folder.rstrip('/')))
+            if not os.path.isdir(os.path.normpath(os.path.join(self.save_path, site_folder))):
+                os.mkdir(os.path.normpath(os.path.join(self.save_path, site_folder)))
+            if not os.path.isfile(os.path.normpath(os.path.join(self.save_path, site_folder, file_name))):
+                with urllib.request.urlopen(url) as response, open(os.path.normpath(os.path.join(self.save_path, site_folder, file_name)), 'wb') as out_file:
+                    shutil.copyfileobj(response, out_file)
+                print(f"\tDownloaded ({self.file_urls.index(url)}/{len(self.file_urls)}): "
+                      f"{os.path.normpath(os.path.join(self.save_path, site_folder, file_name))}")
+            else:
+                print(f"\tFile {os.path.normpath(os.path.join(self.save_path, site_folder, file_name))} "
+                      f"already downloaded")
+        except Exception as e:
+            pass
 
 
 def webarchiver(argv):
@@ -519,10 +605,15 @@ def webarchiver(argv):
     clean_flag = False
     file_flag = False
     zoom_level = 100
+    image_archive = False
+    scrape_flag = False
+    url_filter = None
+    threads = os.cpu_count()
 
     try:
-        opts, args = getopt.getopt(argv, "hcd:f:l:t:z:", ["help", "clean", "directory=", "dpi=", "file=", "links=",
-                                                          "type=", "zoom="])
+        opts, args = getopt.getopt(argv, "hcd:f:l:i:st:u:z:", ["help", "clean", "directory=", "dpi=", "file=",
+                                                             "links=", "image-type=", "scrape", "threads=",
+                                                             "url-filter=", "zoom="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -539,14 +630,21 @@ def webarchiver(argv):
         elif opt in ("-f", "--file"):
             file_flag = True
             filename = arg
+        elif opt in ("-s", "--scrape"):
+            scrape_flag = True
+        elif opt in ("-u", "--url-filter"):
+            url_filter = arg
         elif opt in ("-l", "--links"):
             url_list = arg.replace(" ", "")
             url_list = url_list.split(",")
             for url in url_list:
-                archive.append_link(url)
-        elif opt in ("-t", "--type"):
+                archive.append_link(url.strip())
+        elif opt in ("-i", "--image-type"):
             if arg == "PNG" or arg == "png" or arg == "JPG" or arg == "jpg" or arg == "JPEG" or arg == "jpeg":
-                archive.DEFAULT_IMAGE_FORMAT = f'{arg}'
+                archive.image_format = f'{arg}'
+            image_archive = True
+        elif opt in ("-t", "--threads"):
+            threads = arg
         elif opt in ("-z", "--zoom"):
             zoom_level = arg
 
@@ -556,19 +654,25 @@ def webarchiver(argv):
     if clean_flag:
         archive.clean_url()
 
-    archive.launch_browser()
-    url_count = 0
-    for url in archive.urls:
-        archive.set_zoom_level(zoom_level)
-        archive.fullpage_screenshot(url=f'{url}', zoom_percentage=zoom_level)
-        url_count = url_count + 1
-        percentage = '%.3f' % ((url_count/len(archive.urls))*100)
-        urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
-        percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
-        total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
-        print(f"{urls_processed} | {percentage_display} | {total}\n")
+    if image_archive:
+        archive.launch_browser()
+        url_count = 0
+        for url in archive.urls:
+            archive.set_zoom_level(zoom_level)
+            archive.full_page_screenshot(url=f'{url}', zoom_percentage=zoom_level)
+            url_count = url_count + 1
+            percentage = '%.3f' % ((url_count/len(archive.urls))*100)
+            urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
+            percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
+            total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
+            print(f"{urls_processed} | {percentage_display} | {total}\n")
+        archive.quit_driver()
 
-    archive.quit_driver()
+    if scrape_flag:
+        archive.set_threads(threads=threads)
+        archive.set_url_filter(url_filter=url_filter)
+        archive.scrape_urls_in_parallel()
+        archive.download_urls_in_parallel()
 
 
 def usage():
