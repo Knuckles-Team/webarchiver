@@ -36,7 +36,7 @@ class Webarchiver:
         self.capabilities = None
         self.chrome_options = webdriver.ChromeOptions()
         self.firefox_options = webdriver.FirefoxOptions()
-        self.image_format = 'PNG'
+        self.image_format = 'png'
         self.image_quality = 80
         self.hidden_scroll_bar = 'hidden'
         self.screenshot_success = False
@@ -195,6 +195,9 @@ class Webarchiver:
         self.file_urls = urls
         self.file_urls = list(dict.fromkeys(self.file_urls))
 
+    def set_image_format(self, image_format):
+        self.image_format = image_format
+
     def get_links(self):
         return self.urls
 
@@ -259,13 +262,13 @@ class Webarchiver:
             print("No Empty Strings Found")
         self.urls = list(dict.fromkeys(filter(None, self.urls)))
 
-    def screenshot(self, url, zoom_percentage=100, filename=None, filetype=None, quality=None):
+    def screenshot(self, url, zoom_percentage=100, filename=None, quality=None):
         self.read_url(url, zoom_percentage)
         print(f"Quality: {quality}")
         if filename:
             title = re.sub('[\\\\/:"*?<>|\']', '', filename)
             title = (title[:140]) if len(title) > 140 else title
-            self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
+            self.driver.save_screenshot(f'{self.save_path}/{title}.{self.image_format}')
         else:
             print(f"Driver Title: {self.driver.title}")
             print(f"URL, {url}")
@@ -273,14 +276,14 @@ class Webarchiver:
                 title = re.sub('[\\\\/:"*?<>|\']', '', self.driver.title)
                 title = title.replace(" ", "_")
                 title = (title[:140]) if len(title) > 140 else title
-                self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
+                self.driver.save_screenshot(f'{self.save_path}/{title}.{self.image_format}')
             else:
                 title = re.sub('[\\\\/:"*?<>|.,\']', '', url)
                 title = title.replace(" ", "_")
                 title = (title[:140]) if len(title) > 140 else title
-                self.driver.save_screenshot(f'{self.save_path}/{title}.{filetype}')
+                self.driver.save_screenshot(f'{self.save_path}/{title}.{self.image_format}')
 
-    def full_page_screenshot(self, url, zoom_percentage=100, filename=None, filetype=None, quality=None):
+    def full_page_screenshot(self, url, zoom_percentage=100, filename=None, quality=None):
         self.read_url(url, zoom_percentage)
         if filename:
             title = re.sub('[\\\\/:"*?<>|.,\']', '', filename)
@@ -319,7 +322,7 @@ class Webarchiver:
         image_options = dict()
         # This will add the URL of the webite to the description
         image_options['exif'] = exif_bytes
-        image_options['format'] = filetype
+        image_options['format'] = self.image_format
         image_options['quality'] = quality
         # Changes the ratio of the screen of the device.
         device_pixel_ratio_js = 'return window.devicePixelRatio;'
@@ -377,12 +380,12 @@ class Webarchiver:
         else:
             image_file.paste(slices[-1], (0, math.ceil((scroll_height - inner_height) * device_pixel_ratio)))
         try:
-            image_file.save(f'{self.save_path}/{title}.{filetype}', **image_options)
+            image_file.save(f'{self.save_path}/{title}.{self.image_format}', **image_options)
             self.screenshot_success = True
         except Exception as e:
             print("Could not save image error: ", e)
             try:
-                os.remove(f'{self.save_path}/{title}.{filetype}')
+                os.remove(f'{self.save_path}/{title}.{self.image_format}')
             except Exception as e:
                 print(f"Could not remove file, does it exist? {e}")
             self.screenshot_success = False
@@ -394,8 +397,7 @@ class Webarchiver:
             self.driver.execute_script(scroll_to_js.format(initial_offset))
 
         if not self.screenshot_success:
-            self.full_page_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}',
-                                                  filetype=filetype, quality=quality)
+            self.full_page_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}', quality=quality)
 
     def full_page_screenshot_alternative(self, url, zoom_percentage=100, filename=None, **kwargs):
         zeroth_ifd = {
@@ -431,7 +433,6 @@ class Webarchiver:
         image_options['exif'] = exif_bytes
         image_options['format'] = kwargs.get('format') or self.image_format
         image_options['quality'] = kwargs.get('quality') or self.image_quality
-        filetype = kwargs.get('format') or self.image_format
         quality = kwargs.get('quality') or self.image_quality
         print("Attempting alternative screenshot method")
         self.driver.execute_script(f"window.scrollTo({0}, {0})")
@@ -473,14 +474,14 @@ class Webarchiver:
             os.remove(file_name)
             part = part + 1
             previous = rectangle
-        print(f"Saving image to: {self.save_path}/{filename}.{filetype}'")
+        print(f"Saving image to: {self.save_path}/{filename}.{self.image_format}'")
         try:
-            stitched_image.save(f"{self.save_path}/{filename}.{filetype}", **image_options)
+            stitched_image.save(f"{self.save_path}/{filename}.{self.image_format}", **image_options)
             self.screenshot_success_alt = True
         except Exception as e:
             print("Could not save image error in alternative form: ", e)
             try:
-                os.remove(f'{self.save_path}/{filename}.{filetype}')
+                os.remove(f'{self.save_path}/{filename}.{self.image_format}')
             except Exception as e:
                 print(f"Could not remove file, does it exist? {e}")
             self.screenshot_success_alt = False
@@ -489,8 +490,7 @@ class Webarchiver:
         if not ImageChops.invert(
                 stitched_image).getbbox() or not stitched_image.getbbox() or self.screenshot_success_alt is False:
             print("Could not save full page screenshot, saving single page screenshot instead")
-            self.screenshot(url=f'{url}', zoom_percentage=zoom_percentage, filename=filename, filetype=filetype,
-                            quality=quality)
+            self.screenshot(url=f'{url}', zoom_percentage=zoom_percentage, filename=filename, quality=quality)
 
     def set_save_path(self, save_path):
         self.save_path = save_path
@@ -729,6 +729,7 @@ class Webarchiver:
 
 def webarchiver(argv):
     filename = "./links.txt"
+    image_format = 'png'
     browser = "Chrome"
     executor = "Local"
     archive = Webarchiver()
@@ -776,7 +777,7 @@ def webarchiver(argv):
                 archive.append_link(url.strip())
         elif opt in ("-i", "--image-type"):
             if arg.lower() == "png" or arg.lower() == "jpg" or arg.lower() == "jpeg":
-                archive.image_format = f'{arg.lower()}'
+                image_format = f'{arg.lower()}'
             image_archive = True
         elif opt in ("-p", "--processes"):
             processes = arg
@@ -791,6 +792,7 @@ def webarchiver(argv):
 
     if image_archive:
         archive.set_zoom_level(zoom_level)
+        archive.set_image_format(image_format)
         archive.set_processes(processes=processes)
         archive.set_browser(browser=browser)
         archive.set_executor(executor=executor)
