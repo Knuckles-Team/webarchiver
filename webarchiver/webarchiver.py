@@ -780,7 +780,7 @@ def webarchiver(argv):
                 image_format = f'{arg.lower()}'
             image_archive = True
         elif opt in ("-p", "--processes"):
-            processes = arg
+            processes = int(arg)
         elif opt in ("-z", "--zoom"):
             zoom_level = arg
 
@@ -793,12 +793,11 @@ def webarchiver(argv):
     if image_archive:
         archive.set_zoom_level(zoom_level)
         archive.set_image_format(image_format)
-        archive.set_processes(processes=processes)
         archive.set_browser(browser=browser)
         archive.set_executor(executor=executor)
         if len(archive.urls) < processes:
             processes = len(archive.urls)
-            archive.set_processes(processes=processes)
+        archive.set_processes(processes=processes)
         parallel_urls = list(archive.chunks(archive.urls, processes))
         archive.screenshot_urls_in_parallel(parallel_urls=parallel_urls)
 
