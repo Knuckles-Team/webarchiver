@@ -19,6 +19,7 @@ from PIL import Image, ImageChops
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys
@@ -34,6 +35,7 @@ class Webarchiver:
         self.save_path = os.path.join(self.home, "Downloads")
         self.capabilities = None
         self.chrome_options = webdriver.ChromeOptions()
+        self.firefox_options = webdriver.FirefoxOptions()
         self.image_format = 'PNG'
         self.image_quality = 80
         self.hidden_scroll_bar = 'hidden'
@@ -44,53 +46,134 @@ class Webarchiver:
         self.max_scroll_height = 369369
         self.threads = os.cpu_count()
         self.url_filter = None
+        self.url_count = 0
+        self.executor = "Local"
+        self.host = "None"
+        self.browser = "Chrome"
 
     def launch_browser(self):
-        self.capabilities = {
-            'self.browserName': 'chrome',
-            'chromeOptions': {
-                'useAutomationExtension': False,
-                'forceDevToolsScreenshot': True
+        if self.browser.lower() == "chrome" and self.executor.lower() == "local":
+            self.capabilities = {
+                'self.browserName': 'chrome',
+                'chromeOptions': {
+                    'useAutomationExtension': False,
+                    'forceDevToolsScreenshot': True
+                }
             }
-        }
-        # Pass the argument 1 to allow and 2 to block
-        self.chrome_options.add_experimental_option("prefs", {
-            "profile.default_content_setting_values.notifications": 2
-        })
-        # Add Ublock Origin to Chrome
-        parent_dir = os.path.abspath(os.path.dirname(__file__))
-        lib_dir = os.path.join(parent_dir, 'lib')
-        sys.path.append(lib_dir)
-        adblock_path = f'{lib_dir}/uBlock-Origin_v1.27.0.crx'
-        if os.path.isfile(adblock_path):
-            print(f"uBlock Origin Found: {adblock_path}")
-            self.chrome_options.add_extension(adblock_path)
-        elif os.path.isfile(f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'):
-            adblock_path = f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'
-            print(f"uBlock Origin Found: {adblock_path}")
-            self.chrome_options.add_extension(adblock_path)
-        else:
-            print(f"uBlock Origin was not found")
-        self.chrome_options.add_argument('--disable-gpu')
-        self.chrome_options.add_argument('--start-maximized')
-        self.chrome_options.add_argument('--hide-scrollbars')
-        self.chrome_options.add_argument('--disable-infobars')
-        self.chrome_options.add_argument('--disable-notifications')
-        self.chrome_options.add_argument('--disable-dev-shm-usage')
-        self.chrome_options.add_argument('--dns-prefetch-disable')
-        if self.dpi != 1:
-            self.chrome_options.add_argument(f'--force-device-scale-factor={self.dpi}')
-            self.chrome_options.add_argument(f'--high-dpi-support={self.dpi}')
-        try:
-            self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(),
-                                           desired_capabilities=self.capabilities,
-                                           options=self.chrome_options)
-            # Hide the scrollbar
-            scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.hidden_scroll_bar)
-            self.driver.execute_script(scrollbar_js)
-        except Exception as e:
-            print("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
-            exit()
+            # Pass the argument 1 to allow and 2 to block
+            self.chrome_options.add_experimental_option("prefs", {
+                "profile.default_content_setting_values.notifications": 2
+            })
+            # Add Ublock Origin to Chrome
+            parent_dir = os.path.abspath(os.path.dirname(__file__))
+            lib_dir = os.path.join(parent_dir, 'lib')
+            sys.path.append(lib_dir)
+            adblock_path = f'{lib_dir}/uBlock-Origin_v1.27.0.crx'
+            if os.path.isfile(adblock_path):
+                print(f"uBlock Origin Found: {adblock_path}")
+                self.chrome_options.add_extension(adblock_path)
+            elif os.path.isfile(f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'):
+                adblock_path = f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'
+                print(f"uBlock Origin Found: {adblock_path}")
+                self.chrome_options.add_extension(adblock_path)
+            else:
+                print(f"uBlock Origin was not found")
+            self.chrome_options.add_argument('--disable-gpu')
+            self.chrome_options.add_argument('--start-maximized')
+            self.chrome_options.add_argument('--hide-scrollbars')
+            self.chrome_options.add_argument('--disable-infobars')
+            self.chrome_options.add_argument('--disable-notifications')
+            self.chrome_options.add_argument('--disable-dev-shm-usage')
+            self.chrome_options.add_argument('--dns-prefetch-disable')
+            if self.dpi != 1:
+                self.chrome_options.add_argument(f'--force-device-scale-factor={self.dpi}')
+                self.chrome_options.add_argument(f'--high-dpi-support={self.dpi}')
+            try:
+                self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(),
+                                               desired_capabilities=self.capabilities,
+                                               options=self.chrome_options)
+                # Hide the scrollbar
+                scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.hidden_scroll_bar)
+                self.driver.execute_script(scrollbar_js)
+            except Exception as e:
+                print("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
+                exit()
+        elif self.browser.lower() == "firefox" and self.executor.lower() == "local":
+            options = webdriver.FirefoxOptions()
+            options.headless = True
+            self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options=options)
+            self.driver.set_window_position(0,0)
+            self.driver.maximize_window()
+        elif self.browser.lower() == "chrome" and self.executor.lower() != "local":
+            browser_name = "Webarchiver"
+            options = webdriver.ChromeOptions()
+            capabilities = {
+                "browserName": "chrome",
+                "browserVersion": "latest",
+                f"{self.host}:options": {
+                    "enableVideo": False,
+                    "enableVNC": True,
+                    "name": browser_name,
+                    "setAcceptInsecureCerts": True,
+                    "acceptSslCerts": True,
+                }
+            }
+            # Add Ublock Origin to Chrome
+            parent_dir = os.path.abspath(os.path.dirname(__file__))
+            lib_dir = os.path.join(parent_dir, 'lib')
+            sys.path.append(lib_dir)
+            adblock_path = f'{lib_dir}/uBlock-Origin_v1.27.0.crx'
+            if os.path.isfile(adblock_path):
+                print(f"uBlock Origin Found: {adblock_path}")
+                self.chrome_options.add_extension(adblock_path)
+            elif os.path.isfile(f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'):
+                adblock_path = f'{os.curdir}/lib/uBlock-Origin_v1.27.0.crx'
+                print(f"uBlock Origin Found: {adblock_path}")
+                self.chrome_options.add_extension(adblock_path)
+            else:
+                print(f"uBlock Origin was not found")
+            self.chrome_options.add_argument('--disable-gpu')
+            self.chrome_options.add_argument('--start-maximized')
+            self.chrome_options.add_argument('--hide-scrollbars')
+            self.chrome_options.add_argument('--disable-infobars')
+            self.chrome_options.add_argument('--disable-notifications')
+            self.chrome_options.add_argument('--disable-dev-shm-usage')
+            self.chrome_options.add_argument('--dns-prefetch-disable')
+            self.chrome_options.add_argument('--log-level=3')
+            self.driver = webdriver.Remote(
+                command_executor=self.executor,
+                options=options,
+                desired_capabilities=capabilities
+            )
+            self.driver.maximize_window()
+        elif self.browser.lower() == "firefox" and self.executor.lower() != "local":
+            browser_name = "Webarchiver"
+            options = webdriver.ChromeOptions()
+            capabilities = {
+                "browserName": "firefox",
+                "browserVersion": "latest",
+                f"{self.host}:options": {
+                    "enableVideo": False,
+                    "enableVNC": True,
+                    "name": browser_name,
+                    "setAcceptInsecureCerts": True,
+                    "acceptSslCerts": True,
+                }
+            }
+            self.chrome_options.add_argument('--disable-gpu')
+            self.chrome_options.add_argument('--start-maximized')
+            self.chrome_options.add_argument('--hide-scrollbars')
+            self.chrome_options.add_argument('--disable-infobars')
+            self.chrome_options.add_argument('--disable-notifications')
+            self.chrome_options.add_argument('--disable-dev-shm-usage')
+            self.chrome_options.add_argument('--dns-prefetch-disable')
+            self.chrome_options.add_argument('--log-level=3')
+            self.driver = webdriver.Remote(
+                command_executor=self.executor,
+                options=options,
+                desired_capabilities=capabilities
+            )
+            self.driver.maximize_window()
 
     def open_file(self, file):
         webarchive_urls = open(file, 'r')
@@ -118,6 +201,18 @@ class Webarchiver:
     def reset_links(self):
         print("Links Reset")
         self.urls = []
+
+    def set_executor(self, executor="Local"):
+        self.host = "None"
+        self.executor = executor
+        if executor != "Local":
+            self.host = executor.split('|')[0]
+            self.executor = executor.split('|')[1]
+
+        print(f"HOST: {self.host} EXECUTOR: {self.executor}")
+
+    def set_browser(self, browser="Chrome"):
+        self.browser = browser
 
     def set_zoom_level(self, zoom_percentage=100):
         self.zoom_level = zoom_percentage
@@ -600,9 +695,29 @@ class Webarchiver:
         except Exception as e:
             pass
 
+    def chunks(self, lst, n):
+        for i in range(0, len(lst), n):
+            return list(lst[i:i + n])
+
+    def screenshot_urls_in_parallel(self, parallel_urls):
+        self.launch_browser()
+        for url in parallel_urls:
+            self.set_zoom_level(self.zoom_level)
+            self.full_page_screenshot(url=f'{url}', zoom_percentage=self.zoom_level)
+            self.url_count = self.url_count + 1
+            percentage = '%.3f' % ((self.url_count / len(self.urls)) * 100)
+            urls_processed = '{0: <25}'.format(f"URLs Processed: {self.url_count}")
+            percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
+            total = '{0: <15}'.format(f"Total: {self.url_count}/{len(self.urls)}")
+            print(f"{urls_processed} | {percentage_display} | {total}\n")
+        self.quit_driver()
+        self.url_count = 0
+
 
 def webarchiver(argv):
     filename = "./links.txt"
+    browser = "Chrome"
+    executor = "Local"
     archive = Webarchiver()
     clean_flag = False
     file_flag = False
@@ -613,16 +728,19 @@ def webarchiver(argv):
     threads = os.cpu_count()
 
     try:
-        opts, args = getopt.getopt(argv, "hcd:f:l:i:st:u:z:", ["help", "clean", "directory=", "dpi=", "file=",
-                                                               "links=", "image-type=", "scrape", "threads=",
-                                                               "url-filter=", "zoom="])
+        opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:st:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
+                                                                 "file=", "executor=", "links=", "image-type=", "scrape", "threads=",
+                                                                 "url-filter=", "zoom="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
+
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             usage()
             sys.exit()
+        elif opt in ("-b", "--browser"):
+            browser = arg
         elif opt in ("-c", "--clean"):
             clean_flag = True
         elif opt in ("-d", "--directory"):
@@ -632,6 +750,8 @@ def webarchiver(argv):
         elif opt in ("-f", "--file"):
             file_flag = True
             filename = arg
+        elif opt in ("-e", "--executor"):
+            executor = arg
         elif opt in ("-s", "--scrape"):
             scrape_flag = True
         elif opt in ("-u", "--url-filter"):
@@ -642,8 +762,8 @@ def webarchiver(argv):
             for url in url_list:
                 archive.append_link(url.strip())
         elif opt in ("-i", "--image-type"):
-            if arg == "PNG" or arg == "png" or arg == "JPG" or arg == "jpg" or arg == "JPEG" or arg == "jpeg":
-                archive.image_format = f'{arg}'
+            if arg.lower() == "png" or arg.lower() == "jpg" or arg.lower() == "jpeg":
+                archive.image_format = f'{arg.lower()}'
             image_archive = True
         elif opt in ("-t", "--threads"):
             threads = arg
@@ -657,6 +777,8 @@ def webarchiver(argv):
         archive.clean_url()
 
     if image_archive:
+        archive.set_browser(browser=browser)
+        archive.set_executor(executor=executor)
         archive.launch_browser()
         url_count = 0
         for url in archive.urls:
@@ -670,6 +792,20 @@ def webarchiver(argv):
             print(f"{urls_processed} | {percentage_display} | {total}\n")
         archive.quit_driver()
 
+        # print("Starting")
+        # archive.set_zoom_level(zoom_level)
+        # archive.set_threads(threads=threads)
+        # archive.set_browser(browser=browser)
+        # archive.set_executor(executor=executor)
+        # parallel_urls = archive.chunks(archive.urls, threads)
+        # pool = Pool(processes=threads)
+        # try:
+        #     pool.map(archive.screenshot_urls_in_parallel, parallel_urls)
+        # finally:
+        #     pool.close()
+        #     pool.join()
+
+
     if scrape_flag:
         archive.set_threads(threads=threads)
         archive.set_url_filter(url_filter=url_filter)
@@ -680,9 +816,11 @@ def webarchiver(argv):
 def usage():
     print(f'Usage:\n'
           f'-h | --help       [ See usage ]\n'
+          f'-b | --browser    [ Specify browser: Chrome / Firefox ]\n'
           f'-c | --clean      [ Convert mobile sites to regular site ]\n'
           f'-d | --directory  [ Location where the images will be saved ]\n'
           f'     --dpi        [ DPI for the image ]\n'
+          f'-e | --executor   [ Execution environment: Local / Selenoid Host|Selenoid URL ]\n'
           f'-f | --file       [ Text file to read the URLs from ]\n'
           f'-l | --links      [ Comma separated URLs (No spaces) ]\n'
           f'-i | --image-type [ Save images as PNG or JPEG ]\n'
@@ -691,7 +829,7 @@ def usage():
           f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'
           f'webarchiver -c -f <links_file.txt> '
-          '-l "<URL1, URL2, URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1\n')
+          '-l "<URL1, URL2, URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1 --browser "Chrome" --executor "selenoid|http://selenoid.com/wd/hub"\n')
 
 
 def main():
