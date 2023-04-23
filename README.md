@@ -32,11 +32,11 @@ One of the following browsers:
 
 ### Example:
 ```bash
-webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1
+webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -i 'jpeg' -d "~/Downloads" -z 100 --dpi 1 --browser "Firefox"
 ```
 
 ```bash
-webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1 --executor "selenoid|http://selenoid.com/wd/hub" --browser "Chrome"
+webarchiver -c -f <links_file.txt> -l "<URL1,URL2,URL3>" -i 'png' -d "~/Downloads" -z 100 --dpi 1 --executor "selenoid|http://selenoid.com/wd/hub" --browser "Chrome"
 ```
 
 #### Install Instructions

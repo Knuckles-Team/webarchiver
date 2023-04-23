@@ -829,7 +829,8 @@ def usage():
           f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'
           f'webarchiver -c -f <links_file.txt> '
-          '-l "<URL1, URL2, URL3>" -t <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1 --browser "Chrome" --executor "selenoid|http://selenoid.com/wd/hub"\n')
+          '-l "<URL1, URL2, URL3>" -i <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1 --browser "Chrome" '
+          '--executor "selenoid|http://selenoid.com/wd/hub"\n')
 
 
 def main():
