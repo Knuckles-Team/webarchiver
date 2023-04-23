@@ -701,7 +701,14 @@ class Webarchiver:
         self.launch_browser()
         for url in parallel_urls:
             self.set_zoom_level(self.zoom_level)
-            self.full_page_screenshot(url=f'{url}', zoom_percentage=self.zoom_level)
+            try:
+                self.full_page_screenshot(url=f'{url}', zoom_percentage=self.zoom_level)
+            except Exception as e:
+                print(f"Unable to capture screenshot\nError: {e}\nTrying again...")
+                try:
+                    self.full_page_screenshot(url=f'{url}', zoom_percentage=self.zoom_level)
+                except Exception as e:
+                    print(f"Unable to capture screenshot\nError: {e}")
             self.url_count = self.url_count + 1
             percentage = '%.3f' % ((self.url_count / len(self.urls)) * 100)
             urls_processed = '{0: <25}'.format(f"URLs Processed: {self.url_count}")
@@ -791,7 +798,6 @@ def webarchiver(argv):
             processes = len(archive.urls)
             archive.set_processes(processes=processes)
         parallel_urls = list(archive.chunks(archive.urls, processes))
-        print(f"PARALLEL URLS: {parallel_urls}")
         archive.screenshot_urls_in_parallel(parallel_urls=parallel_urls)
 
     if scrape_flag:
