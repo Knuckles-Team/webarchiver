@@ -783,22 +783,6 @@ def webarchiver(argv):
         archive.clean_url()
 
     if image_archive:
-        # archive.set_browser(browser=browser)
-        # archive.set_executor(executor=executor)
-        # archive.launch_browser()
-        # url_count = 0
-        # for url in archive.urls:
-        #     archive.set_zoom_level(zoom_level)
-        #     archive.full_page_screenshot(url=f'{url}', zoom_percentage=zoom_level)
-        #     url_count = url_count + 1
-        #     percentage = '%.3f' % ((url_count / len(archive.urls)) * 100)
-        #     urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
-        #     percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
-        #     total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
-        #     print(f"{urls_processed} | {percentage_display} | {total}\n")
-        # archive.quit_driver()
-
-        print("Starting")
         archive.set_zoom_level(zoom_level)
         archive.set_processes(processes=processes)
         archive.set_browser(browser=browser)
