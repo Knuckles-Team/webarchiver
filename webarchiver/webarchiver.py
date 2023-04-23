@@ -44,7 +44,7 @@ class Webarchiver:
         self.zoom_level = 100
         self.dpi = 1.0
         self.max_scroll_height = 369369
-        self.threads = os.cpu_count()
+        self.processes = 1
         self.url_filter = None
         self.url_count = 0
         self.executor = "Local"
@@ -205,11 +205,9 @@ class Webarchiver:
     def set_executor(self, executor="Local"):
         self.host = "None"
         self.executor = executor
-        if executor != "Local":
+        if executor.lower() != "local":
             self.host = executor.split('|')[0]
             self.executor = executor.split('|')[1]
-
-        print(f"HOST: {self.host} EXECUTOR: {self.executor}")
 
     def set_browser(self, browser="Chrome"):
         self.browser = browser
@@ -620,25 +618,25 @@ class Webarchiver:
         print("Chrome Driver Closed")
         self.driver.quit()
 
-    def set_threads(self, threads):
+    def set_processes(self, processes):
         try:
-            threads = int(threads)
-            if threads > 0 or threads < os.cpu_count():
-                self.threads = threads
+            processes = int(processes)
+            if processes > 0 or processes < os.cpu_count():
+                self.processes = processes
             else:
-                print(f"Did not recognize {threads} as a valid value, defaulting to CPU Count: {os.cpu_count()}")
-                self.threads = os.cpu_count()
+                print(f"Did not recognize {processes} as a valid value, defaulting to CPU Count: {os.cpu_count()}")
+                self.processes = os.cpu_count()
         except Exception as e:
             print(
-                f"Did not recognize {threads} as a valid value, defaulting to CPU Count: {os.cpu_count()}\nError: {e}")
-            self.threads = os.cpu_count()
+                f"Did not recognize {processes} as a valid value, defaulting to CPU Count: {os.cpu_count()}\nError: {e}")
+            self.processes = os.cpu_count()
 
     def set_url_filter(self, url_filter):
         self.url_filter = url_filter
 
     def scrape_urls_in_parallel(self):
         print("Scraping for URL(s)")
-        scrape_pool = Pool(processes=self.threads)
+        scrape_pool = Pool(processes=self.processes)
         results = scrape_pool.map(self.scrape_urls, self.urls)
         final_result = [x for res in results for x in res]
         self.set_file_links(urls=final_result)
@@ -668,7 +666,7 @@ class Webarchiver:
 
     def download_urls_in_parallel(self):
         print(f"Downloading {len(self.file_urls)} URL(s)")
-        download_pool = Pool(processes=self.threads)
+        download_pool = Pool(processes=self.processes)
         download_pool.map(self.download_urls, self.file_urls)
         print("Cleaning empty directories")
         folders = list(os.walk(self.save_path))[1:]
@@ -695,11 +693,11 @@ class Webarchiver:
         except Exception as e:
             pass
 
-    def chunks(self, lst, n):
-        for i in range(0, len(lst), n):
-            return list(lst[i:i + n])
+    def chunks(self, a, n):
+        k, m = divmod(len(a), n)
+        return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
-    def screenshot_urls_in_parallel(self, parallel_urls):
+    def screenshot_urls(self, parallel_urls):
         self.launch_browser()
         for url in parallel_urls:
             self.set_zoom_level(self.zoom_level)
@@ -713,6 +711,14 @@ class Webarchiver:
         self.quit_driver()
         self.url_count = 0
 
+    def screenshot_urls_in_parallel(self, parallel_urls):
+        pool = Pool(processes=self.processes)
+        try:
+            pool.map(self.screenshot_urls, parallel_urls)
+        finally:
+            pool.close()
+            pool.join()
+
 
 def webarchiver(argv):
     filename = "./links.txt"
@@ -725,11 +731,11 @@ def webarchiver(argv):
     image_archive = False
     scrape_flag = False
     url_filter = None
-    threads = os.cpu_count()
+    processes = os.cpu_count()
 
     try:
-        opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:st:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
-                                                                 "file=", "executor=", "links=", "image-type=", "scrape", "threads=",
+        opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:sp:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
+                                                                 "file=", "executor=", "links=", "image-type=", "scrape", "processes=",
                                                                  "url-filter=", "zoom="])
     except getopt.GetoptError:
         usage()
@@ -765,8 +771,8 @@ def webarchiver(argv):
             if arg.lower() == "png" or arg.lower() == "jpg" or arg.lower() == "jpeg":
                 archive.image_format = f'{arg.lower()}'
             image_archive = True
-        elif opt in ("-t", "--threads"):
-            threads = arg
+        elif opt in ("-p", "--processes"):
+            processes = arg
         elif opt in ("-z", "--zoom"):
             zoom_level = arg
 
@@ -777,37 +783,35 @@ def webarchiver(argv):
         archive.clean_url()
 
     if image_archive:
-        archive.set_browser(browser=browser)
-        archive.set_executor(executor=executor)
-        archive.launch_browser()
-        url_count = 0
-        for url in archive.urls:
-            archive.set_zoom_level(zoom_level)
-            archive.full_page_screenshot(url=f'{url}', zoom_percentage=zoom_level)
-            url_count = url_count + 1
-            percentage = '%.3f' % ((url_count / len(archive.urls)) * 100)
-            urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
-            percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
-            total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
-            print(f"{urls_processed} | {percentage_display} | {total}\n")
-        archive.quit_driver()
-
-        # print("Starting")
-        # archive.set_zoom_level(zoom_level)
-        # archive.set_threads(threads=threads)
         # archive.set_browser(browser=browser)
         # archive.set_executor(executor=executor)
-        # parallel_urls = archive.chunks(archive.urls, threads)
-        # pool = Pool(processes=threads)
-        # try:
-        #     pool.map(archive.screenshot_urls_in_parallel, parallel_urls)
-        # finally:
-        #     pool.close()
-        #     pool.join()
+        # archive.launch_browser()
+        # url_count = 0
+        # for url in archive.urls:
+        #     archive.set_zoom_level(zoom_level)
+        #     archive.full_page_screenshot(url=f'{url}', zoom_percentage=zoom_level)
+        #     url_count = url_count + 1
+        #     percentage = '%.3f' % ((url_count / len(archive.urls)) * 100)
+        #     urls_processed = '{0: <25}'.format(f"URLs Processed: {url_count}")
+        #     percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
+        #     total = '{0: <15}'.format(f"Total: {url_count}/{len(archive.urls)}")
+        #     print(f"{urls_processed} | {percentage_display} | {total}\n")
+        # archive.quit_driver()
 
+        print("Starting")
+        archive.set_zoom_level(zoom_level)
+        archive.set_processes(processes=processes)
+        archive.set_browser(browser=browser)
+        archive.set_executor(executor=executor)
+        if len(archive.urls) < processes:
+            processes = len(archive.urls)
+            archive.set_processes(processes=processes)
+        parallel_urls = list(archive.chunks(archive.urls, processes))
+        print(f"PARALLEL URLS: {parallel_urls}")
+        archive.screenshot_urls_in_parallel(parallel_urls=parallel_urls)
 
     if scrape_flag:
-        archive.set_threads(threads=threads)
+        archive.set_processes(processes=processes)
         archive.set_url_filter(url_filter=url_filter)
         archive.scrape_urls_in_parallel()
         archive.download_urls_in_parallel()
@@ -824,7 +828,7 @@ def usage():
           f'-f | --file       [ Text file to read the URLs from ]\n'
           f'-l | --links      [ Comma separated URLs (No spaces) ]\n'
           f'-i | --image-type [ Save images as PNG or JPEG ]\n'
-          f'-t | --threads    [ Number of threads to run scrape and download ]\n'
+          f'-p | --processes  [ Number of processes to run scrape and download ]\n'
           f'-u | --url-filter [ Only filter for specific files that contain this string ]\n'
           f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'

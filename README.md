@@ -25,7 +25,7 @@ One of the following browsers:
 | -f         | --file       | Text file to read the URLs from                             |
 | -l         | --links      | Comma separated URLs (No spaces)                            |
 | -i         | --image-type | Save images as PNG or JPEG                                  |
-| -t         | --threads    | Number of threads to run concurrently                       |
+| -p         | --processes  | Number of processes to run concurrently                     |
 | -u         | --url-filter | Filter URLs that contain this string                        |
 | -z         | --zoom       | The zoom to use on the browser                              |
 
