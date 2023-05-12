@@ -24,6 +24,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from webarchiver.version import __version__, __author__, __credits__
 
 
 class Webarchiver:
@@ -809,7 +810,11 @@ def webarchiver(argv):
 
 
 def usage():
-    print(f'Usage:\n'
+    print(f'Webarchiver: Archive the Internet!\n'
+          f'Version: {__version__}\n'
+          f'Author: {__author__}\n'
+          f'Credits: {__credits__}\n'
+          f'Usage:\n'
           f'-h | --help       [ See usage ]\n'
           f'-b | --browser    [ Specify browser: Chrome / Firefox ]\n'
           f'-c | --clean      [ Convert mobile sites to regular site ]\n'
