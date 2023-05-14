@@ -700,8 +700,51 @@ class Webarchiver:
             if not folder[2]:
                 os.rmdir(folder[0])
 
+    def clean_file_name(self, file_name):
+        file_name_filters = {
+            "%20": " ",
+            "%21": "!",
+            "%22": '"',
+            "%23": "#",
+            "%24": "$",
+            "%25": "%",
+            "%26": "&",
+            "%27": "'",
+            "%28": "(",
+            "%29": ")",
+            "%2A": "*",
+            "%2B": "+",
+            "%2C": ",",
+            "%2D": "-",
+            "%2E": ".",
+            "%2F": "_",
+            "%3A": "_",
+            "%3B": "_",
+            "%3C": "_",
+            "%3D": "=",
+            "%3E": ">",
+            "%3F": "?",
+            "%40": "@",
+            "%5C": "_",
+            "%5B": "[",
+            "%5D": "]",
+            "%5E": "^",
+            "%5F": "_",
+            "%60": "`",
+            "%7B": "{",
+            "%7C": "_",
+            "%7D": "}",
+            "%7E": "~",
+            "%7F": " ",
+        }
+        new_file_name = file_name.rsplit('/', 1)[-1]
+        for key in file_name_filters:
+            new_file_name = re.sub(str(key), str(file_name_filters[key]), new_file_name)
+        re.sub("[*<>:;|/]*", "", new_file_name)
+        return new_file_name
+
     def download_urls(self, url):
-        file_name = re.sub("[&*!@#$%^(), ]*", "", url.rsplit('/', 1)[-1])
+        file_name = self.clean_file_name(url)
         print(f"Downloading: {file_name} from: {url}")
         try:
             site_folder = url.rsplit('/', 1)[-2]
