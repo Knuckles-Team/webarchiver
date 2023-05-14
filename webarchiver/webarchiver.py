@@ -13,7 +13,6 @@ import urllib.request
 import shutil
 from multiprocessing import Pool
 from bs4 import BeautifulSoup
-from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageChops
 from selenium import webdriver
@@ -25,6 +24,11 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from webarchiver.version import __version__, __author__, __credits__
+
+
+def chunks(a, n):
+    k, m = divmod(len(a), n)
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
 
 class Webarchiver:
@@ -546,7 +550,8 @@ class Webarchiver:
             # Convert overflow to scroll and position to relative.
             try:
                 # Removes Any Scroll bars
-                self.driver.execute_script("""(function () {
+                self.driver.execute_script("""
+                (function () {
                   for (let e of document.getElementsByClassName("Scroll--locked")) { 
                       e.style.overflow = "hidden"; 
                       e.style.position = "relative"; 
@@ -560,7 +565,8 @@ class Webarchiver:
 
             # Removes Any Fixed Elements from body at top of page
             try:
-                self.driver.execute_script("""(function () { 
+                self.driver.execute_script("""
+                (function () { 
                   var i, elements = document.querySelectorAll('body *');
 
                   for (i = 0; i < elements.length; i++) {
@@ -575,29 +581,31 @@ class Webarchiver:
 
             # Removes Any Fixed Elements from any div at top of page
             try:
-                self.driver.execute_script("""(function () {
-                          var i, elements = document.querySelectorAll('div *');
+                self.driver.execute_script("""
+                (function () {
+                  var i, elements = document.querySelectorAll('div *');
 
-                          for (i = 0; i < elements.length; i++) {
-                            if (getComputedStyle(elements[i]).position === 'fixed' || getComputedStyle(elements[i]).position === 'sticky' || getComputedStyle(elements[i]).position === '-webkit-sticky') {
-                              elements[i].parentNode.removeChild(elements[i]);
-                            }
-                          }
-                        })();""")
+                  for (i = 0; i < elements.length; i++) {
+                    if (getComputedStyle(elements[i]).position === 'fixed' || getComputedStyle(elements[i]).position === 'sticky' || getComputedStyle(elements[i]).position === '-webkit-sticky') {
+                      elements[i].parentNode.removeChild(elements[i]);
+                    }
+                  }
+                })();""")
             except Exception as e:
                 print(e)
             print("Removed elements from all divs")
             try:
                 # Removes Any Fixed Elements from any html main at top of page
-                self.driver.execute_script("""(function () {
-                                 var i, elements = document.querySelectorAll('html *');
-
-                                 for (i = 0; i < elements.length; i++) {
-                                   if (getComputedStyle(elements[i]).position === 'fixed' || getComputedStyle(elements[i]).position === 'sticky' || getComputedStyle(elements[i]).position === '-webkit-sticky') {
-                                     elements[i].parentNode.removeChild(elements[i]);
-                                   }
-                                 }
-                               })();""")
+                self.driver.execute_script("""
+                (function () {
+                  var i, elements = document.querySelectorAll('html *');
+  
+                  for (i = 0; i < elements.length; i++) {
+                    if (getComputedStyle(elements[i]).position === 'fixed' || getComputedStyle(elements[i]).position === 'sticky' || getComputedStyle(elements[i]).position === '-webkit-sticky') {
+                      elements[i].parentNode.removeChild(elements[i]);
+                    }
+                  }
+                })();""")
             except Exception as e:
                 print(e)
             print("Removed elements from html")
@@ -648,7 +656,7 @@ class Webarchiver:
         results = scrape_pool.map(self.scrape_urls, self.urls)
         print("Obtaining Results...")
         final_result = [x for res in results for x in res]
-        self.set_file_links(urls=urls)
+        self.set_file_links(urls=final_result)
         print(f"Found {len(self.file_urls)} file(s)")
 
     def scrape_urls(self, url):
@@ -708,10 +716,6 @@ class Webarchiver:
                       f"already downloaded")
         except Exception as e:
             pass
-
-    def chunks(self, a, n):
-        k, m = divmod(len(a), n)
-        return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
     def screenshot_urls(self, parallel_urls):
         self.launch_browser()
@@ -817,7 +821,7 @@ def webarchiver(argv):
         if len(archive.urls) < processes:
             processes = len(archive.urls)
         archive.set_processes(processes=processes)
-        parallel_urls = list(archive.chunks(archive.urls, processes))
+        parallel_urls = list(chunks(archive.urls, processes))
         archive.screenshot_urls_in_parallel(parallel_urls=parallel_urls)
 
     if scrape_flag:
