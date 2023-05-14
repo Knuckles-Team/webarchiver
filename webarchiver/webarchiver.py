@@ -702,6 +702,7 @@ class Webarchiver:
 
     def download_urls(self, url):
         file_name = re.sub("[&*!@#$%^(), ]*", "", url.rsplit('/', 1)[-1])
+        print(f"Downloading: {file_name} from: {url}")
         try:
             site_folder = url.rsplit('/', 1)[-2]
             site_folder = re.sub("[&*!@#$%^(), ]*", "", os.path.basename(site_folder.rstrip('/')))
@@ -717,6 +718,7 @@ class Webarchiver:
                 print(f"\tFile {os.path.normpath(os.path.join(self.save_path, site_folder, file_name))} "
                       f"already downloaded")
         except Exception as e:
+            print(f"Unable to download: {file_name}\nError:\n{e}")
             pass
 
     def screenshot_urls(self, parallel_urls):
