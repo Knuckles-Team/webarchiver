@@ -193,7 +193,12 @@ class Webarchiver:
 
     def set_file_links(self, urls):
         # print(f"FILE URL Appended: {url}")
-        self.file_urls = urls
+        cleaned_urls = []
+        for url in urls:
+            if str(result).strip() != ""
+                cleaned_urls.append(str(result).strip())
+
+        self.file_urls = cleaned_urls
         self.file_urls = list(dict.fromkeys(self.file_urls))
 
     def set_image_format(self, image_format):
@@ -642,7 +647,7 @@ class Webarchiver:
         results = scrape_pool.map(self.scrape_urls, self.urls)
         print("Obtaining Results...")
         final_result = [x for res in results for x in res]
-        self.set_file_links(urls=final_result)
+        self.set_file_links(urls=urls)
         print(f"Found {len(self.file_urls)} file(s)")
 
     def scrape_urls(self, url):
