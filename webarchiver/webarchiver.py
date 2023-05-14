@@ -102,8 +102,8 @@ class Webarchiver:
         elif self.browser.lower() == "firefox" and self.executor.lower() == "local":
             options = webdriver.FirefoxOptions()
             options.headless = True
-            self.driver = webdriver.Firefox(executable_path = GeckoDriverManager().install(), options=options)
-            self.driver.set_window_position(0,0)
+            self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+            self.driver.set_window_position(0, 0)
             self.driver.maximize_window()
         elif self.browser.lower() == "chrome" and self.executor.lower() != "local":
             browser_name = "Webarchiver"
@@ -195,8 +195,8 @@ class Webarchiver:
         # print(f"FILE URL Appended: {url}")
         cleaned_urls = []
         for url in urls:
-            if str(result).strip() != ""
-                cleaned_urls.append(str(result).strip())
+            if str(url).strip() != "":
+                cleaned_urls.append(str(url).strip())
 
         self.file_urls = cleaned_urls
         self.file_urls = list(dict.fromkeys(self.file_urls))
@@ -403,7 +403,8 @@ class Webarchiver:
             self.driver.execute_script(scroll_to_js.format(initial_offset))
 
         if not self.screenshot_success:
-            self.full_page_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}', quality=quality)
+            self.full_page_screenshot_alternative(url=f'{url}', zoom_percentage=zoom_percentage, filename=f'{title}',
+                                                  quality=quality)
 
     def full_page_screenshot_alternative(self, url, zoom_percentage=100, filename=None, **kwargs):
         zeroth_ifd = {
@@ -753,15 +754,15 @@ def webarchiver(argv):
     zoom_level = 100
     image_archive = False
     scrape_flag = False
-    url_filter = None
     processes = 1
     url_filter = ['.zip', '.rar', '.tar.gz', '.iso', '.7z', '.tar', '.gz', '.txt', '.md', '.mp3',
                   '.mp4', '.mkv', '.m4a', '.avi']
 
     try:
         opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:sp:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
-                                                                 "file=", "executor=", "links=", "image-type=", "scrape", "processes=",
-                                                                 "url-filter=", "zoom="])
+                                                                   "file=", "executor=", "links=", "image-type=",
+                                                                   "scrape", "processes=",
+                                                                   "url-filter=", "zoom="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -787,7 +788,7 @@ def webarchiver(argv):
             scrape_flag = True
         elif opt in ("-u", "--url-filter"):
             url_filter = arg.replace(" ", "")
-            url_filter = url_list.split(",")
+            url_filter = url_filter.split(",")
         elif opt in ("-l", "--links"):
             url_list = arg.replace(" ", "")
             url_list = url_list.split(",")
@@ -846,21 +847,21 @@ def usage():
           f'-u | --url-filter [ Only filter for specific files that contain this string ]\n'
           f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'
-          f'webarchiver \ \n'
-          f'-c \ \n'
-          f'-f <links_file.txt>  \ \n'
-          f'-l "<URL1, URL2, URL3>" \ \n'
-          f'-i <JPEG/PNG> \ \n'
-          f'-d "~/Downloads" \ \n'
-          f'-z 100 \ \n'
-          f'--dpi 1 \ \n'
-          f'--browser "Chrome" \ \n'
-          f'--executor "selenoid|http://selenoid.com/wd/hub"\n'
+          f'webarchiver \\ \n'
+          f'\t-c \\ \n'
+          f'\t-f <links_file.txt>  \\ \n'
+          f'\t-l "<URL1, URL2, URL3>" \\ \n'
+          f'\t-i <JPEG/PNG> \\ \n'
+          f'\t-d "~/Downloads" \\ \n'
+          f'\t-z 100 \\ \n'
+          f'\t--dpi 1 \\ \n'
+          f'\t--browser "Chrome" \\ \n'
+          f'\t--executor "selenoid|http://selenoid.com/wd/hub"\n'
           f'\n'
-          f'webarchiver \ \n'
-          f'-s \ \n'
-          f'-f <links_file.txt>  \ \n'
-          f'-l "<URL1, URL2, URL3>" \n')
+          f'webarchiver \\ \n'
+          f'\t-s \\ \n'
+          f'\t-f <links_file.txt>  \\ \n'
+          f'\t-l "<URL1, URL2, URL3>" \\n')
 
 
 def main():
