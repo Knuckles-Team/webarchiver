@@ -691,7 +691,7 @@ class Webarchiver:
         return file_link
 
     def download_urls_in_parallel(self):
-        print(f"Downloading {len(self.file_urls)} URL(s)")
+        print(f"Downloading {len(self.file_urls)} URL(s)\n{self.file_urls}")
         download_pool = Pool(processes=self.processes)
         download_pool.map(self.download_urls, self.file_urls)
         print("Cleaning empty directories")
