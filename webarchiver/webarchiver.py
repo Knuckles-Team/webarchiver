@@ -645,10 +645,10 @@ class Webarchiver:
 
     def scrape_urls(self, url):
         # Check if the url supplied is already a file of type below.
-        file_types = ['zip', 'rar', 'tar.gz', 'iso', '7z', 'tar', 'gz', 'txt', '.md', '.mp3',
-                      '.mp4', '.mkv', '.m4a', '.avi']
-        for file_type in file_types:
-            if file_type in url:
+
+        for url_filter in self.url_filter:
+            if url_filter in str(url):
+                print("URL Contains Content: ")
                 return url
 
         url = url.strip()
@@ -747,7 +747,9 @@ def webarchiver(argv):
     image_archive = False
     scrape_flag = False
     url_filter = None
-    processes = os.cpu_count()
+    processes = 1
+    url_filter = ['.zip', '.rar', '.tar.gz', '.iso', '.7z', '.tar', '.gz', '.txt', '.md', '.mp3',
+                  '.mp4', '.mkv', '.m4a', '.avi']
 
     try:
         opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:sp:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
@@ -777,7 +779,8 @@ def webarchiver(argv):
         elif opt in ("-s", "--scrape"):
             scrape_flag = True
         elif opt in ("-u", "--url-filter"):
-            url_filter = arg
+            url_filter = arg.replace(" ", "")
+            url_filter = url_list.split(",")
         elif opt in ("-l", "--links"):
             url_list = arg.replace(" ", "")
             url_list = url_list.split(",")
@@ -829,7 +832,7 @@ def usage():
           f'     --dpi        [ DPI for the image ]\n'
           f'-e | --executor   [ Execution environment: Local / Selenoid Host|Selenoid URL ]\n'
           f'-f | --file       [ Text file to read the URL(s) from ]\n'
-          f'-l | --links      [ Comma separated URL(s) (No spaces) ]\n'
+          f'-l | --links      [ Comma separated URL(s) ]\n'
           f'-i | --image-type [ Save images as PNG or JPEG ]\n'
           f'-p | --processes  [ Number of processes to run scrape and download ]\n'
           f'-s | --scrape     [ Scrape URL(s) by Downloading ]\n'

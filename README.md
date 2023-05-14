@@ -23,7 +23,7 @@ One of the following browsers:
 |            | --dpi        | DPI for the image                                          |
 | -e         | --executor   | Execution environment: Local / Selenoid Host\|Selenoid URL |
 | -f         | --file       | Text file to read the URL(s) from                          |
-| -l         | --links      | Comma separated URL(s) (No spaces)                         |
+| -l         | --links      | Comma separated URL(s)                                     |
 | -i         | --image-type | Save images as PNG or JPEG                                 |
 | -p         | --processes  | Number of processes to run concurrently                    |
 | -s         | --scrape     | Scrape URL(s) by Downloading                               |
