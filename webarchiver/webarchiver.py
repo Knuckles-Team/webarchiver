@@ -183,7 +183,9 @@ class Webarchiver:
     def open_file(self, file):
         webarchiver_urls = open(file, 'r')
         for url in webarchiver_urls:
-            self.append_link(url)
+            if str(url).strip() != "":
+                self.append_link(str(url).strip())
+                self.append_file_link(str(url).strip())
 
     def append_link(self, url):
         # print(f"URL Appended: {url}")
@@ -653,7 +655,7 @@ class Webarchiver:
         print("Scraping for URL(s)")
         scrape_pool = Pool(processes=self.processes)
         print("Pooling...")
-        results = scrape_pool.map(self.scrape_urls, self.urls)
+        results = scrape_pool.map(self.scrape_urls, self.file_urls)
         print("Obtaining Results...")
         final_result = [x for res in results for x in res]
         self.set_file_links(urls=final_result)
@@ -679,12 +681,12 @@ class Webarchiver:
                 continue
             if self.url_filter:
                 if self.url_filter in url:
-                    print(f"\tAdding ({len(self.urls)}-{len(self.file_urls)}): {url}/{artifact_link}")
+                    print(f"\tAdding ({len(file_link)}-{len(self.file_urls)}): {url}/{artifact_link}")
                     file_link.append(f"{url}/{artifact_link}")
                 else:
                     print(f"\tSkipping: {url}/{artifact_link}")
             else:
-                print(f"\tAdding ({len(self.urls)}-{len(self.file_urls)}): {url}/{artifact_link}")
+                print(f"\tAdding ({len(file_link)}-{len(self.file_urls)}): {url}/{artifact_link}")
                 file_link.append(f"{url}/{artifact_link}")
         return file_link
 
@@ -798,6 +800,7 @@ def webarchiver(argv):
             url_list = url_list.split(",")
             for url in url_list:
                 archive.append_link(url.strip())
+                archive.append_file_link(url.strip())
         elif opt in ("-i", "--image-type"):
             if arg.lower() == "png" or arg.lower() == "jpg" or arg.lower() == "jpeg":
                 image_format = f'{arg.lower()}'
