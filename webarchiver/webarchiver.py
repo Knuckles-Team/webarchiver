@@ -657,10 +657,8 @@ class Webarchiver:
         print("Pooling...")
         results = scrape_pool.map(self.scrape_urls, self.file_urls)
         print(f"Obtaining Results: {results}")
-        final_results = [x for res in results for x in res]
-        print(f"Final Results: {final_results}")
-        for final_result in final_results:
-            self.append_file_link(url=final_result)
+        for result in results:
+            self.append_file_link(url=result)
         print(f"Found {len(self.file_urls)} file(s)")
 
     def scrape_urls(self, url):
