@@ -177,8 +177,8 @@ class Webarchiver:
             self.driver.maximize_window()
 
     def open_file(self, file):
-        webarchive_urls = open(file, 'r')
-        for url in webarchive_urls:
+        webarchiver_urls = open(file, 'r')
+        for url in webarchiver_urls:
             self.append_link(url)
 
     def append_link(self, url):
@@ -638,19 +638,21 @@ class Webarchiver:
     def scrape_urls_in_parallel(self):
         print("Scraping for URL(s)")
         scrape_pool = Pool(processes=self.processes)
+        print("Pooling...")
         results = scrape_pool.map(self.scrape_urls, self.urls)
+        print("Obtaining Results...")
         final_result = [x for res in results for x in res]
         self.set_file_links(urls=final_result)
         print(f"Found {len(self.file_urls)} file(s)")
 
     def scrape_urls(self, url):
         # Check if the url supplied is already a file of type below.
-
+        print("Checking URL...")
         for url_filter in self.url_filter:
             if url_filter in str(url):
-                print("URL Contains Content: ")
+                print(f"URL Contains Content: {url}")
                 return url
-
+        print("Checking URL for Additional Content...")
         url = url.strip()
         reqs = requests.get(url)
         soup = BeautifulSoup(reqs.text, 'html.parser')
