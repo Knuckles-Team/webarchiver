@@ -740,7 +740,7 @@ class Webarchiver:
         new_file_name = file_name.rsplit('/', 1)[-1]
         for key in file_name_filters:
             new_file_name = re.sub(str(key), str(file_name_filters[key]), new_file_name)
-        re.sub("[*<>:;|/]*", "", new_file_name)
+        new_file_name = re.sub("[*<>:;|/]*", "", new_file_name)
         return new_file_name
 
     def download_urls(self, url):
