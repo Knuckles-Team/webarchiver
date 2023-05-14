@@ -644,6 +644,13 @@ class Webarchiver:
         print(f"Found {len(self.file_urls)} file(s)")
 
     def scrape_urls(self, url):
+        # Check if the url supplied is already a file of type below.
+        file_types = ['zip', 'rar', 'tar.gz', 'iso', '7z', 'tar', 'gz', 'txt', '.md', '.mp3',
+                      '.mp4', '.mkv', '.m4a', '.avi']
+        for file_type in file_types:
+            if file_type in url:
+                return url
+
         url = url.strip()
         reqs = requests.get(url)
         soup = BeautifulSoup(reqs.text, 'html.parser')
@@ -712,7 +719,7 @@ class Webarchiver:
                     print(f"Unable to capture screenshot\nError: {e}")
             self.url_count = self.url_count + 1
             percentage = '%.3f' % ((self.url_count / len(self.urls)) * 100)
-            urls_processed = '{0: <25}'.format(f"URLs Processed: {self.url_count}")
+            urls_processed = '{0: <25}'.format(f"URL(s) Processed: {self.url_count}")
             percentage_display = '{0: <20}'.format(f"Percentage: {percentage}%")
             total = '{0: <15}'.format(f"Total: {self.url_count}/{len(self.urls)}")
             print(f"{urls_processed} | {percentage_display} | {total}\n")
@@ -821,16 +828,29 @@ def usage():
           f'-d | --directory  [ Location where the images will be saved ]\n'
           f'     --dpi        [ DPI for the image ]\n'
           f'-e | --executor   [ Execution environment: Local / Selenoid Host|Selenoid URL ]\n'
-          f'-f | --file       [ Text file to read the URLs from ]\n'
-          f'-l | --links      [ Comma separated URLs (No spaces) ]\n'
+          f'-f | --file       [ Text file to read the URL(s) from ]\n'
+          f'-l | --links      [ Comma separated URL(s) (No spaces) ]\n'
           f'-i | --image-type [ Save images as PNG or JPEG ]\n'
           f'-p | --processes  [ Number of processes to run scrape and download ]\n'
+          f'-s | --scrape     [ Scrape URL(s) by Downloading ]\n'
           f'-u | --url-filter [ Only filter for specific files that contain this string ]\n'
           f'-z | --zoom       [ The zoom to use on the browser ]\n'
           f'\n'
-          f'webarchiver -c -f <links_file.txt> '
-          '-l "<URL1, URL2, URL3>" -i <JPEG/PNG> -d "~/Downloads" -z 100 --dpi 1 --browser "Chrome" '
-          '--executor "selenoid|http://selenoid.com/wd/hub"\n')
+          f'webarchiver \ \n'
+          f'-c \ \n'
+          f'-f <links_file.txt>  \ \n'
+          f'-l "<URL1, URL2, URL3>" \ \n'
+          f'-i <JPEG/PNG> \ \n'
+          f'-d "~/Downloads" \ \n'
+          f'-z 100 \ \n'
+          f'--dpi 1 \ \n'
+          f'--browser "Chrome" \ \n'
+          f'--executor "selenoid|http://selenoid.com/wd/hub"\n'
+          f'\n'
+          f'webarchiver \ \n'
+          f'-s \ \n'
+          f'-f <links_file.txt>  \ \n'
+          f'-l "<URL1, URL2, URL3>" \n')
 
 
 def main():
