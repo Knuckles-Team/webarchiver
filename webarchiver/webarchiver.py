@@ -807,7 +807,7 @@ def webarchiver(argv):
     scrape_flag = False
     processes = 1
     url_filter = ['.zip', '.rar', '.tar.gz', '.iso', '.7z', '.tar', '.gz', '.txt', '.md', '.mp3',
-                  '.mp4', '.mkv', '.m4a', '.avi']
+                  '.mp4', '.mkv', '.m4a', '.avi', '.gif', '.jpg', 'jpeg', 'png', 'webm']
 
     try:
         opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:sp:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
