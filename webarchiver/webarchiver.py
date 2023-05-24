@@ -806,8 +806,14 @@ def webarchiver(argv):
     image_archive = False
     scrape_flag = False
     processes = 1
-    url_filter = ['.zip', '.rar', '.tar.gz', '.iso', '.7z', '.tar', '.gz', '.txt', '.md', '.mp3',
-                  '.mp4', '.mkv', '.m4a', '.avi', '.gif', '.jpg', 'jpeg', 'png', 'webm']
+    url_filter = ['.zip', '.rar', '.tar.gz', '.gzip', '.iso', '.7z', '.7zip', '.tar', '.gz', '.txt', '.md', '.mp3',
+                  '.wav', '.flac', '.mp4', '.mkv', '.m4a', '.avi', '.gif', '.jpg', '.jpeg', '.png', '.webm', '.3ds',
+                  '.nds', '.bin', '.cue', '.chd', '.ndd', '.fds', '.sbl', '.rvz', '.gcz', '.cso', '.ecm', '.mds',
+                  '.md5', '.sfc', '.mdf', '.img', '.ccd', '.tap', '.tzx', '.cdc', '.cas', '.nes', '.nez', '.unf',
+                  '.unif', '.smc', '.md', '.smd', '.gen', '.gg', '.z64', '.v64', '.n64', '.gb', '.gbc', '.gba',
+                  '.srl', '.gcm', '.gcz', '.nds', '.dsi', '.app', '.ids', '.wbfs', '.wad', '.cia', '.nsp', '.xci',
+                  '.ngp', '.ngc', '.pce', '.vpk', '.vb', '.ws', '.wsc', '.ipa', '.apk', '.obb', '.dsv', '.sav',
+                  '.ps2', '.mcr', '.mpk', '.eep', '.srm']
 
     try:
         opts, args = getopt.getopt(argv, "hb:cd:e:f:l:i:sp:u:z:", ["help", "browser=", "clean", "directory=", "dpi=",
