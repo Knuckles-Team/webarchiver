@@ -26,7 +26,7 @@ setup(
     url='https://github.com/Knuckles-Team/webarchiver',
     author=__author__,
     author_email='knucklessg1@gmail.com',
-    license='Unlicense',
+    license='MIT',
     packages=['webarchiver'],
     include_package_data=True,
     install_requires=[str(requirement.requirement) for requirement in requirements],
