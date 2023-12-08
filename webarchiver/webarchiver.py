@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from io import BytesIO
 from PIL import Image, ImageChops
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -23,8 +24,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from webarchiver.version import __version__, __author__, __credits__
-
+try:
+    from webarchiver.version import __version__, __author__, __credits__
+except ModuleNotFoundError:
+    from version import __version__, __author__, __credits__
 
 def chunks(a, n):
     k, m = divmod(len(a), n)
@@ -38,7 +41,6 @@ class Webarchiver:
         self.driver = None
         self.home = os.path.expanduser("~")
         self.save_path = os.path.join(self.home, "Downloads")
-        self.capabilities = None
         self.chrome_options = webdriver.ChromeOptions()
         self.firefox_options = webdriver.FirefoxOptions()
         self.image_format = 'png'
@@ -58,13 +60,6 @@ class Webarchiver:
 
     def launch_browser(self):
         if self.browser.lower() == "chrome" and self.executor.lower() == "local":
-            self.capabilities = {
-                'self.browserName': 'chrome',
-                'chromeOptions': {
-                    'useAutomationExtension': False,
-                    'forceDevToolsScreenshot': True
-                }
-            }
             # Pass the argument 1 to allow and 2 to block
             self.chrome_options.add_experimental_option("prefs", {
                 "profile.default_content_setting_values.notifications": 2
@@ -90,12 +85,16 @@ class Webarchiver:
             self.chrome_options.add_argument('--disable-notifications')
             self.chrome_options.add_argument('--disable-dev-shm-usage')
             self.chrome_options.add_argument('--dns-prefetch-disable')
+            self.chrome_options.set_capability("browserName", "chrome")
+            self.chrome_options.set_capability("chromeOptions", {
+                'useAutomationExtension': False,
+                'forceDevToolsScreenshot': True
+            })
             if self.dpi != 1:
                 self.chrome_options.add_argument(f'--force-device-scale-factor={self.dpi}')
                 self.chrome_options.add_argument(f'--high-dpi-support={self.dpi}')
             try:
-                self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(),
-                                               desired_capabilities=self.capabilities,
+                self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
                                                options=self.chrome_options)
                 # Hide the scrollbar
                 scrollbar_js = 'document.documentElement.style.overflow = \"{}\"'.format(self.hidden_scroll_bar)
@@ -104,25 +103,12 @@ class Webarchiver:
                 print("Could not open with Latest Chrome Version. PLEASE ENSURE YOU'RE NOT RUNNING WITH SUDO", e)
                 exit()
         elif self.browser.lower() == "firefox" and self.executor.lower() == "local":
-            options = webdriver.FirefoxOptions()
-            options.headless = True
-            self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+            self.firefox_options.headless = True
+            self.driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=self.firefox_options)
             self.driver.set_window_position(0, 0)
             self.driver.maximize_window()
         elif self.browser.lower() == "chrome" and self.executor.lower() != "local":
             browser_name = "Webarchiver"
-            options = webdriver.ChromeOptions()
-            capabilities = {
-                "browserName": "chrome",
-                "browserVersion": "latest",
-                f"{self.host}:options": {
-                    "enableVideo": False,
-                    "enableVNC": True,
-                    "name": browser_name,
-                    "setAcceptInsecureCerts": True,
-                    "acceptSslCerts": True,
-                }
-            }
             # Add Ublock Origin to Chrome
             parent_dir = os.path.abspath(os.path.dirname(__file__))
             lib_dir = os.path.join(parent_dir, 'lib')
@@ -145,38 +131,42 @@ class Webarchiver:
             self.chrome_options.add_argument('--disable-dev-shm-usage')
             self.chrome_options.add_argument('--dns-prefetch-disable')
             self.chrome_options.add_argument('--log-level=3')
+            self.chrome_options.set_capability("browserName", "chrome")
+            self.chrome_options.set_capability("browserVersion", "latest")
+            self.chrome_options.set_capability(f"{self.host}:options", {
+                "enableVideo": False,
+                "enableVNC": True,
+                "name": browser_name,
+                "setAcceptInsecureCerts": True,
+                "acceptSslCerts": True,
+            })
             self.driver = webdriver.Remote(
                 command_executor=self.executor,
-                options=options,
-                desired_capabilities=capabilities
+                options=self.chrome_options,
             )
             self.driver.maximize_window()
         elif self.browser.lower() == "firefox" and self.executor.lower() != "local":
             browser_name = "Webarchiver"
-            options = webdriver.ChromeOptions()
-            capabilities = {
-                "browserName": "firefox",
-                "browserVersion": "latest",
-                f"{self.host}:options": {
-                    "enableVideo": False,
-                    "enableVNC": True,
-                    "name": browser_name,
-                    "setAcceptInsecureCerts": True,
-                    "acceptSslCerts": True,
-                }
-            }
-            self.chrome_options.add_argument('--disable-gpu')
-            self.chrome_options.add_argument('--start-maximized')
-            self.chrome_options.add_argument('--hide-scrollbars')
-            self.chrome_options.add_argument('--disable-infobars')
-            self.chrome_options.add_argument('--disable-notifications')
-            self.chrome_options.add_argument('--disable-dev-shm-usage')
-            self.chrome_options.add_argument('--dns-prefetch-disable')
-            self.chrome_options.add_argument('--log-level=3')
+            self.firefox_options.add_argument('--disable-gpu')
+            self.firefox_options.add_argument('--start-maximized')
+            self.firefox_options.add_argument('--hide-scrollbars')
+            self.firefox_options.add_argument('--disable-infobars')
+            self.firefox_options.add_argument('--disable-notifications')
+            self.firefox_options.add_argument('--disable-dev-shm-usage')
+            self.firefox_options.add_argument('--dns-prefetch-disable')
+            self.firefox_options.add_argument('--log-level=3')
+            self.firefox_options.set_capability("browserName", "chrome")
+            self.firefox_options.set_capability("browserVersion", "latest")
+            self.firefox_options.set_capability(f"{self.host}:options", {
+                "enableVideo": False,
+                "enableVNC": True,
+                "name": browser_name,
+                "setAcceptInsecureCerts": True,
+                "acceptSslCerts": True,
+            })
             self.driver = webdriver.Remote(
                 command_executor=self.executor,
-                options=options,
-                desired_capabilities=capabilities
+                options=self.firefox_options,
             )
             self.driver.maximize_window()
 
