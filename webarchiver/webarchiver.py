@@ -86,10 +86,6 @@ class Webarchiver:
             self.chrome_options.add_argument('--disable-dev-shm-usage')
             self.chrome_options.add_argument('--dns-prefetch-disable')
             self.chrome_options.set_capability("browserName", "chrome")
-            self.chrome_options.set_capability("chromeOptions", {
-                'useAutomationExtension': False,
-                'forceDevToolsScreenshot': True
-            })
             if self.dpi != 1:
                 self.chrome_options.add_argument(f'--force-device-scale-factor={self.dpi}')
                 self.chrome_options.add_argument(f'--high-dpi-support={self.dpi}')
