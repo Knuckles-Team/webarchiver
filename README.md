@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/webarchiver)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/webarchiver)
 
-*Version: 0.32.4*
+*Version: 0.32.5*
 
 Python tool that allows you to take full page screenshots of pages without ads
 
