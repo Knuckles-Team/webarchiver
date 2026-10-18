@@ -1,0 +1,47 @@
+{
+  "connector": "webarchiver",
+  "ontology_source": "webarchiver",
+  "schema_version": "1",
+  "resources": [
+    {
+      "name": "WebarchiverResource"
+    },
+    {
+      "name": "Document"
+    },
+    {
+      "name": "MediaAsset"
+    }
+  ],
+  "identity": {
+    "id_field": {
+      "WebarchiverResource": "id"
+    },
+    "title_field": {
+      "WebarchiverResource": "name"
+    }
+  },
+  "schema_mappings": {
+    "WebarchiverResource": {
+      "fields": {
+        "name": "xsd:string"
+      }
+    }
+  },
+  "sync": [],
+  "provenance": {
+    "generated_by": "mcp-builder/scripts/scaffold_package.py",
+    "source_artifacts": [
+      "ontology/webarchiver.ttl"
+    ],
+    "integrity": {
+      "algorithm": "sha256",
+      "hash": "96567d5fb4e3d237096f0ac4674568b49007e1482cc462f96223c2f726348e39"
+    }
+  },
+  "review_todos": [
+    "Replace the starter resource mapping with the reviewed source model.",
+    "Declare real source presets and matching sync entries before certification.",
+    "Integrity is an ontology byte hash, not canonical RDF or release certification."
+  ]
+}

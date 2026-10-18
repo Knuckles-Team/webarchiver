@@ -1,0 +1,87 @@
+{
+  "applicable": true,
+  "entries": [
+    {
+      "bytes": 1599,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/index.md",
+      "sha256": "909dfa804c6e3fc74a2c8ef3b5b2d34a41d352865e04dbb532e31c564b39661e",
+      "source": "docs/index.md",
+      "url": "https://knuckles-team.github.io/webarchiver/"
+    },
+    {
+      "bytes": 689,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/overview/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/overview/index.md",
+      "sha256": "45da4a41c747ea227df8b5fdb5e8658edc75e675a09b818bec0652f82129208d",
+      "source": "docs/overview.md",
+      "url": "https://knuckles-team.github.io/webarchiver/overview/"
+    },
+    {
+      "bytes": 1913,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/architecture/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/architecture/index.md",
+      "sha256": "7d7fb68e11d1aa4fbd6e47bc2fa03914deea3ab8fba7ad0d94a2e4c1e6739459",
+      "source": "docs/architecture.md",
+      "url": "https://knuckles-team.github.io/webarchiver/architecture/"
+    },
+    {
+      "bytes": 742,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/installation/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/installation/index.md",
+      "sha256": "8629a0c18a8e3e7e94ac09efa1dee16765a468301ebf569ab05d7206709a322c",
+      "source": "docs/installation.md",
+      "url": "https://knuckles-team.github.io/webarchiver/installation/"
+    },
+    {
+      "bytes": 4985,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/deployment/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/deployment/index.md",
+      "sha256": "faf584e5a8d8b370d319d868702c02bc4393290e03397be6feefd78af0d30850",
+      "source": "docs/deployment.md",
+      "url": "https://knuckles-team.github.io/webarchiver/deployment/"
+    },
+    {
+      "bytes": 1376,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/usage/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/usage/index.md",
+      "sha256": "788ca8fb2f983ce200279eb0786ece7a510a67d55dd0b2017c8d03b6b91dc3c8",
+      "source": "docs/usage.md",
+      "url": "https://knuckles-team.github.io/webarchiver/usage/"
+    },
+    {
+      "bytes": 713,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/platform/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/platform/index.md",
+      "sha256": "83cdacdaf050c5c294696fc9c29a5c658d441ca97505b940b5b470da2a08da68",
+      "source": "docs/platform.md",
+      "url": "https://knuckles-team.github.io/webarchiver/platform/"
+    },
+    {
+      "bytes": 334,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/concepts/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/concepts/index.md",
+      "sha256": "880477d6d1294c7df89de66be60d041e335b74a44128b29e22f90d9e4921ac6f",
+      "source": "docs/concepts.md",
+      "url": "https://knuckles-team.github.io/webarchiver/concepts/"
+    },
+    {
+      "bytes": 1631,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/glossary/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/glossary/index.md",
+      "sha256": "f35f337fd8175dfdd274442795558772ae3138bb95fc31d84937f5047bff1f64",
+      "source": "docs/glossary.md",
+      "url": "https://knuckles-team.github.io/webarchiver/glossary/"
+    },
+    {
+      "bytes": 1126,
+      "canonical_url": "https://knuckles-team.github.io/webarchiver/spec-delivery/",
+      "markdown_url": "https://knuckles-team.github.io/webarchiver/spec-delivery/index.md",
+      "sha256": "9046a2ac5fc90ec07835a52808279baa270c07f963d65dd9753d8c9db1e36c4d",
+      "source": "docs/spec-delivery.md",
+      "url": "https://knuckles-team.github.io/webarchiver/spec-delivery/"
+    }
+  ],
+  "schema_version": "agent-readiness/v1",
+  "url_contract": "mkdocs-static/v2"
+}

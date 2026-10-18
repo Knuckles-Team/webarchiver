@@ -1,0 +1,10 @@
+# webarchiver — Backing Platform (Webarchiver)
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Backing Platform (Webarchiver)
+
+- [Backing Platform (Webarchiver)](https://knuckles-team.github.io/webarchiver/platform/) — webarchiver is a client of a backing service instance. This page provides a Docker recipe for deploying one locally as an operator-selected provider endpoint.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

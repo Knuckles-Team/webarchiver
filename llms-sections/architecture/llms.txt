@@ -1,0 +1,10 @@
+# webarchiver — Architecture
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Architecture
+
+- [Architecture](https://knuckles-team.github.io/webarchiver/architecture/) — The webarchiver package owns external-system operations and source mappings. The shared connector SDK owns reusable runtime contracts.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

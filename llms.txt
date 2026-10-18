@@ -1,0 +1,54 @@
+# webarchiver
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Home
+
+- [Home](https://knuckles-team.github.io/webarchiver/) — Webarchiver API + MCP Server built on the connector SDK — a typed, action-routed connector.
+
+## Overview
+
+- [Overview](https://knuckles-team.github.io/webarchiver/overview/) — > Category: Integration | Ecosystem Role: MCP Server > Built on agent-connector-sdk.
+
+## Architecture
+
+- [Architecture](https://knuckles-team.github.io/webarchiver/architecture/) — The webarchiver package owns external-system operations and source mappings. The shared connector SDK owns reusable runtime contracts.
+
+## Installation
+
+- [Installation](https://knuckles-team.github.io/webarchiver/installation/) — webarchiver is a standard Python package and a prebuilt container image.
+
+## Deployment
+
+- [Deployment](https://knuckles-team.github.io/webarchiver/deployment/) — This page covers documentation delivery and running webarchiver as long-lived servers.
+
+## Usage (API / CLI / MCP)
+
+- [Usage (API / CLI / MCP)](https://knuckles-team.github.io/webarchiver/usage/) — webarchiver exposes the same capability three ways: as MCP tools an agent calls, as a Python API you import, and as a CLI.
+
+## Backing Platform (Webarchiver)
+
+- [Backing Platform (Webarchiver)](https://knuckles-team.github.io/webarchiver/platform/) — webarchiver is a client of a backing service instance. This page provides a Docker recipe for deploying one locally as an operator-selected provider endpoint.
+
+## Concepts
+
+- [Concepts](https://knuckles-team.github.io/webarchiver/concepts/) — > Prefix: CONCEPT:CONN-WEBARCHIVER- > Version: 0.1.0
+
+## Glossary
+
+- [Glossary](https://knuckles-team.github.io/webarchiver/glossary/) — The browser operator experience for working with agents and their runtime. Arbora hosts it as a composed service.
+
+## Spec delivery
+
+- [Spec delivery](https://knuckles-team.github.io/webarchiver/spec-delivery/) — Open the published delivery dashboard.
+
+## Standards maturity
+
+- RFC 3986: rfc (normative)
+- RFC 9264: rfc (normative)
+- RFC 9727: rfc (normative)
+- RFC 8414: rfc (normative)
+- RFC 9728: rfc (normative)
+- Agent Documentation Standard vNext: draft (draft)
+- Concept IDs and AGENTS: convention (advisory)

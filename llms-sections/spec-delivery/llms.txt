@@ -1,0 +1,10 @@
+# webarchiver — Spec delivery
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Spec delivery
+
+- [Spec delivery](https://knuckles-team.github.io/webarchiver/spec-delivery/) — Open the published delivery dashboard.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

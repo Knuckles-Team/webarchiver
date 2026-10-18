@@ -1,0 +1,27 @@
+INHERIT: .pipeline-theme/templates/mkdocs-theme/base.mkdocs.yml
+site_name: "webarchiver"
+site_description: "Governed web fetch, extract, render, screenshot and link connector"
+site_url: "https://knuckles-team.github.io/webarchiver/"
+repo_name: "Knuckles-Team/webarchiver"
+repo_url: "https://github.com/Knuckles-Team/webarchiver"
+edit_uri: "edit/main/docs/"
+copyright: "Copyright &copy; Knuckles-Team — MIT licensed"
+
+plugins:
+  - search
+
+extra:
+  ecosystem:
+    current: "webarchiver"
+
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Architecture: architecture.md
+  - Installation: installation.md
+  - Deployment: deployment.md
+  - Usage (API / CLI / MCP): usage.md
+  - Backing Platform (Webarchiver): platform.md
+  - Concepts: concepts.md
+  - Glossary: glossary.md
+  - Spec delivery: spec-delivery.md

@@ -1,0 +1,48 @@
+@prefix : <http://knuckles.team/kg#> .
+@prefix cp: <http://knuckles.team/kg/connector-pack#> .
+@prefix c: <http://knuckles.team/kg/connector/webarchiver#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Connector surface and ingest contract (STUB — keep in step with the typed
+# declarations). Domain classes come from webarchiver.ttl; no blank nodes.
+
+c:connector a cp:Connector ;
+    rdfs:label "Webarchiver" ;
+    cp:providesFeature c:feature-sync ;
+    cp:hasContract c:contract .
+
+c:feature-sync a cp:Feature ;
+    rdfs:label "Webarchiver sync" ;
+    cp:realizedBy c:skill-webarchiver-starter, c:prompt-webarchiver_specialist .
+
+c:skill-webarchiver-starter a cp:Skill ;
+    cp:componentId "webarchiver-starter" ;
+    cp:appliesTo :WebarchiverResource .
+
+c:prompt-webarchiver_specialist a cp:Prompt ;
+    cp:componentId "webarchiver_specialist" ;
+    cp:appliesTo :WebarchiverResource .
+
+c:contract a cp:IngestContract ;
+    cp:contractOf c:connector ;
+    cp:contractVersion "1" ;
+    cp:hasSourceObject c:object-resource ;
+    cp:hasCursorPolicy c:cursor ;
+    cp:hasAccessPolicy c:access ;
+    cp:requiresProvenance c:provenance .
+
+c:object-resource a cp:SourceObject ;
+    cp:mapsToClass :WebarchiverResource ;
+    cp:hasKeyRule c:key-resource .
+
+c:key-resource a cp:KeyRule ;
+    cp:keyField "id" .
+
+c:cursor a cp:CursorPolicy ;
+    cp:cursorKind "opaque" .
+
+c:access a cp:AccessPolicy ;
+    cp:defaultAcl "quarantine" .
+
+c:provenance a cp:ProvenanceRequirement ;
+    cp:requiredField "source", "record_id", "as_of" .

@@ -1,0 +1,29 @@
+@prefix : <http://knuckles.team/kg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# TODO: replace this stub with the real domain model. Classes/properties live in the
+# SHARED : (kg#) namespace; only the owl:Ontology node gets the per-package IRI. Do NOT
+# redefine classes another package owns (:MediaAsset/:Blob/:Document/:Person) — reuse them.
+
+:WebarchiverResource a owl:Class ;
+    rdfs:label "Webarchiver Resource" ;
+    rdfs:comment "A primary object managed by Webarchiver (STUB — rename/expand)." .
+
+:managedBy a owl:ObjectProperty ;
+    rdfs:label "managed by" ;
+    rdfs:comment "Links a Webarchiver resource to the Person responsible (STUB)." ;
+    rdfs:domain :WebarchiverResource ;
+    rdfs:range :Person .
+
+:webarchiverId a owl:DatatypeProperty ;
+    rdfs:label "webarchiver id" ;
+    rdfs:comment "External identifier of the Webarchiver resource (STUB)." ;
+    rdfs:domain :WebarchiverResource ;
+    rdfs:range xsd:string .
+
+<http://knuckles.team/kg/webarchiver> a owl:Ontology ;
+    rdfs:label "Webarchiver Ontology" ;
+    rdfs:comment "Webarchiver domain extensions federated into the KG hub. STUB." ;
+    owl:imports <http://knuckles.team/kg> .

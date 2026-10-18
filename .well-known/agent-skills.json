@@ -1,0 +1,10 @@
+{
+  "schema_version": "agent-skills/v1",
+  "skills": [
+    {
+      "description": ">-",
+      "name": "webarchiver-starter",
+      "path": "webarchiver/skills/webarchiver-starter/SKILL.md"
+    }
+  ]
+}

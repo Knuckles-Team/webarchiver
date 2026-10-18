@@ -1,0 +1,85 @@
+[build-system]
+requires = [ "setuptools>=80.9.0", "wheel",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webarchiver"
+version = "1.0.0"
+description = "Governed web fetch, extract, render, screenshot and link connector"
+readme = "README.md"
+classifiers = [ "Development Status :: 5 - Production/Stable", "License :: OSI Approved :: MIT License", "Environment :: Console", "Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.12", "Programming Language :: Python :: 3.13", "Programming Language :: Python :: 3.14",]
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "agent-connector-sdk[mcp]>=0.3.0,<1.0.0",
+    "trafilatura>=2.0.0,<3.0.0",
+    "lxml>=6.0.0",
+    "playwright>=1.55.0,<2.0.0",
+]
+[[project.authors]]
+name = "Repository Maintainers"
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+mcp = [ "agent-connector-sdk[mcp]>=0.3.0,<1.0.0",]
+all = [
+    "agent-connector-sdk[mcp]>=0.3.0,<1.0.0",
+]
+test = [
+    "pytest-xdist>=3.6.0", "pytest", "pytest-asyncio", "pytest-cov",]
+
+[project.scripts]
+webarchiver-mcp = "webarchiver.mcp_server:mcp_server"
+
+[tool.uv.workspace]
+members = ["."]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint.isort]
+known-first-party = ["webarchiver"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+
+# Shared public documentation contract. The hook authority is declared in
+# .pre-commit-config.yaml; these values identify this generated repository and
+# keep its README/AGENTS surface deterministic without network access.
+[tool.pipelines_hooks]
+packages = ["webarchiver"]
+
+[tool.pipelines_hooks.stdout_writes]
+served_paths = ["webarchiver"]
+
+[tool.pipelines_hooks.public_surface]
+repository = "Knuckles-Team/webarchiver"
+distribution = "webarchiver"
+pages_url = "https://knuckles-team.github.io/webarchiver/"
+mcp_server = true
+
+[dependency-groups]
+dev = [
+    "pytest-timeout>=2.4.0",
+]
+
+[tool.setuptools.package-data]
+webarchiver = [ "mcp_config.json", "prompts/**", "skills/**", "ontology/**", "connectors/**", "connector_manifest.yml",]
+
+[tool.ruff.lint]
+select = [ "E", "F", "I", "UP", "B",]
+ignore = [ "E402", "E501", "B008",]
+
+[tool.setuptools.packages.find]
+where = [ ".",]
+include = ["webarchiver*"]
+
+[tool.vulture]
+ignore_names = ["request", "config"]

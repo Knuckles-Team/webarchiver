@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block announce %}
+  {% set ecosystem = config.extra.ecosystem %}
+  {% set current_site = ecosystem.sites | selectattr("slug", "equalto", ecosystem.current) | first %}
+  <details class="site-switcher">
+    <summary aria-label="Choose an ecosystem documentation site">
+      Ecosystem documentation{% if current_site %}: {{ current_site.name }}{% endif %}
+    </summary>
+    <nav aria-label="Ecosystem documentation sites">
+      <ul class="site-switcher__list">
+        {% for site in ecosystem.sites %}
+          <li>
+            {% if site.slug == ecosystem.current %}
+              <span aria-current="page">{{ site.name }} — {{ site.role }}</span>
+            {% else %}
+              <a href="{{ site.url }}">{{ site.name }} — {{ site.role }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </details>
+  {% if config.extra.spec_delivery %}
+  <style>
+    .site-spec-delivery { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; padding: 0.3rem 0.8rem; }
+    .site-spec-delivery > a { font-weight: 700; }
+    .site-spec-delivery__list { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+    .site-spec-delivery a:focus-visible, .site-spec-delivery summary:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  </style>
+  <nav class="site-spec-delivery" aria-label="Spec delivery">
+    <a class="site-spec-delivery__link" href="{{ base_url }}/spec-delivery/">Spec delivery</a>
+    <details class="site-spec-delivery__menu">
+      <summary aria-label="Spec delivery of each core repository">All repositories</summary>
+      <ul class="site-spec-delivery__list">
+        {% for site in config.extra.ecosystem.sites %}
+          {% if site.spec_delivery is not false %}<li><a href="{{ site.url }}spec-delivery/">{{ site.name }}</a></li>{% endif %}
+        {% endfor %}
+      </ul>
+    </details>
+  </nav>
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  <div class="site-footer">
+    <div class="site-footer__inner">
+      <span>Part of the Knuckles-Team agent ecosystem.</span>
+      <span>
+        {% if config.repo_url %}<a href="{{ config.repo_url }}">Source repository</a>{% endif %}
+        {% if config.repo_url and config.site_url %} · {% endif %}
+        {% if config.site_url %}<a href="{{ config.site_url }}">Documentation home</a>{% endif %}
+      </span>
+    </div>
+  </div>
+{% endblock %}

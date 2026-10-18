@@ -1,0 +1,12 @@
+{
+  "experimental": true,
+  "schema_version": "mcp-server-card/v1-experimental",
+  "server": {
+    "name": "webarchiver"
+  },
+  "source": "docs/capabilities/mcp.json",
+  "transports": [
+    "streamable-http",
+    "sse"
+  ]
+}

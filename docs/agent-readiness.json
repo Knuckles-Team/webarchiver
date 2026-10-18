@@ -1,0 +1,31 @@
+{
+  "schema_version": "agent-readiness/v1",
+  "project": {"name": "webarchiver", "kind": "package"},
+  "applicability": {
+    "content": true,
+    "discoverability": true,
+    "access_policy": true,
+    "capabilities": true,
+    "errors": true,
+    "provenance": true,
+    "measurement": false,
+    "deployment": false
+  },
+  "standards": [
+    {"id": "RFC 3986", "kind": "rfc", "level": "normative"},
+    {"id": "RFC 9264", "kind": "rfc", "level": "normative"},
+    {"id": "RFC 9727", "kind": "rfc", "level": "normative"},
+    {"id": "RFC 8414", "kind": "rfc", "level": "normative"},
+    {"id": "RFC 9728", "kind": "rfc", "level": "normative"},
+    {"id": "Agent Documentation Standard vNext", "kind": "draft", "level": "draft"},
+    {"id": "Concept IDs and AGENTS", "kind": "convention", "level": "advisory"}
+  ],
+  "content_signals": {"policy": "unset"},
+  "budgets": {"curated_chars": 24000, "summary_chars": 800, "full_chars": 0},
+  "capabilities": {
+    "api": {"applicable": true, "artifact": "docs/capabilities/api.json"},
+    "mcp": {"applicable": true, "artifact": "docs/capabilities/mcp.json"},
+    "a2a": {"applicable": false},
+    "skills": {"applicable": true, "path": "webarchiver/skills"}
+  }
+}

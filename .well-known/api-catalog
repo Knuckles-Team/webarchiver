@@ -1,0 +1,24 @@
+{
+  "linkset": [
+    {
+      "anchor": ".",
+      "item": [
+        {
+          "href": "docs/capabilities/api.json",
+          "type": "application/json"
+        },
+        {
+          "href": ".well-known/mcp-server-card.json",
+          "title": "Experimental MCP Server Card",
+          "type": "application/json"
+        },
+        {
+          "href": ".well-known/agent-skills.json",
+          "title": "Agent Skills",
+          "type": "application/json"
+        }
+      ]
+    }
+  ],
+  "profile": "https://www.rfc-editor.org/info/rfc9727"
+}
