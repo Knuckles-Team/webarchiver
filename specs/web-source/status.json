@@ -113,8 +113,10 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
       "title": "Ingest mappings",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "1d799869b316"
+      ],
       "verified_by": [
         "tests/test_startup.py:51"
       ]
