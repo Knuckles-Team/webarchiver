@@ -38,30 +38,52 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
       "title": "Behavior",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
-      "verified_by": []
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "1339b26bc3eb"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:104",
+        "tests/test_extract.py:120",
+        "tests/test_extract.py:21",
+        "tests/test_extract.py:49",
+        "tests/test_extract.py:57"
+      ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
       "title": "Wiring",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
-      "verified_by": []
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "1339b26bc3eb"
+      ],
+      "verified_by": [
+        "tests/test_served.py:32",
+        "tests/test_served.py:46",
+        "tests/test_served.py:62"
+      ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
       "title": "Refusal",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
-      "verified_by": []
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "1339b26bc3eb"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:30"
+      ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
       "title": "Evidence",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
-      "verified_by": []
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "1339b26bc3eb"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:130"
+      ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
