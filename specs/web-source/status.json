@@ -12,7 +12,8 @@
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
-    "CONN-WEBARCHIVER-WEB-SOURCE-R001.8"
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.10"
   ],
   "requirements": [
     {
@@ -29,15 +30,20 @@
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
-        "CONN-WEBARCHIVER-WEB-SOURCE-R001.8"
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.10"
       ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
       "title": "Model",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
-      "verified_by": []
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "31e5998eddc5"
+      ],
+      "verified_by": [
+        "tests/test_conformance.py:20"
+      ]
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
@@ -47,11 +53,11 @@
         "8c38c25066e3"
       ],
       "verified_by": [
-        "tests/test_extract.py:104",
-        "tests/test_extract.py:120",
-        "tests/test_extract.py:21",
-        "tests/test_extract.py:49",
-        "tests/test_extract.py:57"
+        "tests/test_extract.py:103",
+        "tests/test_extract.py:117",
+        "tests/test_extract.py:133",
+        "tests/test_extract.py:36",
+        "tests/test_extract.py:64"
       ]
     },
     {
@@ -62,9 +68,9 @@
         "8c38c25066e3"
       ],
       "verified_by": [
-        "tests/test_served.py:32",
-        "tests/test_served.py:46",
-        "tests/test_served.py:62"
+        "tests/test_served.py:34",
+        "tests/test_served.py:52",
+        "tests/test_served.py:69"
       ]
     },
     {
@@ -75,7 +81,7 @@
         "8c38c25066e3"
       ],
       "verified_by": [
-        "tests/test_extract.py:30"
+        "tests/test_extract.py:45"
       ]
     },
     {
@@ -86,7 +92,7 @@
         "8c38c25066e3"
       ],
       "verified_by": [
-        "tests/test_extract.py:130"
+        "tests/test_extract.py:143"
       ]
     },
     {
@@ -115,10 +121,22 @@
       "title": "Ingest mappings",
       "delivery_state": "VERIFIED",
       "landed_in": [
+        "482ceea819b0",
         "4d127d07b8ce"
       ],
       "verified_by": [
         "tests/test_startup.py:51"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+      "title": "Conformance",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "31e5998eddc5"
+      ],
+      "verified_by": [
+        "tests/test_conformance.py:21"
       ]
     }
   ]
