@@ -97,8 +97,11 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
       "title": "Bounded site crawl",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "6a2d71470fa4",
+        "e1b2c681bae6"
+      ],
       "verified_by": [
         "tests/test_crawl.py:17",
         "tests/test_crawl.py:35",
