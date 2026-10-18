@@ -3,6 +3,72 @@
   "spec_id": "CONN-WEBARCHIVER-WEB-SOURCE",
   "owner_repo": "webarchiver",
   "delivery_state": "SPECIFIED",
-  "requirement_ids": [],
-  "requirements": []
+  "requirement_ids": [
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.6"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001",
+      "title": "Pages answer through the web-source contract (rollup)",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [],
+      "rollup_of": [
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.6"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+      "title": "Model",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+      "title": "Behavior",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+      "title": "Wiring",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+      "title": "Refusal",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+      "title": "Evidence",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
+      "title": "Hot-path proof",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    }
+  ]
 }
