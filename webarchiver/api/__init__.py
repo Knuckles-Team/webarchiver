@@ -1,10 +1,11 @@
-from .api_client_system import ApiClientSystem, ExtractResult, LinksResult
+from .api_client_system import ApiClientSystem, LinksResult
 from .policy import FetchPolicy, PolicyRefused
+from .web_source import WebarchiverSource
 
 __all__ = [
     "ApiClientSystem",
-    "ExtractResult",
     "FetchPolicy",
     "LinksResult",
     "PolicyRefused",
+    "WebarchiverSource",
 ]

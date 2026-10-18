@@ -5,10 +5,25 @@ from __future__ import annotations
 import hashlib
 
 import pytest
+from agent_connector_sdk.ports.web_source import (
+    WebFetchRequest,
+    WebPageResult,
+    WebSourceRefused,
+    content_digest,
+)
 
 from tests.conftest import FIXTURES
-from webarchiver.api import ApiClientSystem, FetchPolicy, PolicyRefused
+from webarchiver.api import (
+    ApiClientSystem,
+    FetchPolicy,
+    PolicyRefused,
+    WebarchiverSource,
+)
 from webarchiver.api.policy import REFUSAL_REASONS, DomainRateLimiter, RobotsCache
+
+
+async def _extract(url: str) -> WebPageResult:
+    return await WebarchiverSource(_client().fetcher).extract(WebFetchRequest(url=url))
 
 
 def _client(**policy: object) -> ApiClientSystem:
@@ -20,7 +35,7 @@ def _client(**policy: object) -> ApiClientSystem:
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.2")
 async def test_fetch_follows_redirect_and_returns_html(site: str) -> None:
-    fetched = await _client().fetch(f"{site}/moved")
+    fetched = await _client().fetcher.fetch(f"{site}/moved")
     assert fetched.final_url == f"{site}/article"
     assert fetched.status == 200
     assert "Pod disruption budgets" in fetched.text
@@ -41,7 +56,7 @@ async def test_refusals(
     site: str, path: str, reason: str, policy: dict[str, object]
 ) -> None:
     with pytest.raises(PolicyRefused) as refused:
-        await _client(**policy).fetch(f"{site}{path}")
+        await _client(**policy).fetcher.fetch(f"{site}{path}")
     assert refused.value.reason == reason
     assert refused.value.reason in REFUSAL_REASONS
 
@@ -50,40 +65,38 @@ async def test_refusals(
 async def test_fetch_refuses_loopback_unless_allowed(site: str) -> None:
     client = ApiClientSystem(FetchPolicy(min_interval_s=0.0))
     with pytest.raises(PolicyRefused) as refused:
-        await client.fetch(f"{site}/article")
+        await client.fetcher.fetch(f"{site}/article")
     assert refused.value.reason == "egress_denied"
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.2")
 async def test_fetch_refuses_non_http_url() -> None:
     with pytest.raises(PolicyRefused) as refused:
-        await _client().fetch("file:///etc/passwd")
+        await _client().fetcher.fetch("file:///etc/passwd")
     assert refused.value.reason == "policy_refused"
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.2")
 async def test_main_content_and_metadata(site: str) -> None:
-    result = await _client().extract(f"{site}/article")
-    page = result.page
-    assert result.backend == "webarchiver"
-    assert result.fetch_mode == "http"
+    page = await _extract(f"{site}/article")
+    assert page.backend == "webarchiver"
     assert page.title == "Pod disruption budgets explained"
     assert page.author == "Ada Example"
-    assert page.published.startswith("2026-09-01")
+    assert page.published_at.startswith("2026-09-01")
     assert page.canonical_url == f"{site}/article"
-    assert "voluntary disruptions" in page.text
-    assert "We use cookies" not in page.text
-    assert "Copyright" not in page.text
-    assert len(page.content_sha256) == 64
-    urls = {link.url for link in page.links}
+    assert "voluntary disruptions" in page.text_markdown
+    assert "We use cookies" not in page.text_markdown
+    assert "Copyright" not in page.text_markdown
+    assert page.content_digest == content_digest(page.text_markdown)
+    urls = {link.url for link in page.outbound_links}
     assert "https://kubernetes.example.org/docs/pdb" in urls
     assert not any(url.startswith("mailto:") for url in urls)
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.2")
 async def test_extract_refuses_a_page_without_content(site: str) -> None:
-    with pytest.raises(PolicyRefused) as refused:
-        await _client().extract(f"{site}/empty")
+    with pytest.raises(WebSourceRefused) as refused:
+        await _extract(f"{site}/empty")
     assert refused.value.reason == "extract_empty"
 
 
@@ -129,7 +142,7 @@ async def test_robots_status_semantics(status: int, allowed: bool) -> None:
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.5")
 async def test_result_provenance(site: str) -> None:
-    result = await _client().extract(f"{site}/moved")
+    result = await _extract(f"{site}/moved")
     fixture = (FIXTURES / "article.html").read_bytes()
     assert result.backend == "webarchiver"
     assert result.url == f"{site}/moved"
@@ -137,8 +150,8 @@ async def test_result_provenance(site: str) -> None:
     assert result.status == 200
     assert result.byte_count == len(fixture)
     assert (
-        result.content_digest == hashlib.sha256(result.page.text.encode()).hexdigest()
+        result.content_digest
+        == hashlib.sha256(result.text_markdown.encode()).hexdigest()
     )
     assert result.retrieved_at.endswith("+00:00")
-    assert result.robots == "allowed"
     assert result.content_type.startswith("text/html")

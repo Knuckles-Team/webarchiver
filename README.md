@@ -47,6 +47,10 @@ DOMs, full-page screenshots and outbound links. It holds no credentials.
 - **One tool per operation** — `web_fetch`, `web_extract`,
   `web_render`, `web_screenshot`, `web_crawl` and `web_links`, all
   read-only.
+- **Shared web-source contract** — `web_fetch` and `web_extract` are the
+  agent-connector-sdk web-source contract's tools: the same request, page
+  result and refusal reasons as every page connector, including the ArchiveBox
+  connector. Each page names its `backend` (`webarchiver`).
 
 ## Quick start
 

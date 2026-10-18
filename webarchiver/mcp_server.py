@@ -5,10 +5,11 @@ from agent_connector_sdk.config import load_config
 from agent_connector_sdk.mcp.content import ConnectorContent
 from agent_connector_sdk.mcp.server import create_mcp_server
 from agent_connector_sdk.mcp.tool_surface import register_tool_surface
+from agent_connector_sdk.ports.web_source import register_web_source_tools
 
 from . import mcp as tool_modules
 from ._version import __version__
-from .api import ApiClientSystem
+from .api import ApiClientSystem, WebarchiverSource
 from .auth import get_client
 
 
@@ -37,6 +38,8 @@ def get_mcp_instance(*, command_args=None):
         client_cls=ApiClientSystem,
         get_client=get_client,
     )
+    # web_fetch and web_extract: the SDK web-source contract's own tools.
+    register_web_source_tools(mcp, lambda: WebarchiverSource(get_client().fetcher))
     for middleware in middlewares:
         mcp.add_middleware(middleware)
     return mcp, args, middlewares
