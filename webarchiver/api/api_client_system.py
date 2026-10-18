@@ -10,11 +10,12 @@ limit; a refusal is returned as a typed :class:`PolicyRefused`.
 
 from __future__ import annotations
 
-import datetime as _dt
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
+from ._support import now as _now
+from ._support import read_only as _read_only
 from .browser import Browser, RenderedPage, Screenshot
 from .crawl import CrawlResult, crawl_site
 from .extraction import ExtractedPage, PageLink, extract_links, extract_page
@@ -25,11 +26,6 @@ __all__ = ["ApiClientSystem", "ExtractResult", "LinksResult"]
 
 #: Rendered HTML returned by ``render`` is capped to keep tool results bounded.
 _MAX_RENDERED_HTML = 2 * 1024 * 1024
-
-
-def _read_only(method: Any) -> Any:
-    method.__http_method__ = "GET"
-    return method
 
 
 class ExtractResult(BaseModel):
@@ -188,7 +184,3 @@ class ApiClientSystem:
     async def _close(self) -> None:
         """Release the shared browser."""
         await self.browser.close()
-
-
-def _now() -> str:
-    return _dt.datetime.now(_dt.UTC).isoformat()
