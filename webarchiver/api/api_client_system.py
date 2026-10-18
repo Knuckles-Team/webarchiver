@@ -2,48 +2,28 @@
 
 CONN-WEBARCHIVER-WEB-SOURCE-R001. ``register_tool_surface`` turns each public
 method of :class:`ApiClientSystem` into one typed tool named
-``webarchiver_<method>``: ``fetch``, ``extract``, ``render``, ``screenshot``
-and ``links``. All five only read the web, so each is declared ``GET`` and
-served read-only. Every operation honours robots.txt and the per-domain rate
+``web_<method>``: ``render``, ``screenshot``, ``crawl`` and ``links``. All
+four only read the web, so each is declared ``GET`` and served read-only.
+``web_fetch`` and ``web_extract`` are the SDK web-source contract's tools,
+served over :class:`~webarchiver.api.web_source.WebarchiverSource`. Every operation honours robots.txt and the per-domain rate
 limit; a refusal is returned as a typed :class:`PolicyRefused`.
 """
 
 from __future__ import annotations
 
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict
 
-from ._support import now as _now
 from ._support import read_only as _read_only
 from .browser import Browser, RenderedPage, Screenshot
 from .crawl import CrawlResult, crawl_site
-from .extraction import ExtractedPage, PageLink, extract_links, extract_page
-from .fetcher import FetchedResponse, Fetcher
+from .extraction import PageLink, extract_links
+from .fetcher import Fetcher
 from .policy import FetchPolicy, PolicyRefused, origin_of
 
-__all__ = ["ApiClientSystem", "ExtractResult", "LinksResult"]
+__all__ = ["ApiClientSystem", "LinksResult"]
 
 #: Rendered HTML returned by ``render`` is capped to keep tool results bounded.
 _MAX_RENDERED_HTML = 2 * 1024 * 1024
-
-
-class ExtractResult(BaseModel):
-    """Extracted main content plus the provenance of how it was fetched."""
-
-    model_config = ConfigDict(frozen=True, extra="forbid")
-
-    backend: Literal["webarchiver"] = "webarchiver"
-    fetch_mode: Literal["http", "render"]
-    url: str
-    final_url: str
-    status: int
-    content_type: str
-    byte_count: int
-    content_digest: str
-    retrieved_at: str
-    robots: Literal["allowed", "not_checked"]
-    page: ExtractedPage
 
 
 class LinksResult(BaseModel):
@@ -81,52 +61,6 @@ class ApiClientSystem:
         ):
             raise PolicyRefused("robots_disallowed", url)
         await self.fetcher.limiter.acquire(origin_of(url))
-
-    @_read_only
-    async def fetch(self, url: str) -> FetchedResponse:
-        """GET one URL under robots.txt, rate-limit, size and content-type policy."""
-        return await self.fetcher.fetch(url)
-
-    @_read_only
-    async def extract(self, url: str, render: bool = False) -> ExtractResult:
-        """Fetch one URL and extract its main content as text and markdown.
-
-        Returns title, author, published date, canonical URL and outbound
-        links. ``render=True`` runs the page's scripts in headless Chromium
-        first, for pages that build their content client-side.
-        """
-        if render:
-            rendered = await self.render(url)
-            page = extract_page(rendered.html, rendered.final_url)
-            return ExtractResult(
-                fetch_mode="render",
-                url=url,
-                final_url=rendered.final_url,
-                status=rendered.status,
-                content_type="text/html",
-                byte_count=len(rendered.html.encode("utf-8")),
-                content_digest=page.content_sha256,
-                retrieved_at=_now(),
-                robots=self._robots_decision(),
-                page=page.model_copy(update={"url": url}),
-            )
-        fetched = await self.fetcher.fetch(url)
-        page = extract_page(fetched.text, fetched.final_url)
-        return ExtractResult(
-            fetch_mode="http",
-            url=url,
-            final_url=fetched.final_url,
-            status=fetched.status,
-            content_type=fetched.content_type,
-            byte_count=fetched.bytes,
-            content_digest=page.content_sha256,
-            retrieved_at=fetched.fetched_at,
-            robots=self._robots_decision(),
-            page=page.model_copy(update={"url": url}),
-        )
-
-    def _robots_decision(self) -> Literal["allowed", "not_checked"]:
-        return "allowed" if self.policy.obey_robots else "not_checked"
 
     @_read_only
     async def render(self, url: str) -> RenderedPage:

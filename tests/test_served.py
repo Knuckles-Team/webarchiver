@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 
 import pytest
@@ -11,12 +10,15 @@ from fastmcp import Client
 import webarchiver.auth as auth_module
 from webarchiver.mcp_server import get_mcp_instance
 
+#: Each operation and its required input: the SDK web-source contract's tools
+#: take one ``request`` object; the connector's own tools take the URL.
 OPERATIONS = {
-    "web_fetch",
-    "web_extract",
-    "web_render",
-    "web_screenshot",
-    "web_links",
+    "web_fetch": "request",
+    "web_extract": "request",
+    "web_render": "url",
+    "web_screenshot": "url",
+    "web_links": "url",
+    "web_crawl": "seed_url",
 }
 
 
@@ -34,24 +36,29 @@ async def test_one_read_only_tool_per_operation() -> None:
     server, _args, _mw = get_mcp_instance(command_args=[])
     async with Client(server) as client:
         tools = {tool.name: tool for tool in await client.list_tools()}
-    assert OPERATIONS <= tools.keys()
+    served = {
+        name: (
+            tools[name].annotations.readOnlyHint,
+            tools[name].inputSchema["required"],
+        )
+        for name in OPERATIONS
+    }
+    assert served == {name: (True, [field]) for name, field in OPERATIONS.items()}
     assert not any(
-        "action" in (t.inputSchema.get("properties") or {}) for t in tools.values()
+        "action" in t.inputSchema.get("properties", {}) for t in tools.values()
     )
-    for name in OPERATIONS:
-        assert tools[name].annotations.readOnlyHint is True
-        assert "url" in tools[name].inputSchema["required"]
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.3")
 async def test_tools_call_reaches_extractor(site: str, loopback: None) -> None:
     server, _args, _mw = get_mcp_instance(command_args=[])
     async with Client(server) as client:
-        result = await client.call_tool("web_extract", {"url": f"{site}/article"})
-    body = result.structured_content or json.loads(result.content[0].text)
-    body = body.get("result", body)
-    assert body["backend"] == "webarchiver"
-    assert body["page"]["title"] == "Pod disruption budgets explained"
+        result = await client.call_tool(
+            "web_extract", {"request": {"url": f"{site}/article"}}
+        )
+    body = result.structured_content["result"]
+    assert body["kind"] == "page" and body["backend"] == "webarchiver"
+    assert body["title"] == "Pod disruption budgets explained"
 
 
 def _chromium_available() -> bool:
@@ -69,9 +76,7 @@ async def test_render_and_screenshot_in_headless_chromium(site: str) -> None:
         rendered = await client.render(f"{site}/article")
         assert "cookie-banner" not in rendered.html
         assert "Pod disruption budgets" in rendered.title
-        extracted = await client.extract(f"{site}/article", render=True)
-        assert extracted.fetch_mode == "render"
-        assert "voluntary disruptions" in extracted.page.text
+        assert "voluntary disruptions" in rendered.html
         shot = await client.screenshot(f"{site}/article")
         assert shot.bytes > 1000 and shot.png_base64.startswith("iVBOR")
     finally:
