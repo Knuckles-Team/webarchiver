@@ -29,6 +29,24 @@ ROUTES: dict[str, tuple[int, str, bytes, dict[str, str]]] = {
     "/huge": (200, "text/html", b"<p>" + b"x" * 4096 + b"</p>", {}),
     "/empty": (200, "text/html", b"<html><body></body></html>", {}),
     "/gone": (404, "text/html", b"<p>missing</p>", {}),
+    "/docs/": (
+        200,
+        "text/html",
+        b'<a href="/docs/a">A</a> <a href="/docs/b">B</a> <a href="/private/x">P</a>'
+        b' <a href="/blog/post">Blog</a> <a href="https://elsewhere.example/z">Z</a>'
+        b' <a href="/docs/a#frag">A again</a>',
+        {},
+    ),
+    "/docs/a": (
+        200,
+        "text/html",
+        b'<a href="/docs/deep">Deep</a> <a href="/docs/">Up</a>',
+        {},
+    ),
+    "/docs/b": (200, "text/html", b"<p>b</p>", {}),
+    "/docs/deep": (200, "text/html", b'<a href="/docs/deeper">Deeper</a>', {}),
+    "/docs/deeper": (200, "text/html", b"<p>deeper</p>", {}),
+    "/blog/post": (200, "text/html", b"<p>blog</p>", {}),
 }
 
 

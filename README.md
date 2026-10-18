@@ -42,8 +42,10 @@ DOMs, full-page screenshots and outbound links. It holds no credentials.
 - **Rendering** — headless Chromium for pages built by scripts, with ad and
   tracker requests aborted and fixed overlays removed.
 - **Screenshots** — full-page PNG captures.
+- **Site crawl** — a bounded breadth-first walk from one seed URL that returns
+  page URLs (up to 1000) under the same robots and rate policy.
 - **One tool per operation** — `web_fetch`, `web_extract`,
-  `web_render`, `web_screenshot` and `web_links`, all
+  `web_render`, `web_screenshot`, `web_crawl` and `web_links`, all
   read-only.
 
 ## Quick start

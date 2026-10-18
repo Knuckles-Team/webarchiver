@@ -11,3 +11,4 @@ Governing spec: [spec.md](spec.md).
 | T-005 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.4` | Unit | `tests/test_extract.py::test_refusals` | Each case returns its reason and no page body. |  |
 | T-006 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.5` | Unit | `tests/test_extract.py::test_result_provenance` | Each named field is present and matches the fixture response. |  |
 | T-007 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.6` | Served | `tests/test_conformance_served.py::test_conformance_kit_and_sync` | The kit reports no broken obligation, and the engine holds one Document with `backend=webarchiver`. |  |
+| T-008 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.7` | Unit | `tests/test_crawl.py::test_bounded_crawl` | The fixture site yields the expected URLs in order and the disallowed path is reported, not fetched. |  |

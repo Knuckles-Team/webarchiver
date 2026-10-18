@@ -1,19 +1,27 @@
-name: Release Python package
+name: Build|Upload|Release Python Package
 
 on:
   push:
-    tags: ['v*']
+    branches:
+      - 'main'
 
 permissions:
   contents: read
 
 jobs:
   publish-pypi:
-    if: startsWith(github.ref, 'refs/tags/v')
     uses: Knuckles-Team/pipelines/.github/workflows/python_pipeline.yml@main
     permissions:
       contents: write
-    # Configure this existing publishing secret through the repository's
-    # approved release process. The scaffold does not create credentials.
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+  publish-docker:
+    needs: publish-pypi
+    uses: Knuckles-Team/pipelines/.github/workflows/container_pipeline.yml@main
+    permissions:
+      contents: read
+    secrets:
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}

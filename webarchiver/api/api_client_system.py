@@ -16,6 +16,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict
 
 from .browser import Browser, RenderedPage, Screenshot
+from .crawl import CrawlResult, crawl_site
 from .extraction import ExtractedPage, PageLink, extract_links, extract_page
 from .fetcher import FetchedResponse, Fetcher
 from .policy import FetchPolicy, PolicyRefused, origin_of
@@ -146,6 +147,33 @@ class ApiClientSystem:
         await self._admit(url)
         return await self.browser.screenshot(
             url, user_agent=self.policy.user_agent, full_page=full_page
+        )
+
+    @_read_only
+    async def crawl(
+        self,
+        seed_url: str,
+        same_site: bool = True,
+        max_pages: int = 100,
+        max_depth: int = 2,
+        include: list[str] | None = None,
+        exclude: list[str] | None = None,
+    ) -> CrawlResult:
+        """Discover up to ``max_pages`` (1 to 1000) page URLs from one seed.
+
+        A breadth-first walk to ``max_depth`` (0 to 10) under the same robots,
+        rate, size, type and egress policy as ``web_fetch``. ``include`` and
+        ``exclude`` are regular expressions matched against each URL. Returns
+        URLs only.
+        """
+        return await crawl_site(
+            self.fetcher,
+            seed_url,
+            same_site=same_site,
+            max_pages=max_pages,
+            max_depth=max_depth,
+            include=tuple(include or ()),
+            exclude=tuple(exclude or ()),
         )
 
     @_read_only
