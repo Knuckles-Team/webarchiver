@@ -9,3 +9,4 @@ Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requireme
 - [ ] **CONN-WEBARCHIVER-WEB-SOURCE-R001.4:** Refusal.
 - [ ] **CONN-WEBARCHIVER-WEB-SOURCE-R001.5:** Evidence.
 - [ ] **CONN-WEBARCHIVER-WEB-SOURCE-R001.6:** Hot-path proof.
+- [x] `CONN-WEBARCHIVER-WEB-SOURCE-R001.7` — Bounded site crawl `web_crawl` returning URLs under the fetch policy.
