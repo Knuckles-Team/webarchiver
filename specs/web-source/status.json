@@ -1,0 +1,8 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-WEBARCHIVER-WEB-SOURCE",
+  "owner_repo": "webarchiver",
+  "delivery_state": "SPECIFIED",
+  "requirement_ids": [],
+  "requirements": []
+}
