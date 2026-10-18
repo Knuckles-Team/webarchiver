@@ -46,3 +46,23 @@ def test_manifest_loads_with_the_sdk_model():
         Path(webarchiver.__file__).parent / "connector_manifest.yml"
     )
     assert manifest.connector == "webarchiver"
+
+
+@pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.8")
+def test_manifest_maps_document_and_chunk_records():
+    """SourceIngest resolves manifest:<connector>#schema_mappings/<type> for both."""
+    from pathlib import Path
+
+    from agent_connector_sdk.manifest.loader import load_manifest
+
+    import webarchiver
+
+    manifest = load_manifest(
+        Path(webarchiver.__file__).parent / "connector_manifest.yml"
+    )
+    for record_type, ontology_class in (("Document", "Document"), ("Chunk", "Chunk")):
+        mapping = manifest.schema_mappings[record_type]
+        assert mapping.ontology_class == ontology_class
+        assert {"text", "title", "source_uri", "content_hash", "backend"} <= set(
+            mapping.fields
+        )

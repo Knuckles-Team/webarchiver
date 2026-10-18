@@ -11,20 +11,63 @@
     },
     {
       "name": "MediaAsset"
+    },
+    {
+      "name": "Chunk"
     }
   ],
   "identity": {
     "id_field": {
-      "WebarchiverResource": "id"
+      "WebarchiverResource": "id",
+      "Document": "id",
+      "Chunk": "id"
     },
     "title_field": {
-      "WebarchiverResource": "name"
+      "WebarchiverResource": "name",
+      "Document": "title",
+      "Chunk": "title"
     }
   },
   "schema_mappings": {
     "WebarchiverResource": {
       "fields": {
         "name": "xsd:string"
+      }
+    },
+    "Document": {
+      "ontology_class": "Document",
+      "fields": {
+        "text": "xsd:string",
+        "title": "xsd:string",
+        "source_uri": "xsd:string",
+        "content_hash": "xsd:string",
+        "url": "xsd:string",
+        "canonical_url": "xsd:string",
+        "author": "xsd:string",
+        "published": "xsd:string",
+        "site_name": "xsd:string",
+        "content_sha256": "xsd:string",
+        "backend": "xsd:string",
+        "fetch_mode": "xsd:string",
+        "fallback_from": "xsd:string",
+        "search_query": "xsd:string",
+        "search_engine": "xsd:string",
+        "search_rank": "xsd:integer",
+        "chunk_count": "xsd:integer"
+      }
+    },
+    "Chunk": {
+      "ontology_class": "Chunk",
+      "fields": {
+        "text": "xsd:string",
+        "title": "xsd:string",
+        "source_uri": "xsd:string",
+        "content_hash": "xsd:string",
+        "document_id": "xsd:string",
+        "chunk_index": "xsd:integer",
+        "char_start": "xsd:integer",
+        "char_end": "xsd:integer",
+        "backend": "xsd:string"
       }
     }
   },
@@ -40,7 +83,6 @@
     }
   },
   "review_todos": [
-    "Replace the starter resource mapping with the reviewed source model.",
     "Declare real source presets and matching sync entries before certification.",
     "Integrity is an ontology byte hash, not canonical RDF or release certification."
   ]
