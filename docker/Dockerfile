@@ -20,7 +20,7 @@ ENV HOST=${HOST} \
     PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 # The render and screenshot operations drive Playwright's prebuilt Chromium
 # (downloaded, not compiled) with its system libraries.
-RUN pip install --only-binary :all: webarchiver[mcp]==1.1.0 \
+RUN pip install --only-binary :all: webarchiver[mcp]==1.1.1 \
     && playwright install --with-deps --only-shell chromium \
     && rm -rf /var/lib/apt/lists/* \
     && chmod -R a+rX /opt/ms-playwright \

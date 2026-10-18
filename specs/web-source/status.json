@@ -11,7 +11,8 @@
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
-    "CONN-WEBARCHIVER-WEB-SOURCE-R001.7"
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.8"
   ],
   "requirements": [
     {
@@ -27,7 +28,8 @@
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
-        "CONN-WEBARCHIVER-WEB-SOURCE-R001.7"
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.8"
       ]
     },
     {
@@ -99,13 +101,22 @@
       "title": "Bounded site crawl",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "6a2d71470fa4",
-        "e1b2c681bae6"
+        "4fde2c6fe305",
+        "99c1281925fe"
       ],
       "verified_by": [
         "tests/test_crawl.py:17",
         "tests/test_crawl.py:35",
         "tests/test_crawl.py:49"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+      "title": "Ingest mappings",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_startup.py:51"
       ]
     }
   ]
