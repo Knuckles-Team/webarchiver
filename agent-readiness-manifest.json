@@ -38,14 +38,14 @@
       "artifact": "docs/capabilities/api.json",
       "artifact_sha256": "32d63c9b83ae2faff2c905b57dd229eddabe3c826acb8f263ca774a4d3bc0279",
       "source": "webarchiver/api/__init__.py",
-      "source_sha256": "163db5f8c42a0ba745518a06a434a7e2c9367c07fc8475203dc5b49a8b6b8e88"
+      "source_sha256": "84195f9f4e935d6e2a61820875be9b691b9545c8cf45d2df129c10de3937a6e5"
     },
     "mcp": {
       "artifact": "docs/capabilities/mcp.json",
       "artifact_sha256": "9eca979321d7c362d8e0f4f8f05b330a6fd83eb801d53f4dc7547c9782241d09",
       "http_transport": "true",
       "source": "webarchiver/mcp_server.py",
-      "source_sha256": "3f8638db3a44d9182f6bc318ce9fbd9668fc79af7dad0f3878b34480582ceb74"
+      "source_sha256": "69584905dcb5fe6ddaf08db6ebfe8b4704c239e07cf7f242031d70d7bd2b196d"
     }
   },
   "content_signals": {
@@ -78,13 +78,13 @@
     "mkdocs_sha256": "c40c51eefe734319eec9a86a47fa3eb8822c6c675d32e39314afa82db6c760bd",
     "pages": [
       {
-        "bytes": 1599,
-        "sha256": "909dfa804c6e3fc74a2c8ef3b5b2d34a41d352865e04dbb532e31c564b39661e",
+        "bytes": 1622,
+        "sha256": "7333f951968f62e4fc26db8129b5b8c89de5072a78ff25a0cad0b2fb4799bd28",
         "source": "docs/index.md"
       },
       {
-        "bytes": 689,
-        "sha256": "45da4a41c747ea227df8b5fdb5e8658edc75e675a09b818bec0652f82129208d",
+        "bytes": 686,
+        "sha256": "041cb09d6e4645399f7d04db5b74c6338f994ee1cbf9a4de7ff9a416b79cb542",
         "source": "docs/overview.md"
       },
       {
@@ -93,8 +93,8 @@
         "source": "docs/architecture.md"
       },
       {
-        "bytes": 742,
-        "sha256": "8629a0c18a8e3e7e94ac09efa1dee16765a468301ebf569ab05d7206709a322c",
+        "bytes": 728,
+        "sha256": "01a85ed7e697d85fa5df8afb5deac10dd135d4621982a83942d5bac7be755a88",
         "source": "docs/installation.md"
       },
       {
@@ -103,8 +103,8 @@
         "source": "docs/deployment.md"
       },
       {
-        "bytes": 1376,
-        "sha256": "788ca8fb2f983ce200279eb0786ece7a510a67d55dd0b2017c8d03b6b91dc3c8",
+        "bytes": 1429,
+        "sha256": "eae164ab7f221954be04dc9f7c4c71eda91a001c1963349fa0d0561df6bdb349",
         "source": "docs/usage.md"
       },
       {

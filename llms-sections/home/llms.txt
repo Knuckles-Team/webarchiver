@@ -5,6 +5,6 @@
 
 ## Home
 
-- [Home](https://knuckles-team.github.io/webarchiver/) — Webarchiver API + MCP Server built on the connector SDK — a typed, action-routed connector.
+- [Home](https://knuckles-team.github.io/webarchiver/) — Webarchiver API + MCP Server built on the connector SDK — a typed connector with one read-only tool per operation.
 
 Standards maturity and scope: [root documentation index](../../llms.txt).

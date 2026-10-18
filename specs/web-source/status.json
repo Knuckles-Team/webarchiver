@@ -115,7 +115,7 @@
       "title": "Ingest mappings",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "1d799869b316"
+        "4d127d07b8ce"
       ],
       "verified_by": [
         "tests/test_startup.py:51"

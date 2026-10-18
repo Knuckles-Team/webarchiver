@@ -2,18 +2,18 @@
   "applicable": true,
   "entries": [
     {
-      "bytes": 1599,
+      "bytes": 1622,
       "canonical_url": "https://knuckles-team.github.io/webarchiver/",
       "markdown_url": "https://knuckles-team.github.io/webarchiver/index.md",
-      "sha256": "909dfa804c6e3fc74a2c8ef3b5b2d34a41d352865e04dbb532e31c564b39661e",
+      "sha256": "7333f951968f62e4fc26db8129b5b8c89de5072a78ff25a0cad0b2fb4799bd28",
       "source": "docs/index.md",
       "url": "https://knuckles-team.github.io/webarchiver/"
     },
     {
-      "bytes": 689,
+      "bytes": 686,
       "canonical_url": "https://knuckles-team.github.io/webarchiver/overview/",
       "markdown_url": "https://knuckles-team.github.io/webarchiver/overview/index.md",
-      "sha256": "45da4a41c747ea227df8b5fdb5e8658edc75e675a09b818bec0652f82129208d",
+      "sha256": "041cb09d6e4645399f7d04db5b74c6338f994ee1cbf9a4de7ff9a416b79cb542",
       "source": "docs/overview.md",
       "url": "https://knuckles-team.github.io/webarchiver/overview/"
     },
@@ -26,10 +26,10 @@
       "url": "https://knuckles-team.github.io/webarchiver/architecture/"
     },
     {
-      "bytes": 742,
+      "bytes": 728,
       "canonical_url": "https://knuckles-team.github.io/webarchiver/installation/",
       "markdown_url": "https://knuckles-team.github.io/webarchiver/installation/index.md",
-      "sha256": "8629a0c18a8e3e7e94ac09efa1dee16765a468301ebf569ab05d7206709a322c",
+      "sha256": "01a85ed7e697d85fa5df8afb5deac10dd135d4621982a83942d5bac7be755a88",
       "source": "docs/installation.md",
       "url": "https://knuckles-team.github.io/webarchiver/installation/"
     },
@@ -42,10 +42,10 @@
       "url": "https://knuckles-team.github.io/webarchiver/deployment/"
     },
     {
-      "bytes": 1376,
+      "bytes": 1429,
       "canonical_url": "https://knuckles-team.github.io/webarchiver/usage/",
       "markdown_url": "https://knuckles-team.github.io/webarchiver/usage/index.md",
-      "sha256": "788ca8fb2f983ce200279eb0786ece7a510a67d55dd0b2017c8d03b6b91dc3c8",
+      "sha256": "eae164ab7f221954be04dc9f7c4c71eda91a001c1963349fa0d0561df6bdb349",
       "source": "docs/usage.md",
       "url": "https://knuckles-team.github.io/webarchiver/usage/"
     },
