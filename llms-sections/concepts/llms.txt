@@ -1,0 +1,10 @@
+# webarchiver — Concepts
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Concepts
+
+- [Concepts](https://knuckles-team.github.io/webarchiver/concepts/) — > Prefix: CONCEPT:CONN-WEBARCHIVER- > Version: 0.1.0
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

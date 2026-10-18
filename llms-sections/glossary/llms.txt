@@ -1,0 +1,10 @@
+# webarchiver — Glossary
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Glossary
+
+- [Glossary](https://knuckles-team.github.io/webarchiver/glossary/) — The browser operator experience for working with agents and their runtime. Arbora hosts it as a composed service.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

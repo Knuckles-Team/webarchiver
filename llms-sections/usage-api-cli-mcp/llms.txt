@@ -1,0 +1,10 @@
+# webarchiver — Usage (API / CLI / MCP)
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Usage (API / CLI / MCP)
+
+- [Usage (API / CLI / MCP)](https://knuckles-team.github.io/webarchiver/usage/) — webarchiver exposes the same capability three ways: as MCP tools an agent calls, as a Python API you import, and as a CLI.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

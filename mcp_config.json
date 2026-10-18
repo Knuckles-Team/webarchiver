@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "webarchiver": {
+      "command": "uv",
+      "args": [
+        "run",
+        "webarchiver-mcp"
+      ],
+      "env": {
+        "SYSTEMTOOL": "true",
+        "WEBARCHIVER_OBEY_ROBOTS": "true", "MCP_TOOL_MODE": "verbose"
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+# KISS thresholds for the shared hook package (kiss 0.4.12, fleet fork build).
+#
+# Source: the fleet's hand-set, measured Python thresholds, copied unchanged. None was derived from
+# what this repository passes. This file is NOT a baseline.
+#
+# Never run bare `kiss check`: without --config it writes a self-calibrating
+# .kissconfig. Go through the kiss-staged / kiss-census hooks (one path per
+# invocation; kiss reports a false clean for a multi-path check).
+
+[global]
+min_similarity          = 0.9
+duplication_enabled     = true
+comment_removal_enabled = false
+docs_allowed            = ["./"]
+orphan_allowed          = []
+# kiss 0.4.11 moved orphan detection out of [global] (orphan_module_enabled,
+# now an unknown key that makes kiss drop this whole table) to the
+# coverage-linked `kiss test`; `kiss check` no longer reports orphans.
+
+[test]
+orphan_detection        = true
+
+[python]
+max_indentation            = 4
+nested_function_depth      = 2
+return_values_per_function = 3
+decorators_per_function    = 5
+boolean_parameters         = 1
+statements_per_try_block   = 3
+returns_per_function       = 5
+positional_args            = 3
+statements_per_function    = 35
+local_variables            = 15
+calls_per_function         = 20
+methods_per_class          = 10
+imported_names_per_file    = 30
+statements_per_file        = 200
+lines_per_file             = 300
+functions_per_file         = 10
+interface_types_per_file   = 1
+# OFF, owned by another gate: cccc (complexity-staged / complexity-census) owns
+# branching; one metric, one tool.
+branches_per_function      = 999999
+# OFF: keyword-only signatures are the remedy positional_args asks for.
+keyword_only_args          = 999999
+# OFF: one class per file is a layout rule, not a complexity rule.
+concrete_types_per_file    = 999999
+# OFF, owned by the import-cycles hook at an absolute zero over the eager import
+# graph; kiss counts deferred and TYPE_CHECKING imports as edges.
+cycle_size                 = 999999
+dependency_depth           = 999999
+indirect_dependencies      = 999999

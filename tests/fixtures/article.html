@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pod disruption budgets explained</title>
+  <link rel="canonical" href="/article">
+  <meta name="author" content="Ada Example">
+  <meta property="article:published_time" content="2026-09-01T10:00:00Z">
+  <meta property="og:site_name" content="Fixture Docs">
+  <meta name="description" content="How a pod disruption budget limits voluntary evictions.">
+</head>
+<body>
+  <nav><a href="/">Home</a> <a href="/about">About</a> <a href="#top">Top</a></nav>
+  <div class="cookie-banner" style="position:fixed">We use cookies.</div>
+  <article>
+    <h1>Pod disruption budgets explained</h1>
+    <p>A pod disruption budget limits how many pods of a replicated application
+    can be down at the same time because of voluntary disruptions, such as a
+    node drain during a cluster upgrade.</p>
+    <p>You set either minAvailable or maxUnavailable. The eviction API refuses an
+    eviction that would violate the budget, so a drain waits until enough
+    replicas are ready again elsewhere.</p>
+    <h2>When budgets do not apply</h2>
+    <p>Involuntary disruptions, such as a kernel panic or a node losing power, are
+    not prevented by a budget, but they do count against it. Read the
+    <a href="https://kubernetes.example.org/docs/pdb">upstream reference</a>
+    for the full field list.</p>
+  </article>
+  <footer>Copyright Fixture Docs. <a href="mailto:docs@example.org">Mail</a></footer>
+</body>
+</html>

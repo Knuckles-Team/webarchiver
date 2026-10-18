@@ -1,0 +1,21 @@
+{
+  "files": {
+    "scripts/sync_mkdocs_theme.py": "bec06ab81fcf5df697b37419324535d2385be2675d34dd093f60190c12c2e390",
+    "templates/mkdocs-theme/README.md": "e5484fae67ffa597e6f40747f52b2e321b9b1b31612b6d5a141a2dcf6029f180",
+    "templates/mkdocs-theme/assets/brands/agent-connector-sdk-logo-v1.png": "6688810468a77118ee1960ac3872816c6ace4f750a849688d306d7a63132e1b1",
+    "templates/mkdocs-theme/assets/brands/agent-terminal-ui-logo-v1.png": "d5e3c011066e2241c09c885f65d9a07c6ff32f4244b00dbe8e7550a3bab20dc8",
+    "templates/mkdocs-theme/assets/brands/agent-utilities-logo-v1.png": "923319a3b89fa1fbd14ca14c27cf49d2e2d9f85bc45456e05b788692700f0103",
+    "templates/mkdocs-theme/assets/brands/agent-webui-logo-v1.png": "3939a7324f134c520fd544aadd2a37c99abba9db78dd2bf3fd5003ffd62502ff",
+    "templates/mkdocs-theme/assets/brands/arbora-logo-v1.png": "bba183368e42927edea91013639311a5d64f5a9910ec2f1bdcc7f4cd32f9d230",
+    "templates/mkdocs-theme/assets/brands/epistemic-graph-logo-v1.png": "26671aef2c3b78ecdcca2ad13adfd266cebf8d7e666e614c2d83d166b853d272",
+    "templates/mkdocs-theme/assets/brands/geniusbot-logo-v1.png": "c4a17404f234f677496197ac202ca8fb30b136c5a69243811bbfa6e5d5352b28",
+    "templates/mkdocs-theme/assets/favicon.svg": "aa606f9668a363bfe533f7d835700c246efaed0b8895cce5fe4398f36c35e7ba",
+    "templates/mkdocs-theme/assets/graph-mark.svg": "d0c69cdc06aa51439b6ce04b4c6df4dbf02283329f01122a78e08f286186e25d",
+    "templates/mkdocs-theme/base.mkdocs.yml": "5424438de987d1ea222f8ce4467e830f286784d14e35b71c623616c9a6ce87d9",
+    "templates/mkdocs-theme/extra.css": "2cc17b7610b67c82895312e7e61cf84587a6fe291bbc154d3c83c59fba2ee843",
+    "templates/mkdocs-theme/glossary.md": "f35f337fd8175dfdd274442795558772ae3138bb95fc31d84937f5047bff1f64",
+    "templates/mkdocs-theme/overrides/main.html": "766234b5045a5815805bb2ce5223ddd93729f7854abc4b6cdf4fba9c7e0dab3b"
+  },
+  "repository": "https://github.com/Knuckles-Team/pipelines",
+  "revision": "58e9bbc62557f2d4a07438070b1ceebb5864a81f"
+}

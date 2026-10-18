@@ -1,0 +1,10 @@
+# webarchiver — Home
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Home
+
+- [Home](https://knuckles-team.github.io/webarchiver/) — Webarchiver API + MCP Server built on the connector SDK — a typed, action-routed connector.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

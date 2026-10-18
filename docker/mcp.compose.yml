@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  webarchiver-mcp:
+    # MCP serving image (built with `--target mcp`).
+    image: "${MCP_IMAGE:?set-MCP_IMAGE-to-image@sha256-digest}"
+    container_name: webarchiver-mcp
+    hostname: webarchiver-mcp
+    restart: always
+    volumes:
+      - type: bind
+        source: ${CONNECTOR_CONFIG_DIR:?set-CONNECTOR_CONFIG_DIR-to-a-reference-only-config-directory}
+        target: /etc/connector
+        read_only: true
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HOST=0.0.0.0
+      - PORT=8000
+      - TRANSPORT=streamable-http
+      - AUTH_TYPE=${AUTH_TYPE:?set-AUTH_TYPE-to-a-configured-auth-provider}
+      - CONNECTOR_CONFIG_FILE=/etc/connector/config.json
+      - WEBARCHIVER_ALLOW_PLAINTEXT=${WEBARCHIVER_ALLOW_PLAINTEXT:-false}
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

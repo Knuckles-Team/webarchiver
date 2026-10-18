@@ -1,0 +1,10 @@
+# webarchiver — Installation
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Installation
+
+- [Installation](https://knuckles-team.github.io/webarchiver/installation/) — webarchiver is a standard Python package and a prebuilt container image.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

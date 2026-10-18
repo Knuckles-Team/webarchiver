@@ -1,0 +1,10 @@
+# webarchiver — Overview
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Overview
+
+- [Overview](https://knuckles-team.github.io/webarchiver/overview/) — > Category: Integration | Ecosystem Role: MCP Server > Built on agent-connector-sdk.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).

@@ -1,0 +1,10 @@
+# webarchiver — Deployment
+
+> Current documentation index generated from the exact MkDocs navigation.
+> Capability and content-use claims are operator-scoped and provenance-bound.
+
+## Deployment
+
+- [Deployment](https://knuckles-team.github.io/webarchiver/deployment/) — This page covers documentation delivery and running webarchiver as long-lived servers.
+
+Standards maturity and scope: [root documentation index](../../llms.txt).
