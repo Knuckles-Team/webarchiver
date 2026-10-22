@@ -13,7 +13,8 @@
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
-    "CONN-WEBARCHIVER-WEB-SOURCE-R001.10"
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.11"
   ],
   "requirements": [
     {
@@ -31,7 +32,8 @@
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
         "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
-        "CONN-WEBARCHIVER-WEB-SOURCE-R001.10"
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.11"
       ]
     },
     {
@@ -39,7 +41,7 @@
       "title": "Model",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "31e5998eddc5"
+        "cb1d8b9cd97d"
       ],
       "verified_by": [
         "tests/test_conformance.py:20"
@@ -133,10 +135,19 @@
       "title": "Conformance",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "31e5998eddc5"
+        "cb1d8b9cd97d"
       ],
       "verified_by": [
         "tests/test_conformance.py:21"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.11",
+      "title": "Fleet name",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_startup.py:71"
       ]
     }
   ]
