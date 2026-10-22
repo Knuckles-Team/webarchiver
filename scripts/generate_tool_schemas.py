@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT))
 try:
     from agent_connector_sdk.manifest.live_contract import validate_live_tool_contract
     from agent_connector_sdk.manifest.loader import (
+        load_manifest,
         load_tool_presets,
         require_valid_connector_package,
     )
@@ -85,7 +86,8 @@ async def generate(check: bool) -> None:
     _write_or_check(
         PACKAGE / "connectors/tool_schema_fingerprints.json",
         {
-            "connector": "webarchiver",
+            # The manifest carries the one connector identity, the fleet name.
+            "connector": load_manifest(PACKAGE / "connector_manifest.yml").connector,
             "algorithm": COMPATIBILITY_FINGERPRINT_ALGORITHM,
             "tools": pinned,
         },
