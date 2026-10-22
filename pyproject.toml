@@ -32,6 +32,10 @@ test = [
 [project.scripts]
 webarchiver-mcp = "webarchiver.mcp_server:mcp_server"
 
+# The one declared connector identity: the fleet name (SDK-CONNECTOR-CONTROL-R071).
+[project.entry-points."agent_connector_sdk.connector"]
+webarchiver-mcp = "webarchiver"
+
 [tool.uv.workspace]
 members = ["."]
 
