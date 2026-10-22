@@ -45,7 +45,7 @@ def test_manifest_loads_with_the_sdk_model():
     manifest = load_manifest(
         Path(webarchiver.__file__).parent / "connector_manifest.yml"
     )
-    assert manifest.connector == "webarchiver"
+    assert manifest.connector == "webarchiver-mcp"
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.8")
@@ -66,3 +66,22 @@ def test_manifest_maps_document_and_chunk_records():
         assert {"text", "title", "source_uri", "content_hash", "backend"} <= set(
             mapping.fields
         )
+
+
+@pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R001.11")
+def test_connector_name_is_the_fleet_name():
+    """Pack, manifest and ingest binding are filed under the fleet name."""
+    from pathlib import Path
+
+    from agent_connector_sdk.manifest.loader import load_manifest
+
+    import webarchiver
+    from webarchiver import kg_ingest
+
+    mcp_server = importlib.import_module("webarchiver.mcp_server")
+    assert mcp_server.CONNECTOR_NAME == "webarchiver-mcp"
+    assert kg_ingest._BINDING.connector == "webarchiver-mcp"
+    manifest = load_manifest(
+        Path(webarchiver.__file__).parent / "connector_manifest.yml"
+    )
+    assert manifest.connector == "webarchiver-mcp"

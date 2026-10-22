@@ -1,5 +1,5 @@
 {
-  "connector": "webarchiver",
+  "connector": "webarchiver-mcp",
   "ontology_source": "webarchiver",
   "schema_version": "1",
   "resources": [

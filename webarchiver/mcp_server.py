@@ -12,6 +12,9 @@ from ._version import __version__
 from .api import ApiClientSystem, WebarchiverSource
 from .auth import get_client
 
+#: The fleet and onboarding name; EG files the content pack and ingest under it.
+CONNECTOR_NAME = "webarchiver-mcp"
+
 
 def get_mcp_instance(*, command_args=None):
     """Construct one SDK-governed server and its native package content."""
@@ -23,7 +26,7 @@ def get_mcp_instance(*, command_args=None):
         instructions="Governed web fetch, extract, render, screenshot and link connector",
         command_args=command_args,
         content=ConnectorContent(
-            connector="webarchiver",
+            connector=CONNECTOR_NAME,
             package_root=package_root,
             package_version=__version__,
             manifest_path=package_root / "connector_manifest.yml",
