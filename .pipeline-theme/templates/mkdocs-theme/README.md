@@ -18,6 +18,8 @@ This folder is the canonical source for the five ecosystem documentation sites. 
 
 The runtime architecture diagram is not a theme asset and is never copied into a consumer. There is exactly one file, `docs/assets/runtime-architecture.svg` in Knuckles-Team/epistemic-graph, and every page that shows it references the URL `https://raw.githubusercontent.com/Knuckles-Team/epistemic-graph/main/docs/assets/runtime-architecture.svg`. The `check` mode fails when a page under the content source references `runtime-architecture.svg` by any other path.
 
+Every page that shows the diagram wraps it in a link to the live, generated [Arbora Architecture Explorer](https://knuckles-team.github.io/.github/architecture/) (deep-linked to the repository's node as `#<node-id>` where one exists) and adds the text link "Explore the live architecture"; the check fails on a page that shows the diagram without that link. The explorer is the canonical, always-current view: it is rebuilt every 30 minutes from every repository's default branch, and each core repository's `/architecture/` redirects to it.
+
 ## MkDocs configuration
 
 The repository's `mkdocs.yml` inherits `templates/mkdocs-theme/base.mkdocs.yml` and supplies `extra.ecosystem.current` with its own slug (`agent-webui`, `arbora`, `agent-utilities`, `epistemic-graph`, or `agent-connector-sdk`). It continues to own its site name, URL, content directory, and navigation. For local builds, check out the exact pinned `pipelines` revision into `.pipeline-theme`, run the `sync` command above, then run `mkdocs build --strict`.
