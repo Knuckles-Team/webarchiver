@@ -144,8 +144,10 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.11",
       "title": "Fleet name",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "90bb39b9d68c"
+      ],
       "verified_by": [
         "tests/test_startup.py:71"
       ]
