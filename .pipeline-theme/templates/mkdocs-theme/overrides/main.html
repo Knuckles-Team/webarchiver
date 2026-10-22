@@ -21,6 +21,13 @@
       </ul>
     </nav>
   </details>
+  {% if config.extra.architecture_explorer %}
+  {% set arch_node = config.extra.architecture_nodes[config.extra.ecosystem.current] | default("") %}
+  <nav class="site-spec-delivery" aria-label="Architecture Explorer">
+    <a class="site-architecture__link" target="_self" href="{{ base_url }}/architecture/{% if arch_node %}#{{ arch_node }}{% endif %}">Architecture Explorer</a>
+    <span>Zoom from the ecosystem into this repository and its spec rows.</span>
+  </nav>
+  {% endif %}
   {% if config.extra.spec_delivery %}
   <style>
     .site-spec-delivery { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; padding: 0.3rem 0.8rem; }

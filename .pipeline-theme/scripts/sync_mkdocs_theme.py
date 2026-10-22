@@ -40,9 +40,7 @@ THEME_FILES = (
         "assets/brands/agent-webui-logo-v1.png",
         "assets/brands/agent-webui-logo-v1.png",
     ),
-    ThemeFile(
-        "assets/brands/geniusbot-logo-v1.png", "assets/brands/geniusbot-logo-v1.png"
-    ),
+    ThemeFile("assets/brands/geniusbot-logo-v1.png", "assets/brands/geniusbot-logo-v1.png"),
     ThemeFile(
         "assets/brands/agent-terminal-ui-logo-v1.png",
         "assets/brands/agent-terminal-ui-logo-v1.png",
@@ -52,9 +50,10 @@ THEME_FILES = (
 
 
 RUNTIME_DIAGRAM_URL = (
-    "https://raw.githubusercontent.com/Knuckles-Team/epistemic-graph/main/"
-    "docs/assets/runtime-architecture.svg"
+    "https://raw.githubusercontent.com/Knuckles-Team/epistemic-graph/main/docs/assets/runtime-architecture.svg"
 )
+# The live, generated architecture view; every page that shows the static diagram links it.
+ARCHITECTURE_EXPLORER_URL = "https://knuckles-team.github.io/.github/architecture/"
 # Any reference to the diagram file; the only accepted target is RUNTIME_DIAGRAM_URL.
 RUNTIME_DIAGRAM_REFERENCE = re.compile(r"[^\s\"'()<>]*runtime-architecture\.svg")
 PAGE_SUFFIXES = {".md", ".html", ".yml", ".yaml"}
@@ -66,11 +65,7 @@ class ThemeSyncError(Exception):
 
 def _safe_relative_path(value: str, label: str) -> Path:
     path = Path(value)
-    if (
-        path.is_absolute()
-        or not path.parts
-        or any(part in {".", ".."} for part in path.parts)
-    ):
+    if path.is_absolute() or not path.parts or any(part in {".", ".."} for part in path.parts):
         raise ThemeSyncError(f"{label} must be a contained relative path")
     return path
 
@@ -95,7 +90,7 @@ def _check_file(destination: Path, expected: bytes, repository: Path) -> str | N
 
 
 def _runtime_reference_mismatches(content_root: Path, repository: Path) -> list[str]:
-    """Pages may show the runtime diagram only through the single canonical URL."""
+    """Pages may show the runtime diagram only through the single canonical URL, linked to the explorer."""
     mismatches: list[str] = []
     if not content_root.is_dir():
         return mismatches
@@ -103,13 +98,13 @@ def _runtime_reference_mismatches(content_root: Path, repository: Path) -> list[
         if page.suffix not in PAGE_SUFFIXES or not page.is_file():
             continue
         text = page.read_text(encoding="utf-8", errors="replace")
-        if any(
-            match.group(0) != RUNTIME_DIAGRAM_URL
-            for match in RUNTIME_DIAGRAM_REFERENCE.finditer(text)
-        ):
+        if any(match.group(0) != RUNTIME_DIAGRAM_URL for match in RUNTIME_DIAGRAM_REFERENCE.finditer(text)):
             mismatches.append(
-                f"runtime diagram must be referenced as {RUNTIME_DIAGRAM_URL}: "
-                f"{page.relative_to(repository)}"
+                f"runtime diagram must be referenced as {RUNTIME_DIAGRAM_URL}: {page.relative_to(repository)}"
+            )
+        elif RUNTIME_DIAGRAM_URL in text and ARCHITECTURE_EXPLORER_URL not in text:
+            mismatches.append(
+                f"runtime diagram must link the explorer at {ARCHITECTURE_EXPLORER_URL}: {page.relative_to(repository)}"
             )
     return mismatches
 
@@ -135,13 +130,7 @@ def sync_theme(
     return mismatches
 
 
-def _sync_files(
-    source: Path,
-    content_root: Path,
-    repository: Path,
-    *,
-    mode: Literal["sync", "check"],
-) -> list[str]:
+def _sync_files(source: Path, content_root: Path, repository: Path, *, mode: Literal["sync", "check"]) -> list[str]:
     """Write or compare every theme file and describe each divergence."""
     mismatches: list[str] = []
     for item in THEME_FILES:
@@ -149,9 +138,7 @@ def _sync_files(
         if not source_file.is_file():
             raise ThemeSyncError(f"canonical theme file does not exist: {source_file}")
         destination_root = content_root if item.content_relative else repository
-        destination = _contained(
-            destination_root, Path(item.destination), item.destination
-        )
+        destination = _contained(destination_root, Path(item.destination), item.destination)
         expected = source_file.read_bytes()
         if mode == "check":
             mismatch = _check_file(destination, expected, repository)
@@ -166,9 +153,7 @@ def _sync_files(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("sync", "check"))
-    parser.add_argument(
-        "--root", type=Path, default=Path.cwd(), help="consumer repository root"
-    )
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="consumer repository root")
     parser.add_argument(
         "--content-source",
         default="docs",

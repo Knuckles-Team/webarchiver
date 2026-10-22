@@ -53,6 +53,17 @@ extra_css:
 
 extra:
   spec_delivery: !ENV [SPEC_DELIVERY_ENABLED, false]
+  architecture_explorer: !ENV [ARCHITECTURE_EXPLORER_ENABLED, false]
+  # The explorer node each site opens at (deep link /architecture/#<node>).
+  architecture_nodes:
+    epistemic-graph: eg
+    arbora: arbora
+    agent-connector-sdk: sdk
+    agent-utilities: au
+    agent-terminal-ui: tui
+    agent-webui: webui
+    pipelines: pipelines
+    universal-skills: skills
   ecosystem:
     current: ""
     sites:
