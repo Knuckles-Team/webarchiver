@@ -19,7 +19,7 @@ from agent_connector_sdk.ingest import (
     current_ingest,
 )
 
-_BINDING = IngestBinding(connector="webarchiver", stream="webarchiver")
+_BINDING = IngestBinding(connector="webarchiver-mcp", stream="webarchiver")
 
 
 async def _submit(changes: ChangeSet, ingest: KnowledgeIngest | None) -> dict[str, int]:

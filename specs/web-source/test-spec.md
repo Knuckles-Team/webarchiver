@@ -14,3 +14,4 @@ Governing spec: [spec.md](spec.md).
 | T-008 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.7` | Unit | `tests/test_crawl.py::test_bounded_crawl` | The fixture site yields the expected URLs in order and the disallowed path is reported, not fetched. |  |
 | T-009 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.8` | Unit | `tests/test_startup.py::test_manifest_maps_document_and_chunk_records` | The manifest maps Document and Chunk to the core classes. |  |
 | T-010 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.10` | Unit | `tests/test_conformance.py::test_webarchiver_conforms_to_the_web_source_contract` | The kit reports no broken obligation. |  |
+| T-011 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.11` | Unit | `tests/test_startup.py::test_connector_name_is_the_fleet_name` | Content, manifest and ingest binding all name `webarchiver-mcp`. |  |

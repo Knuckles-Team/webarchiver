@@ -23,7 +23,7 @@ def test_ingest_maps_record_and_uses_submit():
         kg_ingest.ingest_records([{"id": 0, "name": "first"}], ingest=fake)
     ) == {"nodes": 1, "edges": 0}
     binding, changes = fake.calls[0]
-    assert binding.connector
+    assert binding.connector == "webarchiver-mcp"
     assert changes.entities[0].id == "0"
     assert changes.entities[0].properties == {"name": "first"}
     assert changes.withdrawals == ()
