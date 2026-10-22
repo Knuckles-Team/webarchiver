@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from typing import Any
 from urllib.parse import urldefrag, urljoin, urlsplit
 
 import lxml.html
@@ -84,47 +85,57 @@ def extract_links(html: str, base_url: str) -> tuple[PageLink, ...]:
     return tuple(seen.values())
 
 
-def extract_page(html: str, url: str) -> ExtractedPage:
-    """Extract ``html``'s main content as text and markdown with metadata."""
-    if not html.strip():
-        raise PolicyRefused("extract_empty", url, "empty body")
-    doc = lxml.html.fromstring(html)
-    canonical = _canonical(doc, url)
+_EXTRACT_OPTIONS: dict[str, Any] = {
+    "include_comments": False,
+    "include_tables": True,
+    "favor_precision": True,
+}
+
+
+def _main_content(html: str, url: str) -> tuple[dict[str, Any], str]:
+    """Trafilatura's metadata document and its non-empty main text."""
     raw = trafilatura.extract(
-        html,
-        url=url,
-        output_format="json",
-        with_metadata=True,
-        include_comments=False,
-        include_tables=True,
-        favor_precision=True,
+        html, url=url, output_format="json", with_metadata=True, **_EXTRACT_OPTIONS
     )
     meta = json.loads(raw) if raw else {}
     text = str(meta.get("text") or "").strip()
     if not text:
         raise PolicyRefused("extract_empty", url, "no main content")
-    markdown = (
-        trafilatura.extract(
-            html,
-            url=url,
-            output_format="markdown",
-            include_comments=False,
-            include_tables=True,
-            favor_precision=True,
-        )
-        or text
+    return meta, text
+
+
+def _markdown(html: str, url: str, fallback: str) -> str:
+    rendered = trafilatura.extract(
+        html, url=url, output_format="markdown", **_EXTRACT_OPTIONS
     )
+    return (rendered or fallback).strip()
+
+
+def _metadata(meta: dict[str, Any]) -> dict[str, str]:
+    """The page metadata fields, each a string (empty when absent)."""
+    fields = {
+        "title": "title",
+        "author": "author",
+        "published": "date",
+        "site_name": "sitename",
+        "language": "language",
+        "description": "description",
+    }
+    return {name: str(meta.get(key) or "") for name, key in fields.items()}
+
+
+def extract_page(html: str, url: str) -> ExtractedPage:
+    """Extract ``html``'s main content as text and markdown with metadata."""
+    if not html.strip():
+        raise PolicyRefused("extract_empty", url, "empty body")
+    canonical = _canonical(lxml.html.fromstring(html), url)
+    meta, text = _main_content(html, url)
     return ExtractedPage(
         url=url,
         canonical_url=canonical,
-        title=str(meta.get("title") or ""),
-        author=str(meta.get("author") or ""),
-        published=str(meta.get("date") or ""),
-        site_name=str(meta.get("sitename") or ""),
-        language=str(meta.get("language") or ""),
-        description=str(meta.get("description") or ""),
         text=text,
-        markdown=markdown.strip(),
+        markdown=_markdown(html, url, text),
         content_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
         links=extract_links(html, url),
+        **_metadata(meta),
     )
