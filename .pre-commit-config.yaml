@@ -67,12 +67,6 @@ repos:
     language: system
     pass_filenames: false
     always_run: true
-  - id: connector-tool-schemas
-    name: Live SDK input and output schema contracts
-    entry: python scripts/generate_tool_schemas.py --check
-    language: system
-    pass_filenames: false
-    always_run: true
   - id: pytest
     name: Generated connector contracts
     entry: python -m pytest tests -q

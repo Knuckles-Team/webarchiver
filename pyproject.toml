@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "webarchiver"
-version = "1.2.1"
+version = "1.2.2"
 description = "Governed web fetch, extract, render, screenshot and link connector"
 readme = "README.md"
 classifiers = [ "Development Status :: 5 - Production/Stable", "License :: OSI Approved :: MIT License", "Environment :: Console", "Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.12", "Programming Language :: Python :: 3.13", "Programming Language :: Python :: 3.14",]
 requires-python = ">=3.12,<3.15"
 dependencies = [
-    "agent-connector-sdk[mcp]>=0.3.7,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",
     "trafilatura>=2.0.0,<3.0.0",
     "lxml>=6.0.0",
     "playwright>=1.55.0,<2.0.0",
@@ -22,9 +22,9 @@ name = "Repository Maintainers"
 text = "MIT"
 
 [project.optional-dependencies]
-mcp = [ "agent-connector-sdk[mcp]>=0.3.7,<1.0.0",]
+mcp = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
 all = [
-    "agent-connector-sdk[mcp]>=0.3.7,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",
 ]
 test = [
     "pytest-xdist>=3.6.0", "pytest", "pytest-asyncio", "pytest-cov",]
@@ -75,7 +75,7 @@ dev = [
 ]
 
 [tool.setuptools.package-data]
-webarchiver = [ "mcp_config.json", "prompts/**", "skills/**", "ontology/**", "connectors/**", "connector_manifest.yml",]
+webarchiver = [ "mcp_config.json", "prompts/**", "skills/**", "ontology/**", "connectors/**", ]
 
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]

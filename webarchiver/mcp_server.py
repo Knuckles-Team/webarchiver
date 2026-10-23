@@ -29,7 +29,6 @@ def get_mcp_instance(*, command_args=None):
             connector=CONNECTOR_NAME,
             package_root=package_root,
             package_version=__version__,
-            manifest_path=package_root / "connector_manifest.yml",
         ),
     )
     # One typed, annotated MCP tool per API operation (SDK default).
