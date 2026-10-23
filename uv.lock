@@ -2026,7 +2026,7 @@ wheels = [
 
 [[package]]
 name = "webarchiver"
-version = "1.2.1"
+version = "1.2.2"
 source = { editable = "." }
 dependencies = [
     { name = "agent-connector-sdk", extra = ["mcp"] },
