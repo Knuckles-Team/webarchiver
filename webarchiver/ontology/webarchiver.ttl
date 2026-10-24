@@ -25,5 +25,4 @@
 
 <http://knuckles.team/kg/webarchiver> a owl:Ontology ;
     rdfs:label "Webarchiver Ontology" ;
-    rdfs:comment "Webarchiver domain extensions federated into the KG hub. STUB." ;
-    owl:imports <http://knuckles.team/kg> .
+    rdfs:comment "Webarchiver domain extensions federated into the KG hub. STUB." .
