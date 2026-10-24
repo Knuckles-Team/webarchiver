@@ -12,3 +12,6 @@ permissions:
 jobs:
   gates:
     uses: Knuckles-Team/pipelines/.github/workflows/connector_pr_pipeline.yml@main
+    with:
+      # The self-hosted "Connector quality" workflow runs the native scanners; hosted runners have none.
+      skip-hooks: docker-compose-check,scanner-versions
