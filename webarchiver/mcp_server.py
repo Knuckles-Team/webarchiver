@@ -1,4 +1,5 @@
 import sys
+from importlib.metadata import version as _dist_version
 from pathlib import Path
 
 from agent_connector_sdk.config import load_config
@@ -8,9 +9,10 @@ from agent_connector_sdk.mcp.tool_surface import register_tool_surface
 from agent_connector_sdk.ports.web_source import register_web_source_tools
 
 from . import mcp as tool_modules
-from ._version import __version__
 from .api import ApiClientSystem, WebarchiverSource
 from .auth import get_client
+
+_VERSION = _dist_version("webarchiver")
 
 #: The fleet and onboarding name; EG files the content pack and ingest under it.
 CONNECTOR_NAME = "webarchiver-mcp"
@@ -22,13 +24,13 @@ def get_mcp_instance(*, command_args=None):
     package_root = Path(__file__).resolve().parent
     args, mcp, middlewares = create_mcp_server(
         name="Webarchiver",
-        version=__version__,
+        version=_VERSION,
         instructions="Governed web fetch, extract, render, screenshot and link connector",
         command_args=command_args,
         content=ConnectorContent(
             connector=CONNECTOR_NAME,
             package_root=package_root,
-            package_version=__version__,
+            package_version=_VERSION,
         ),
     )
     # One typed, annotated MCP tool per API operation (SDK default).
