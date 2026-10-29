@@ -78,9 +78,7 @@ def check_project(root: Path, package: str) -> list[str]:
     if "scion-sdk" not in names:
         violations.append("pyproject.toml: connector requires scion-sdk")
     if RETIRED_PACKAGE.replace("_", "-") in names:
-        violations.append(
-            "pyproject.toml: connectors depend on scion-sdk only"
-        )
+        violations.append("pyproject.toml: connectors depend on scion-sdk only")
     for extra, values in project.get("optional-dependencies", {}).items():
         if any(RETIRED_PACKAGE.replace("_", "-") in value.lower() for value in values):
             violations.append(
