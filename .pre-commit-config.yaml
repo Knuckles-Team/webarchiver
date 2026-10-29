@@ -69,7 +69,7 @@ repos:
     always_run: true
   - id: pytest
     name: Generated connector contracts
-    entry: python -m pytest tests -q
+    entry: uv run --all-extras pytest tests -q
     language: system
     pass_filenames: false
     always_run: true
