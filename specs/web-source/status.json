@@ -121,14 +121,12 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
       "title": "Ingest mappings",
-      "delivery_state": "VERIFIED",
+      "delivery_state": "LANDED",
       "landed_in": [
         "482ceea819b0",
         "4d127d07b8ce"
       ],
-      "verified_by": [
-        "tests/test_startup.py:51"
-      ]
+      "verified_by": []
     },
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
@@ -144,13 +142,11 @@
     {
       "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.11",
       "title": "Fleet name",
-      "delivery_state": "VERIFIED",
+      "delivery_state": "LANDED",
       "landed_in": [
         "e9e08644df80"
       ],
-      "verified_by": [
-        "tests/test_startup.py:71"
-      ]
+      "verified_by": []
     }
   ]
 }
