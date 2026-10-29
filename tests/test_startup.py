@@ -11,8 +11,8 @@ def test_mcp_server_module_importable():
 
 @pytest.mark.concept("CONN-WEBARCHIVER-001")
 def test_version_has_one_source():
-    """The package version comes from _version.py. CONCEPT:CONN-WEBARCHIVER-001"""
-    from webarchiver._version import __version__
+    """The served version is the installed distribution version. CONCEPT:CONN-WEBARCHIVER-001"""
+    from importlib.metadata import version
 
     module = importlib.import_module("webarchiver.mcp_server")
-    assert module.__version__ == __version__
+    assert module._VERSION == version("webarchiver")

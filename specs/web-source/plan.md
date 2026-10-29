@@ -14,7 +14,7 @@ The connector holds no store and no selection rule. It returns one page result o
 
 ## Interfaces and data model
 
-The tool arguments and results are the SDK contract types of `SDK-SOURCE-INGEST-R005.40.1`. No connector-local result type exists.
+The tool arguments and results are the SDK contract types of `SCION-SOURCE-INGEST-R005.40.1`. No connector-local result type exists.
 
 ## Live integration path
 
@@ -22,7 +22,7 @@ The production caller is `WebFetchSourceAdapter.extract` in the SDK. arbora reac
 
 ## Quality and release gates
 
-The SDK conformance kit of `SDK-SOURCE-INGEST-R005.40.2` must pass against the served connector.
+The SDK conformance kit of `SCION-SOURCE-INGEST-R005.40.2` must pass against the served connector.
 
 ## Risks, alternatives, and decisions
 
