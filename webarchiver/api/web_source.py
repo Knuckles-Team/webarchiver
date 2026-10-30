@@ -1,7 +1,7 @@
 """webarchiver's implementation of the SDK web-source contract.
 
 CONN-WEBARCHIVER-WEB-SOURCE-R001.1. ``web_fetch`` and ``web_extract`` are served
-by :func:`agent_connector_sdk.ports.web_source.register_web_source_tools` over
+by :func:`scion_sdk.ports.web_source.register_web_source_tools` over
 :class:`WebarchiverSource`, so their names, schemas, refusal reasons and output
 shape are the contract's, identical to every other page connector's. The page
 is fetched natively (governed httpx client) and its main content extracted
@@ -10,7 +10,7 @@ with trafilatura; ``backend`` is ``webarchiver``.
 
 from __future__ import annotations
 
-from agent_connector_sdk.ports.web_source import (
+from scion_sdk.ports.web_source import (
     WebFetchRequest,
     WebOutboundLink,
     WebPageResult,

@@ -88,7 +88,7 @@ for name, source in expected.items():
     origin = pathlib.Path(module.__file__).resolve()
     origin.relative_to(pathlib.Path(source).resolve())
     origins[name] = str(origin)
-for name in ('agent_connector_sdk', 'epistemic_graph', 'fastmcp', 'mcp', 'pytest'):
+for name in ('scion_sdk', 'epistemic_graph', 'fastmcp', 'mcp', 'pytest'):
     origin = pathlib.Path(importlib.import_module(name).__file__).resolve()
     origin.relative_to(pathlib.Path(expected.get(name, prefix)).resolve())
     origins[name] = str(origin)

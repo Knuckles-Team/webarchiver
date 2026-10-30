@@ -9,7 +9,7 @@
 
 ## Overview
 
-- [Overview](https://knuckles-team.github.io/webarchiver/overview/) — > Category: Integration | Ecosystem Role: MCP Server > Built on agent-connector-sdk.
+- [Overview](https://knuckles-team.github.io/webarchiver/overview/) — > Category: Integration | Ecosystem Role: MCP Server > Built on scion-sdk.
 
 ## Architecture
 

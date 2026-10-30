@@ -10,7 +10,7 @@ from __future__ import annotations
 import socket
 from functools import lru_cache
 
-from agent_connector_sdk.http.egress import egress_ip_is_blocked
+from scion_sdk.http.egress import egress_ip_is_blocked
 
 __all__ = ["AD_HOST_SUFFIXES", "egress_blocked", "is_ad_host"]
 

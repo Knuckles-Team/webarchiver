@@ -4,7 +4,7 @@ These specs follow the ecosystem [spec standard](https://github.com/Knuckles-Tea
 
 ## Owner
 
-This repository owns the specs with the ID prefix `CONN-WEBARCHIVER`. The connector contract, certification, and transport rules belong to [agent-connector-sdk](https://github.com/Knuckles-Team/agent-connector-sdk/tree/main/specs).
+This repository owns the specs with the ID prefix `CONN-WEBARCHIVER`. The connector contract, certification, and transport rules belong to [scion-sdk](https://github.com/Knuckles-Team/scion-sdk/tree/main/specs).
 
 ## Local specifications
 

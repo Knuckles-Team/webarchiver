@@ -2,7 +2,7 @@
   "files": {
     "scripts/sync_mkdocs_theme.py": "5c87660f8ef721bf764bb5b4f03ea502a19b4baf9be83da9876999871ce4a193",
     "templates/mkdocs-theme/README.md": "d83c24bc1f4ec08a5142c16729df41cf4d9bad55559b4766e0f399fc31cd5fc7",
-    "templates/mkdocs-theme/assets/brands/agent-connector-sdk-logo-v1.png": "6688810468a77118ee1960ac3872816c6ace4f750a849688d306d7a63132e1b1",
+    "templates/mkdocs-theme/assets/brands/scion-sdk-logo-v1.png": "6688810468a77118ee1960ac3872816c6ace4f750a849688d306d7a63132e1b1",
     "templates/mkdocs-theme/assets/brands/agent-terminal-ui-logo-v1.png": "d5e3c011066e2241c09c885f65d9a07c6ff32f4244b00dbe8e7550a3bab20dc8",
     "templates/mkdocs-theme/assets/brands/agent-utilities-logo-v1.png": "923319a3b89fa1fbd14ca14c27cf49d2e2d9f85bc45456e05b788692700f0103",
     "templates/mkdocs-theme/assets/brands/agent-webui-logo-v1.png": "3939a7324f134c520fd544aadd2a37c99abba9db78dd2bf3fd5003ffd62502ff",
