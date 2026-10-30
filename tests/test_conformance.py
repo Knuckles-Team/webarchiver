@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import pytest
-from agent_connector_sdk.testing.web_source_conformance import (
+from fastmcp import Client
+from scion_sdk.testing.web_source_conformance import (
     check_web_source,
     fastmcp_caller,
     fixture_site,
     served_tool_schemas,
 )
-from fastmcp import Client
 
 import webarchiver.auth as auth_module
 from webarchiver.mcp_server import get_mcp_instance

@@ -1,7 +1,7 @@
 # webarchiver — Concept Overview
 
 > **Category**: Integration | **Ecosystem Role**: MCP Server
-> Built on [`agent-connector-sdk`](https://github.com/Knuckles-Team/agent-connector-sdk).
+> Built on [`scion-sdk`](https://github.com/Knuckles-Team/scion-sdk).
 
 ## Description
 

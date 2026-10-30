@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 
 import pytest
-from agent_connector_sdk.ports.web_source import (
+from scion_sdk.ports.web_source import (
     WebFetchRequest,
     WebPageResult,
     WebSourceRefused,

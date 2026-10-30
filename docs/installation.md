@@ -17,7 +17,7 @@ pip install webarchiver
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| `mcp` | `pip install "webarchiver[mcp]"` | MCP runtime (`agent-connector-sdk`) |
+| `mcp` | `pip install "webarchiver[mcp]"` | MCP runtime (`scion-sdk`) |
 | `all` | `pip install "webarchiver[all]"` | Everything above |
 
 ## From source

@@ -1,7 +1,7 @@
 # Connector architecture
 
 The `webarchiver` package owns external-system operations and source mappings.
-The [shared connector SDK](https://github.com/Knuckles-Team/agent-connector-sdk/blob/5babc4cc48ad73928468b243842f219f51e2cca1/README.md) owns reusable runtime contracts.
+The [shared connector SDK](https://github.com/Knuckles-Team/scion-sdk/blob/5babc4cc48ad73928468b243842f219f51e2cca1/README.md) owns reusable runtime contracts.
 
 ```mermaid
 flowchart LR
