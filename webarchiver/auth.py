@@ -5,7 +5,7 @@ come from settings; loopback and private hosts are refused unless explicitly
 allowed for a test or an authorized internal deployment.
 """
 
-from agent_connector_sdk.config import load_config, setting
+from scion_sdk.config import load_config, setting
 
 from .api import ApiClientSystem, FetchPolicy
 

@@ -2,7 +2,7 @@
 """Reject retired connector APIs in a generated SDK-based project.
 
 This static check needs no installed connector dependencies. A connector is
-MCP-only and depends on agent-connector-sdk alone: the retired control-plane
+MCP-only and depends on scion-sdk alone: the retired control-plane
 package may be neither imported nor declared as a dependency.
 """
 

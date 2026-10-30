@@ -2,11 +2,11 @@ import sys
 from importlib.metadata import version as _dist_version
 from pathlib import Path
 
-from agent_connector_sdk.config import load_config
-from agent_connector_sdk.mcp.content import ConnectorContent
-from agent_connector_sdk.mcp.server import create_mcp_server
-from agent_connector_sdk.mcp.tool_surface import register_tool_surface
-from agent_connector_sdk.ports.web_source import register_web_source_tools
+from scion_sdk.config import load_config
+from scion_sdk.mcp.content import ConnectorContent
+from scion_sdk.mcp.server import create_mcp_server
+from scion_sdk.mcp.tool_surface import register_tool_surface
+from scion_sdk.ports.web_source import register_web_source_tools
 
 from . import mcp as tool_modules
 from .api import ApiClientSystem, WebarchiverSource

@@ -17,7 +17,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from agent_connector_sdk.privacy import sanitize_for_persistence
+from scion_sdk.privacy import sanitize_for_persistence
 
 from .error_rendering import (
     AGENT_ERROR_ACCEPT,

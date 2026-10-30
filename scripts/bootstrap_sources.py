@@ -7,7 +7,7 @@ import tomllib
 from urllib.parse import urlsplit
 
 SOURCE_MODULES = {
-    "agent-connector-sdk": "agent_connector_sdk",
+    "scion-sdk": "scion_sdk",
     "epistemic-graph": "epistemic_graph",
 }
 

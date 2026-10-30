@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_connector_sdk.ingest import (
+from scion_sdk.ingest import (
     ChangeSet,
     Document,
     Entity,

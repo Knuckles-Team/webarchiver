@@ -18,7 +18,7 @@ Tool-neutral rules for any AI agent or human working in this repository. This bl
 The connector SDK owns HTTP, credential references, TLS, server policy,
 registration, content publication and ingestion transport. The graph engine
 owns durable storage and semantics. Connectors are MCP-only and depend on
-`agent-connector-sdk` alone; there is no agent mode.
+`scion-sdk` alone; there is no agent mode.
 
 ## Setup and commands
 

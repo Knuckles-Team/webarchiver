@@ -2,7 +2,7 @@
 
 Owner: webarchiver. Cross-repo IDs: `SCION-SOURCE-INGEST-R005.40`, `ARBORA-OPS-R067`, `MEDULLA-UNIFIED-DATA-PLANE-R651.7`.
 
-Extends: [SCION-SOURCE-INGEST](https://github.com/Knuckles-Team/agent-connector-sdk/blob/main/specs/SCION-SOURCE-INGEST/spec.md)
+Extends: [SCION-SOURCE-INGEST](https://github.com/Knuckles-Team/scion-sdk/blob/main/specs/SCION-SOURCE-INGEST/spec.md)
 References: [ARBORA-OPS](https://github.com/Knuckles-Team/arbora/blob/main/specs/hosted-api-operations/spec.md)
 
 ## Purpose and user stories
