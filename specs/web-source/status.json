@@ -14,7 +14,8 @@
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
     "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
-    "CONN-WEBARCHIVER-WEB-SOURCE-R001.11"
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.11",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R002"
   ],
   "requirements": [
     {
@@ -146,6 +147,13 @@
       "landed_in": [
         "e9e08644df80"
       ],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R002",
+      "title": "Structured entity documents",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
       "verified_by": []
     }
   ]
