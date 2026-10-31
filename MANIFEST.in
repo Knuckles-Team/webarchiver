@@ -11,7 +11,6 @@ graft scripts
 graft tests
 graft docs
 graft specs
-graft .pipeline-theme
 graft docker
 include mkdocs.yml pytest.ini .bumpversion.cfg
 include .config/spec-dashboard.json

@@ -1,4 +1,3 @@
-INHERIT: .pipeline-theme/templates/mkdocs-theme/base.mkdocs.yml
 site_name: "webarchiver"
 site_description: "Governed web fetch, extract, render, screenshot and link connector"
 site_url: "https://knuckles-team.github.io/webarchiver/"

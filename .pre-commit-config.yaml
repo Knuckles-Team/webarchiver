@@ -1,5 +1,5 @@
-# .pipeline-theme/ is vendored from pipelines and pinned by provenance.json
-# hashes; this repository's formatters must not rewrite it.
+# .pipeline-theme/ is the shared Pages theme checked out from pipelines at
+# build time (never tracked); formatters must not rewrite a local checkout.
 exclude: ^\.pipeline-theme/
 default_language_version:
   python: python3
