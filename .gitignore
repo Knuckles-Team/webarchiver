@@ -105,3 +105,6 @@ trace.txt
 
 # Spec status is computed at read time (pipelines-hook spec-status --write), never committed.
 specs/*/status.json
+
+# Shared Pages theme: checked out from pipelines at build time, never tracked.
+.pipeline-theme/
