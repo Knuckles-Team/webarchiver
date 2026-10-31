@@ -1,0 +1,152 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-WEBARCHIVER-WEB-SOURCE",
+  "owner_repo": "webarchiver",
+  "delivery_state": "SPECIFIED",
+  "requirement_ids": [
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+    "CONN-WEBARCHIVER-WEB-SOURCE-R001.11"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001",
+      "title": "Pages answer through the web-source contract (rollup)",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [],
+      "rollup_of": [
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+        "CONN-WEBARCHIVER-WEB-SOURCE-R001.11"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.1",
+      "title": "Model",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "cb1d8b9cd97d"
+      ],
+      "verified_by": [
+        "tests/test_conformance.py:20"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.2",
+      "title": "Behavior",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "8c38c25066e3"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:103",
+        "tests/test_extract.py:117",
+        "tests/test_extract.py:133",
+        "tests/test_extract.py:36",
+        "tests/test_extract.py:64"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.3",
+      "title": "Wiring",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "8c38c25066e3"
+      ],
+      "verified_by": [
+        "tests/test_served.py:34",
+        "tests/test_served.py:52",
+        "tests/test_served.py:69"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.4",
+      "title": "Refusal",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "8c38c25066e3"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:45"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.5",
+      "title": "Evidence",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "8c38c25066e3"
+      ],
+      "verified_by": [
+        "tests/test_extract.py:143"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.6",
+      "title": "Hot-path proof",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.7",
+      "title": "Bounded site crawl",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "4fde2c6fe305",
+        "99c1281925fe"
+      ],
+      "verified_by": [
+        "tests/test_crawl.py:17",
+        "tests/test_crawl.py:35",
+        "tests/test_crawl.py:49"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.8",
+      "title": "Ingest mappings",
+      "delivery_state": "LANDED",
+      "landed_in": [
+        "482ceea819b0",
+        "4d127d07b8ce"
+      ],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.10",
+      "title": "Conformance",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "cb1d8b9cd97d"
+      ],
+      "verified_by": [
+        "tests/test_conformance.py:21"
+      ]
+    },
+    {
+      "id": "CONN-WEBARCHIVER-WEB-SOURCE-R001.11",
+      "title": "Fleet name",
+      "delivery_state": "LANDED",
+      "landed_in": [
+        "e9e08644df80"
+      ],
+      "verified_by": []
+    }
+  ]
+}
