@@ -52,3 +52,20 @@ for module_name, extra_name in OPTIONAL_MODULES.items():
         globals()[f"_{extra_name.upper()}_AVAILABLE"] = False
 
 __all__.extend(["_MCP_AVAILABLE"])
+
+
+from scion_sdk.connector import Connector  # noqa: E402
+
+from webarchiver import mcp as _tools  # noqa: E402
+from webarchiver.api import ApiClientSystem  # noqa: E402
+from webarchiver.auth import get_client  # noqa: E402
+from webarchiver.mcp_server import register_web_surface  # noqa: E402
+
+connector = Connector(
+    api=ApiClientSystem,
+    get_client=get_client,
+    tools=_tools,
+    tool_prefix="web",
+    extra_registrations=(register_web_surface,),
+    instructions="Governed web fetch, extract, render, screenshot and link connector",
+)

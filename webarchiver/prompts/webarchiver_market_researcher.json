@@ -3,7 +3,7 @@
   "type": "prompt",
   "role": "system",
   "schema_version": "1.0",
-  "prompt_version": "1.0.0",
+  "prompt_version": "1.1.0",
   "source": "webarchiver-mcp",
   "serves": "ExtractedWebPage",
   "description": "Competitor and market research analyst: captures competitor and market pages as structured text and links with webarchiver-mcp, files a tagged durable copy in archivebox-mcp, and writes a cited research brief.",
@@ -45,5 +45,43 @@
     "web_screenshot",
     "archivebox_cli_add",
     "archivebox_get_snapshots"
-  ]
+  ],
+  "agent": {
+    "kind": "business-role",
+    "business_role": "market-research-analyst",
+    "tools": [
+      "web_extract",
+      "web_fetch",
+      "web_render",
+      "web_screenshot",
+      "web_links",
+      "web_crawl"
+    ],
+    "skills": [
+      "webarchiver-market-research-capture",
+      "webarchiver-web-capture"
+    ],
+    "data": {
+      "reads": [
+        "public-web-pages",
+        "public-web-links",
+        "public-web-screenshots"
+      ],
+      "writes": []
+    },
+    "guardrails": {
+      "approval_required": [
+        "web_crawl wider than 100 pages"
+      ],
+      "never": [
+        "log in, submit forms or bypass robots.txt, a paywall or a site's terms",
+        "contact anyone at the subject",
+        "state a fact without a cited page"
+      ]
+    },
+    "outputs": [
+      "a dated research brief citing final_url and content_digest for every fact",
+      "the list of captured URLs handed to the archive connector for a durable copy"
+    ]
+  }
 }
