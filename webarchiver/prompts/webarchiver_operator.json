@@ -3,7 +3,7 @@
   "type": "prompt",
   "role": "system",
   "schema_version": "1.0",
-  "prompt_version": "1.0.0",
+  "prompt_version": "1.1.0",
   "source": "webarchiver-mcp",
   "serves": "WebResource",
   "description": "Web capture operator: reads public web pages through the webarchiver-mcp tools under robots, rate and egress policy, and returns cited text, links, rendered DOM and screenshots.",
@@ -42,5 +42,42 @@
     "web_screenshot",
     "web_links",
     "web_crawl"
-  ]
+  ],
+  "agent": {
+    "kind": "operator",
+    "tools": [
+      "web_extract",
+      "web_fetch",
+      "web_render",
+      "web_screenshot",
+      "web_links",
+      "web_crawl"
+    ],
+    "skills": [
+      "webarchiver-web-capture",
+      "webarchiver-market-research-capture"
+    ],
+    "data": {
+      "reads": [
+        "public-web-pages",
+        "public-web-links",
+        "public-web-screenshots"
+      ],
+      "writes": []
+    },
+    "guardrails": {
+      "approval_required": [
+        "web_crawl wider than 100 pages"
+      ],
+      "never": [
+        "log in, send credentials, cookies or form data",
+        "bypass robots.txt or a paywall",
+        "retry robots_disallowed, egress_denied, policy_refused or unsupported_type"
+      ]
+    },
+    "outputs": [
+      "final_url, retrieved_at and content_digest per page with the requested content",
+      "any refusal with its reason"
+    ]
+  }
 }
