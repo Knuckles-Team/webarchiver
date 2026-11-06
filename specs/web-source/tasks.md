@@ -16,3 +16,7 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Tasks run p
 - [x] T010 [US10] CONN-WEBARCHIVER-WEB-SOURCE-R001.10 Conformance.
 - [x] T011 [US11] CONN-WEBARCHIVER-WEB-SOURCE-R001.11 Fleet name.
 - [ ] T012 [US12] CONN-WEBARCHIVER-WEB-SOURCE-R002 Structured entity documents.
+- [ ] T013 [US13] CONN-WEBARCHIVER-WEB-SOURCE-R003 Served content pack (rollup).
+- [ ] T014 [US14] CONN-WEBARCHIVER-WEB-SOURCE-R003.1 Ontology roll-up and tool-use contracts.
+- [ ] T015 [US15] CONN-WEBARCHIVER-WEB-SOURCE-R003.2 Data location and routing.
+- [ ] T016 [US16] CONN-WEBARCHIVER-WEB-SOURCE-R003.3 Agent-definition prompts and workflow skills.

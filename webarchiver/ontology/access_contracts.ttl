@@ -1,0 +1,127 @@
+@prefix ac: <https://knuckles-team.github.io/agent-connector-sdk/access#> .
+@prefix : <http://knuckles.team/kg#> .
+
+# Data location and routing: how each webarchiver class is answered live.
+# webarchiver keeps no store, so every class is read on demand from the public
+# web through one read-only MCP tool, keyed by URL. No credential is needed:
+# the connector reads public pages only, under robots.txt, a per-domain rate
+# limit and the SDK egress policy (private addresses refuse). Federation: an
+# engine query over these classes routes to the named tool; durable copies are
+# the engine's :Document (web-source ingest) and the web archive connector's
+# :WebSnapshot.
+
+:fetchedWebPageAccess a ac:AccessContract ;
+    ac:classIri :FetchedWebPage ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "page" ;
+    ac:keyField "url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_fetch" ;
+    ac:parameter "request" ;
+    ac:pagination "none" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "low" .
+
+:fetchedWebPageUrlBinding a ac:PropertyBinding ;
+    ac:contract :fetchedWebPageAccess ; ac:property :resourceUrl ; ac:field "url" .
+
+:fetchedWebPageFinalUrlBinding a ac:PropertyBinding ;
+    ac:contract :fetchedWebPageAccess ; ac:property :finalUrl ; ac:field "final_url" .
+
+:fetchedWebPageStatusBinding a ac:PropertyBinding ;
+    ac:contract :fetchedWebPageAccess ; ac:property :httpStatus ; ac:field "status" .
+
+:fetchedWebPageDigestBinding a ac:PropertyBinding ;
+    ac:contract :fetchedWebPageAccess ; ac:property :contentDigest ; ac:field "content_digest" .
+
+:fetchedWebPageRetrievedBinding a ac:PropertyBinding ;
+    ac:contract :fetchedWebPageAccess ; ac:property :retrievedAt ; ac:field "retrieved_at" .
+
+:extractedWebPageAccess a ac:AccessContract ;
+    ac:classIri :ExtractedWebPage ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "page" ;
+    ac:keyField "url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_extract" ;
+    ac:parameter "request" ;
+    ac:pagination "none" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "low" .
+
+:extractedWebPageUrlBinding a ac:PropertyBinding ;
+    ac:contract :extractedWebPageAccess ; ac:property :resourceUrl ; ac:field "url" .
+
+:extractedWebPageCanonicalBinding a ac:PropertyBinding ;
+    ac:contract :extractedWebPageAccess ; ac:property :canonicalUrl ; ac:field "canonical_url" .
+
+:extractedWebPageTitleBinding a ac:PropertyBinding ;
+    ac:contract :extractedWebPageAccess ; ac:property :title ; ac:field "title" .
+
+:extractedWebPageDigestBinding a ac:PropertyBinding ;
+    ac:contract :extractedWebPageAccess ; ac:property :contentDigest ; ac:field "content_digest" .
+
+:renderedWebPageAccess a ac:AccessContract ;
+    ac:classIri :RenderedWebPage ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "rendered_page" ;
+    ac:keyField "url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_render" ;
+    ac:parameter "url" ;
+    ac:pagination "none" ;
+    ac:rateLimitPerMinute 20 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "high" .
+
+:renderedWebPageFinalUrlBinding a ac:PropertyBinding ;
+    ac:contract :renderedWebPageAccess ; ac:property :finalUrl ; ac:field "final_url" .
+
+:webPageScreenshotAccess a ac:AccessContract ;
+    ac:classIri :WebPageScreenshot ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "screenshot" ;
+    ac:keyField "url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_screenshot" ;
+    ac:parameter "full_page", "url" ;
+    ac:pagination "none" ;
+    ac:rateLimitPerMinute 20 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "high" .
+
+:webPageScreenshotFinalUrlBinding a ac:PropertyBinding ;
+    ac:contract :webPageScreenshotAccess ; ac:property :finalUrl ; ac:field "final_url" .
+
+:webLinkListAccess a ac:AccessContract ;
+    ac:classIri :WebLinkList ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "links" ;
+    ac:keyField "url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_links" ;
+    ac:parameter "same_site_only", "url" ;
+    ac:pagination "none" ;
+    ac:pushdown "filter" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "low" .
+
+:webCrawlResultAccess a ac:AccessContract ;
+    ac:classIri :WebCrawlResult ;
+    ac:sourceId "webarchiver-mcp" ;
+    ac:entity "crawl" ;
+    ac:keyField "seed_url" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "web_crawl" ;
+    ac:parameter "exclude", "include", "max_depth", "max_pages", "same_site", "seed_url" ;
+    ac:pagination "none" ;
+    ac:pushdown "filter", "limit" ;
+    ac:rateLimitPerMinute 6 ;
+    ac:freshnessSeconds 86400 ;
+    ac:costHint "high" .
+
+:webCrawlResultDepthBinding a ac:PropertyBinding ;
+    ac:contract :webCrawlResultAccess ; ac:property :crawlDepth ; ac:field "max_depth_reached" .

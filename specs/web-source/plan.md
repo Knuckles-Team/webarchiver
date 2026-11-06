@@ -178,6 +178,10 @@ None. The constitution check passed.
 ### Production caller chain
 
 - `CONN-WEBARCHIVER-WEB-SOURCE-R001.11`: `webarchiver-mcp` in `pyproject.toml` runs `webarchiver.mcp_server:mcp_server`, which builds the server from the `scion_sdk.connector` entry point `webarchiver` (`webarchiver/__init__.py:0`); `connector_name("webarchiver")` in the SDK resolves the same entry point name for the content pack, the manifest and the ingest binding.
+- `CONN-WEBARCHIVER-WEB-SOURCE-R003`: the `webarchiver-mcp` console script runs `webarchiver.mcp_server:mcp_server`, whose `ConnectorContent` (webarchiver/mcp_server.py:30) serves `webarchiver/ontology/*.ttl`, `webarchiver/prompts/*.json` and `webarchiver/skills/*/SKILL.md` through the SDK content provider.
+- `CONN-WEBARCHIVER-WEB-SOURCE-R003.1`: the `webarchiver-mcp` console script runs `webarchiver.mcp_server:mcp_server`, whose `ConnectorContent` (webarchiver/mcp_server.py:30) serves `webarchiver/ontology/*.ttl`, `webarchiver/prompts/*.json` and `webarchiver/skills/*/SKILL.md` through the SDK content provider.
+- `CONN-WEBARCHIVER-WEB-SOURCE-R003.2`: the `webarchiver-mcp` console script runs `webarchiver.mcp_server:mcp_server`, whose `ConnectorContent` (webarchiver/mcp_server.py:30) serves `webarchiver/ontology/*.ttl`, `webarchiver/prompts/*.json` and `webarchiver/skills/*/SKILL.md` through the SDK content provider.
+- `CONN-WEBARCHIVER-WEB-SOURCE-R003.3`: the `webarchiver-mcp` console script runs `webarchiver.mcp_server:mcp_server`, whose `ConnectorContent` (webarchiver/mcp_server.py:30) serves `webarchiver/ontology/*.ttl`, `webarchiver/prompts/*.json` and `webarchiver/skills/*/SKILL.md` through the SDK content provider.
 
 ### Cross-repo seams
 

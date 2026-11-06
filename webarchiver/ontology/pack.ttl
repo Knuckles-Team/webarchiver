@@ -3,40 +3,109 @@
 @prefix c: <http://knuckles.team/kg/connector/webarchiver#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# Connector surface and ingest contract (STUB — keep in step with the typed
-# declarations). Domain classes come from webarchiver.ttl; no blank nodes.
+# Connector surface and ingest contract of webarchiver-mcp. Tool-use
+# contracts: each served tool names the domain class it reads (cp:operatesOn)
+# and the class of the records it emits (cp:produces). Prompt, skill and tool
+# links: each feature is realised by its tools, skills and prompts, and each
+# skill and prompt names the class it applies to. Domain classes come from
+# webarchiver.ttl and roll up to medulla core by rdfs:subClassOf. No blank
+# nodes; keep in step with the served tools, skills/ and prompts/.
 
 c:connector a cp:Connector ;
     rdfs:label "Webarchiver" ;
-    cp:providesFeature c:feature-sync ;
+    cp:componentId "webarchiver-mcp" ;
+    cp:providesFeature c:feature-page-capture, c:feature-site-discovery, c:feature-market-research-capture ;
     cp:hasContract c:contract .
 
-c:feature-sync a cp:Feature ;
-    rdfs:label "Webarchiver sync" ;
-    cp:realizedBy c:skill-webarchiver-starter, c:prompt-webarchiver_specialist .
+# --- features ----------------------------------------------------------------
 
-c:skill-webarchiver-starter a cp:Skill ;
-    cp:componentId "webarchiver-starter" ;
-    cp:appliesTo :WebarchiverResource .
+c:feature-page-capture a cp:Feature ;
+    rdfs:label "Web page capture" ;
+    rdfs:comment "Read one public page as raw body, main-content markdown, rendered DOM or screenshot under robots.txt, rate and egress policy." ;
+    cp:realizedBy c:tool-web_fetch, c:tool-web_extract, c:tool-web_render, c:tool-web_screenshot,
+        c:skill-webarchiver-web-capture, c:prompt-webarchiver_operator .
 
-c:prompt-webarchiver_specialist a cp:Prompt ;
-    cp:componentId "webarchiver_specialist" ;
-    cp:appliesTo :WebarchiverResource .
+c:feature-site-discovery a cp:Feature ;
+    rdfs:label "Site link discovery" ;
+    rdfs:comment "List a page's outbound links and walk a bounded same-site crawl from a seed URL." ;
+    cp:realizedBy c:tool-web_links, c:tool-web_crawl,
+        c:skill-webarchiver-web-capture, c:prompt-webarchiver_operator .
+
+c:feature-market-research-capture a cp:Feature ;
+    rdfs:label "Competitor and market research capture" ;
+    rdfs:comment "Capture competitor and market pages as structured text and links, then file a durable tagged archive copy through the web archive connector." ;
+    cp:realizedBy c:tool-web_extract, c:tool-web_render, c:tool-web_links, c:tool-web_crawl, c:tool-web_screenshot,
+        c:skill-webarchiver-market-research-capture, c:prompt-webarchiver_market_researcher .
+
+# --- tools (tool-use contracts) ----------------------------------------------
+
+c:tool-web_fetch a cp:Tool ;
+    cp:componentId "web_fetch" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :FetchedWebPage, :WebFetchRefusal .
+
+c:tool-web_extract a cp:Tool ;
+    cp:componentId "web_extract" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :ExtractedWebPage, :WebFetchRefusal .
+
+c:tool-web_render a cp:Tool ;
+    cp:componentId "web_render" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :RenderedWebPage .
+
+c:tool-web_screenshot a cp:Tool ;
+    cp:componentId "web_screenshot" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :WebPageScreenshot .
+
+c:tool-web_links a cp:Tool ;
+    cp:componentId "web_links" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :WebLinkList .
+
+c:tool-web_crawl a cp:Tool ;
+    cp:componentId "web_crawl" ;
+    cp:operatesOn :WebResource ;
+    cp:produces :WebCrawlResult, :WebFetchRefusal .
+
+# --- skills ------------------------------------------------------------------
+
+c:skill-webarchiver-web-capture a cp:Skill ;
+    cp:componentId "webarchiver-web-capture" ;
+    cp:appliesTo :WebResource .
+
+c:skill-webarchiver-market-research-capture a cp:Skill ;
+    cp:componentId "webarchiver-market-research-capture" ;
+    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+
+# --- prompts (agent definitions) ---------------------------------------------
+
+c:prompt-webarchiver_operator a cp:Prompt ;
+    cp:componentId "webarchiver_operator" ;
+    cp:appliesTo :WebResource .
+
+c:prompt-webarchiver_market_researcher a cp:Prompt ;
+    cp:componentId "webarchiver_market_researcher" ;
+    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+
+# --- ingest contract ---------------------------------------------------------
 
 c:contract a cp:IngestContract ;
     cp:contractOf c:connector ;
-    cp:contractVersion "1" ;
-    cp:hasSourceObject c:object-resource ;
+    cp:contractVersion "2" ;
+    cp:hasSourceObject c:object-page ;
     cp:hasCursorPolicy c:cursor ;
     cp:hasAccessPolicy c:access ;
     cp:requiresProvenance c:provenance .
 
-c:object-resource a cp:SourceObject ;
-    cp:mapsToClass :WebarchiverResource ;
-    cp:hasKeyRule c:key-resource .
+c:object-page a cp:SourceObject ;
+    cp:objectName "page" ;
+    cp:ontologyClass :ExtractedWebPage ;
+    cp:hasKeyRule c:key-page .
 
-c:key-resource a cp:KeyRule ;
-    cp:keyField "id" .
+c:key-page a cp:KeyRule ;
+    cp:keyField "canonical_url" .
 
 c:cursor a cp:CursorPolicy ;
     cp:cursorKind "opaque" .
@@ -45,4 +114,4 @@ c:access a cp:AccessPolicy ;
     cp:defaultAcl "quarantine" .
 
 c:provenance a cp:ProvenanceRequirement ;
-    cp:requiredField "source", "record_id", "as_of" .
+    cp:requiredField "backend", "final_url", "content_digest", "retrieved_at" .

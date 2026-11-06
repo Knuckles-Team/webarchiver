@@ -16,6 +16,10 @@ Governing spec: [spec.md](spec.md).
 | T-010 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.10` | `tests/test_conformance.py::test_webarchiver_conforms_to_the_web_source_contract` | The kit reports no broken obligation. |
 | T-011 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.11` | `tests/test_fleet_name.py::test_connector_name_is_the_fleet_name` (planned) | The served content, the manifest and the ingest binding all name `webarchiver-mcp`. |
 | T-012 | `CONN-WEBARCHIVER-WEB-SOURCE-R002` | `tests/test_extract.py::test_json_entity_document_passes_through` (planned) | Test: `tests/test_extract.py::test_json_entity_document_passes_through` fetches a fixture entity document and asserts the body, media type and digest. |
+| T-013 | `CONN-WEBARCHIVER-WEB-SOURCE-R003` | covered by the child rows | See each child. |
+| T-014 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.1` | `tests/test_content_pack.py::test_every_class_rolls_up_to_medulla_core` | Every class reaches a core class, and the pack's tools, skills and prompts equal the served ones. |
+| T-015 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.2` | `tests/test_content_pack.py::test_access_contracts_route_every_class_to_a_served_tool` | The SDK parser accepts every contract, and the contracts cover every served tool and result class. |
+| T-016 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.3` | `tests/test_content_pack.py::test_prompts_and_skills_are_served_as_agent_definitions` | Both prompts and both skills are served, each prompt names its goal, tools, skills, data, guardrails and output, and the stubs are gone. |
 
 ## Negative and boundary cases
 

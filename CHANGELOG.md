@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5] - 2026-11-06
+
+### Added
+- Domain ontology for every tool result, rolled up to the medulla core web resource, web capture, dataset and observation classes.
+- Tool-use contracts, feature, skill and prompt links in `pack.ttl`; live access contracts in `access_contracts.ttl`.
+- Prompts `webarchiver_operator` and `webarchiver_market_researcher`, written as agent definitions.
+- Skills `webarchiver-web-capture` and `webarchiver-market-research-capture`.
+
+### Removed
+- The starter skill `webarchiver-starter` and the stub prompt `webarchiver_specialist`.
+
 ## [1.2.3] - 2026-10-30
 
 ### Changed
