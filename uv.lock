@@ -1954,7 +1954,7 @@ wheels = [
 
 [[package]]
 name = "webarchiver"
-version = "1.2.5"
+version = "1.2.6"
 source = { editable = "." }
 dependencies = [
     { name = "lxml" },
