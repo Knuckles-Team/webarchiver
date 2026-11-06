@@ -125,6 +125,38 @@ The fleet operator and the engine rely on this behaviour of `webarchiver`: `web_
 
 1. **Given** the `webarchiver` connector built from the default branch, **When** `tests/test_extract.py::test_json_entity_document_passes_through` runs, **Then** test: `tests/test_extract.py::test_json_entity_document_passes_through` fetches a fixture entity document and asserts the body, media type and digest.
 
+### User Story 13 - Served content pack (rollup) (Priority: P2)
+
+The fleet operator and the business agents rely on this behaviour of `webarchiver`: the connector must serve a complete content pack: a domain ontology that rolls up to medulla core, tool-use and access contracts for every served tool, an operator prompt and a business-role prompt written as agent definitions, and one skill per proven workflow. It is proven independently of the other stories.
+
+**Acceptance Scenarios**:
+
+1. **Given** the `webarchiver` connector built from the default branch, **When** the child rows run, **Then** see each child.
+
+### User Story 14 - Ontology roll-up and tool-use contracts (Priority: P2)
+
+The fleet operator and the business agents rely on this behaviour of `webarchiver`: `webarchiver/ontology/webarchiver.ttl` must declare one class per tool result (`:FetchedWebPage`, `:ExtractedWebPage`, `:RenderedWebPage`, `:WebPageScreenshot`, `:WebLinkList`, `:WebCrawlResult`, `:WebFetchRefusal`), each a `rdfs:subClassOf` chain to the core `:WebResource`, `:WebCapture`, `:Dataset` or `:Observation`, with no `owl:imports`, no blank nodes and no stub. It is proven independently of the other stories.
+
+**Acceptance Scenarios**:
+
+1. **Given** the `webarchiver` connector built from the default branch, **When** `tests/test_content_pack.py::test_every_class_rolls_up_to_medulla_core` runs, **Then** every class reaches a core class, and the pack's tools, skills and prompts equal the served ones.
+
+### User Story 15 - Data location and routing (Priority: P2)
+
+The fleet operator and the business agents rely on this behaviour of `webarchiver`: `webarchiver/ontology/access_contracts.ttl` must declare one `ac:AccessContract` per result class, answered live by the served read-only tool that produces it (`accessKind mcp_tool`, `sourceId webarchiver-mcp`, keyed by URL), with property bindings for URL, final URL, status, digest and retrieval time, and no credential reference: the connector keeps no store and reads public pages only. It is proven independently of the other stories.
+
+**Acceptance Scenarios**:
+
+1. **Given** the `webarchiver` connector built from the default branch, **When** `tests/test_content_pack.py::test_access_contracts_route_every_class_to_a_served_tool` runs, **Then** the SDK parser accepts every contract, and the contracts cover every served tool and result class.
+
+### User Story 16 - Agent-definition prompts and workflow skills (Priority: P2)
+
+The fleet operator and the business agents rely on this behaviour of `webarchiver`: the connector must serve the prompts `webarchiver_operator` (web capture operator) and `webarchiver_market_researcher` (competitor and market research analyst). It is proven independently of the other stories.
+
+**Acceptance Scenarios**:
+
+1. **Given** the `webarchiver` connector built from the default branch, **When** `tests/test_content_pack.py::test_prompts_and_skills_are_served_as_agent_definitions` runs, **Then** both prompts and both skills are served, each prompt names its goal, tools, skills, data, guardrails and output, and the stubs are gone.
+
 ### Edge Cases
 
 - The vendor service is unreachable or rejects the credential: the connector returns the SDK typed error and never a partial result.
@@ -144,6 +176,10 @@ The fleet operator and the engine rely on this behaviour of `webarchiver`: `web_
 - **FR-010**: Conformance. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R001.10`.
 - **FR-011**: Fleet name. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R001.11`.
 - **FR-012**: Structured entity documents. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R002`.
+- **FR-013**: Served content pack (rollup). Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003`.
+- **FR-014**: Ontology roll-up and tool-use contracts. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.1`.
+- **FR-015**: Data location and routing. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.2`.
+- **FR-016**: Agent-definition prompts and workflow skills. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.3`.
 
 ## Success Criteria
 
@@ -159,6 +195,10 @@ The fleet operator and the engine rely on this behaviour of `webarchiver`: `web_
 - **SC-010**: The kit reports no broken obligation. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R001.10`.
 - **SC-011**: The served content, the manifest and the ingest binding all name `webarchiver-mcp`. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R001.11`.
 - **SC-012**: Test: `tests/test_extract.py::test_json_entity_document_passes_through` fetches a fixture entity document and asserts the body, media type and digest. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R002`.
+- **SC-013**: See each child. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003`.
+- **SC-014**: Every class reaches a core class, and the pack's tools, skills and prompts equal the served ones. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.1`.
+- **SC-015**: The SDK parser accepts every contract, and the contracts cover every served tool and result class. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.2`.
+- **SC-016**: Both prompts and both skills are served, each prompt names its goal, tools, skills, data, guardrails and output, and the stubs are gone. Rows: `CONN-WEBARCHIVER-WEB-SOURCE-R003.3`.
 
 ## Assumptions
 
@@ -181,3 +221,7 @@ The fleet operator and the engine rely on this behaviour of `webarchiver`: `web_
 | FR-010 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.10` | plan.md Production caller chain | T-010 | tests/test_conformance.py::test_webarchiver_conforms_to_the_web_source_contract |
 | FR-011 | `CONN-WEBARCHIVER-WEB-SOURCE-R001.11` | plan.md Production caller chain | T-011 | tests/test_fleet_name.py::test_connector_name_is_the_fleet_name |
 | FR-012 | `CONN-WEBARCHIVER-WEB-SOURCE-R002` | plan.md Production caller chain | T-012 | tests/test_extract.py::test_json_entity_document_passes_through |
+| FR-013 | `CONN-WEBARCHIVER-WEB-SOURCE-R003` | plan.md Production caller chain | T-013 | planned |
+| FR-014 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.1` | plan.md Production caller chain | T-014 | tests/test_content_pack.py::test_every_class_rolls_up_to_medulla_core |
+| FR-015 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.2` | plan.md Production caller chain | T-015 | tests/test_content_pack.py::test_access_contracts_route_every_class_to_a_served_tool |
+| FR-016 | `CONN-WEBARCHIVER-WEB-SOURCE-R003.3` | plan.md Production caller chain | T-016 | tests/test_content_pack.py::test_prompts_and_skills_are_served_as_agent_definitions |
