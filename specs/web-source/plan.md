@@ -209,6 +209,16 @@ None. The constitution check passed.
 
 None. The rows depend only on the published `scion-sdk` package, which the connector imports.
 
+### Adoption of scion-sdk 0.10.0 (CONN-WEBARCHIVER-WEB-SOURCE-R004)
+
+- Owner. This repository, the import lines named in `CONN-WEBARCHIVER-WEB-SOURCE-R004`. The paths belong to scion-sdk.
+- Cohesion. The import edits, the pin and the lock change together and sit in one change.
+- Dependency direction. The connector imports public modules of the SDK units; no import points to a private module.
+- Interface depth. The connector uses the public surface only.
+- Special cases. None. Every removed path takes the same replacement, with no alias.
+- State. None.
+- Environment. None. The pin is package metadata, not environment code.
+
 ## Phase 2: Task approach
 
 `tasks.md` holds one task per row, producer first. Rows that depend on none run in parallel. A task is checked when its `Spec:` trailer is on the default branch.

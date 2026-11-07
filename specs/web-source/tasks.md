@@ -20,3 +20,4 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Tasks run p
 - [ ] T014 [US14] CONN-WEBARCHIVER-WEB-SOURCE-R003.1 Ontology roll-up and tool-use contracts.
 - [ ] T015 [US15] CONN-WEBARCHIVER-WEB-SOURCE-R003.2 Data location and routing.
 - [ ] T016 [US16] CONN-WEBARCHIVER-WEB-SOURCE-R003.3 Agent-definition prompts and workflow skills.
+- [ ] T017 [US1] CONN-WEBARCHIVER-WEB-SOURCE-R004 Adopt scion-sdk 0.10.0 import paths. Size: S, 1 PR, 30 minutes.
