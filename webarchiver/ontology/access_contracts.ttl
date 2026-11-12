@@ -1,5 +1,6 @@
-@prefix ac: <https://knuckles-team.github.io/agent-connector-sdk/access#> .
-@prefix : <http://knuckles.team/kg#> .
+@prefix ac: <https://knuckles-team.github.io/ontology/access#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/web-archive#> .
 
 # Data location and routing: how each webarchiver class is answered live.
 # webarchiver keeps no store, so every class is read on demand from the public
@@ -24,7 +25,7 @@
     ac:costHint "low" .
 
 :fetchedWebPageUrlBinding a ac:PropertyBinding ;
-    ac:contract :fetchedWebPageAccess ; ac:property :resourceUrl ; ac:field "url" .
+    ac:contract :fetchedWebPageAccess ; ac:property core:resourceUrl ; ac:field "url" .
 
 :fetchedWebPageFinalUrlBinding a ac:PropertyBinding ;
     ac:contract :fetchedWebPageAccess ; ac:property :finalUrl ; ac:field "final_url" .
@@ -33,7 +34,7 @@
     ac:contract :fetchedWebPageAccess ; ac:property :httpStatus ; ac:field "status" .
 
 :fetchedWebPageDigestBinding a ac:PropertyBinding ;
-    ac:contract :fetchedWebPageAccess ; ac:property :contentDigest ; ac:field "content_digest" .
+    ac:contract :fetchedWebPageAccess ; ac:property core:contentDigest ; ac:field "content_digest" .
 
 :fetchedWebPageRetrievedBinding a ac:PropertyBinding ;
     ac:contract :fetchedWebPageAccess ; ac:property :retrievedAt ; ac:field "retrieved_at" .
@@ -52,16 +53,16 @@
     ac:costHint "low" .
 
 :extractedWebPageUrlBinding a ac:PropertyBinding ;
-    ac:contract :extractedWebPageAccess ; ac:property :resourceUrl ; ac:field "url" .
+    ac:contract :extractedWebPageAccess ; ac:property core:resourceUrl ; ac:field "url" .
 
 :extractedWebPageCanonicalBinding a ac:PropertyBinding ;
     ac:contract :extractedWebPageAccess ; ac:property :canonicalUrl ; ac:field "canonical_url" .
 
 :extractedWebPageTitleBinding a ac:PropertyBinding ;
-    ac:contract :extractedWebPageAccess ; ac:property :title ; ac:field "title" .
+    ac:contract :extractedWebPageAccess ; ac:property core:title ; ac:field "title" .
 
 :extractedWebPageDigestBinding a ac:PropertyBinding ;
-    ac:contract :extractedWebPageAccess ; ac:property :contentDigest ; ac:field "content_digest" .
+    ac:contract :extractedWebPageAccess ; ac:property core:contentDigest ; ac:field "content_digest" .
 
 :renderedWebPageAccess a ac:AccessContract ;
     ac:classIri :RenderedWebPage ;

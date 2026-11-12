@@ -1,6 +1,7 @@
-@prefix : <http://knuckles.team/kg#> .
-@prefix cp: <http://knuckles.team/kg/connector-pack#> .
-@prefix c: <http://knuckles.team/kg/connector/webarchiver#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/web-archive#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
+@prefix cp: <https://knuckles-team.github.io/ontology/connector-pack#> .
+@prefix c: <https://knuckles-team.github.io/ontology/connector/web-archive#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Connector surface and ingest contract of webarchiver-mcp. Tool-use
@@ -41,53 +42,53 @@ c:feature-market-research-capture a cp:Feature ;
 
 c:tool-web_fetch a cp:Tool ;
     cp:componentId "web_fetch" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :FetchedWebPage, :WebFetchRefusal .
 
 c:tool-web_extract a cp:Tool ;
     cp:componentId "web_extract" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :ExtractedWebPage, :WebFetchRefusal .
 
 c:tool-web_render a cp:Tool ;
     cp:componentId "web_render" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :RenderedWebPage .
 
 c:tool-web_screenshot a cp:Tool ;
     cp:componentId "web_screenshot" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :WebPageScreenshot .
 
 c:tool-web_links a cp:Tool ;
     cp:componentId "web_links" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :WebLinkList .
 
 c:tool-web_crawl a cp:Tool ;
     cp:componentId "web_crawl" ;
-    cp:operatesOn :WebResource ;
+    cp:operatesOn core:WebResource ;
     cp:produces :WebCrawlResult, :WebFetchRefusal .
 
 # --- skills ------------------------------------------------------------------
 
 c:skill-webarchiver-web-capture a cp:Skill ;
     cp:componentId "webarchiver-web-capture" ;
-    cp:appliesTo :WebResource .
+    cp:appliesTo core:WebResource .
 
 c:skill-webarchiver-market-research-capture a cp:Skill ;
     cp:componentId "webarchiver-market-research-capture" ;
-    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+    cp:appliesTo :ExtractedWebPage, core:WebSnapshot .
 
 # --- prompts (agent definitions) ---------------------------------------------
 
 c:prompt-webarchiver_operator a cp:Prompt ;
     cp:componentId "webarchiver_operator" ;
-    cp:appliesTo :WebResource .
+    cp:appliesTo core:WebResource .
 
 c:prompt-webarchiver_market_researcher a cp:Prompt ;
     cp:componentId "webarchiver_market_researcher" ;
-    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+    cp:appliesTo :ExtractedWebPage, core:WebSnapshot .
 
 # --- ingest contract ---------------------------------------------------------
 
