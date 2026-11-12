@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 
 SOURCE_MODULES = {
     "scion-sdk": "scion_sdk",
-    "epistemic-graph": "epistemic_graph",
+    "medulla": "medulla",
 }
 
 

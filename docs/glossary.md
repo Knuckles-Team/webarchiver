@@ -14,21 +14,21 @@ The desktop cockpit for chat, graph, fleet, health, and operator workflows. Its 
 
 ## Messaging channels
 
-Chat and voice entrypoints hosted and supervised by Arbora. The adapter registry, inbound router, and orchestration bridge are implemented by Agent Utilities.
+Chat and voice entrypoints hosted and supervised by Arbora. The adapter registry, inbound router, and orchestration bridge are implemented by Meristem.
 
 ## Arbora
 
 The governed runtime gateway and composition host for user interfaces, messaging channels, MCP, REST, and A2A clients.
 
-## Agent Utilities
+## Meristem
 
 The agent control plane for orchestration, workflows, evaluation, and agent skills.
 
-## Epistemic Graph
+## Medulla
 
 The durable multimodal knowledge and reasoning engine for graph data, evidence, and provenance.
 
-## Agent Connector SDK
+## Scion SDK
 
 The governed source integration boundary for discovering, reading, and synchronizing external systems.
 

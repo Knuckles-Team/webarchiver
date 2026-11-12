@@ -1,4 +1,5 @@
-@prefix : <http://knuckles.team/kg#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/web-archive#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -20,7 +21,7 @@
 :FetchedWebPage a owl:Class ;
     rdfs:label "Fetched Web Page" ;
     rdfs:comment "One web page read under the web-source contract (robots.txt, per-domain rate limit, size and type caps), with its final URL, status, digest and retrieval time. Produced by web_fetch." ;
-    rdfs:subClassOf :WebResource .
+    rdfs:subClassOf core:WebResource .
 
 :ExtractedWebPage a owl:Class ;
     rdfs:label "Extracted Web Page" ;
@@ -30,27 +31,27 @@
 :RenderedWebPage a owl:Class ;
     rdfs:label "Rendered Web Page" ;
     rdfs:comment "The DOM of a web page after headless-browser rendering with ad blocking, for pages that build their content with scripts. Produced by web_render." ;
-    rdfs:subClassOf :WebCapture .
+    rdfs:subClassOf core:WebCapture .
 
 :WebPageScreenshot a owl:Class ;
     rdfs:label "Web Page Screenshot" ;
     rdfs:comment "A PNG image of a rendered web page, full page or viewport. Produced by web_screenshot." ;
-    rdfs:subClassOf :WebCapture .
+    rdfs:subClassOf core:WebCapture .
 
 :WebLinkList a owl:Class ;
     rdfs:label "Web Link List" ;
     rdfs:comment "The outbound http(s) links of one web page, each flagged same-site or not. Produced by web_links." ;
-    rdfs:subClassOf :Dataset .
+    rdfs:subClassOf core:Dataset .
 
 :WebCrawlResult a owl:Class ;
     rdfs:label "Web Crawl Result" ;
     rdfs:comment "The page URLs a bounded breadth-first crawl reached from one seed, in discovery order, with the skipped URLs and their closed reasons. Produced by web_crawl." ;
-    rdfs:subClassOf :Dataset .
+    rdfs:subClassOf core:Dataset .
 
 :WebFetchRefusal a owl:Class ;
     rdfs:label "Web Fetch Refusal" ;
     rdfs:comment "A refused page read with one closed reason: robots_disallowed, rate_limited, size_exceeded, unsupported_type, egress_denied, policy_refused, extract_empty or upstream_failed." ;
-    rdfs:subClassOf :Observation .
+    rdfs:subClassOf core:Observation .
 
 # --- object properties -----------------------------------------------------
 
@@ -58,56 +59,56 @@
     rdfs:label "links to" ;
     rdfs:comment "Links a fetched web page to a web resource it carries an outbound hyperlink to." ;
     rdfs:domain :FetchedWebPage ;
-    rdfs:range :WebResource .
+    rdfs:range core:WebResource .
 
 :crawlSeed a owl:ObjectProperty ;
     rdfs:label "crawl seed" ;
     rdfs:comment "Links a crawl result to the web resource the crawl started from." ;
     rdfs:domain :WebCrawlResult ;
-    rdfs:range :WebResource .
+    rdfs:range core:WebResource .
 
 :crawlReached a owl:ObjectProperty ;
     rdfs:label "crawl reached" ;
     rdfs:comment "Links a crawl result to a web resource the crawl reached." ;
     rdfs:domain :WebCrawlResult ;
-    rdfs:range :WebResource .
+    rdfs:range core:WebResource .
 
 :refusalOf a owl:ObjectProperty ;
     rdfs:label "refusal of" ;
     rdfs:comment "Links a web fetch refusal to the web resource that was refused." ;
     rdfs:domain :WebFetchRefusal ;
-    rdfs:range :WebResource .
+    rdfs:range core:WebResource .
 
 # --- datatype properties ---------------------------------------------------
 
 :finalUrl a owl:DatatypeProperty ;
     rdfs:label "final URL" ;
     rdfs:comment "The URL a page read ended at after redirects." ;
-    rdfs:domain :WebResource ;
+    rdfs:domain core:WebResource ;
     rdfs:range xsd:string .
 
 :canonicalUrl a owl:DatatypeProperty ;
     rdfs:label "canonical URL" ;
     rdfs:comment "The canonical URL a page declares for itself." ;
-    rdfs:domain :WebResource ;
+    rdfs:domain core:WebResource ;
     rdfs:range xsd:string .
 
 :httpStatus a owl:DatatypeProperty ;
     rdfs:label "HTTP status" ;
     rdfs:comment "The HTTP status code of a page read." ;
-    rdfs:domain :WebResource ;
+    rdfs:domain core:WebResource ;
     rdfs:range xsd:integer .
 
 :retrievedAt a owl:DatatypeProperty ;
     rdfs:label "retrieved at" ;
     rdfs:comment "When a page was read from the web." ;
-    rdfs:domain :WebResource ;
+    rdfs:domain core:WebResource ;
     rdfs:range xsd:dateTime .
 
 :fetchBackend a owl:DatatypeProperty ;
     rdfs:label "fetch backend" ;
     rdfs:comment "The connector that read the page, for example webarchiver." ;
-    rdfs:domain :WebResource ;
+    rdfs:domain core:WebResource ;
     rdfs:range xsd:string .
 
 :refusalReason a owl:DatatypeProperty ;
@@ -122,6 +123,6 @@
     rdfs:domain :WebCrawlResult ;
     rdfs:range xsd:integer .
 
-<http://knuckles.team/kg/webarchiver> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/web-archive> a owl:Ontology ;
     rdfs:label "Webarchiver Ontology" ;
     rdfs:comment "Web fetch, extract, render, screenshot, links and crawl results of the webarchiver connector, rolled up to the medulla core web resource, web capture, dataset and observation classes." .
