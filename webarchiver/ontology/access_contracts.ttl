@@ -1,4 +1,4 @@
-@prefix ac: <https://knuckles-team.github.io/scion-sdk/access#> .
+@prefix ac: <https://knuckles-team.github.io/agent-connector-sdk/access#> .
 @prefix : <http://knuckles.team/kg#> .
 
 # Data location and routing: how each webarchiver class is answered live.

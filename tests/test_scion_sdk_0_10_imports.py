@@ -32,9 +32,16 @@ def test_every_scion_sdk_import_resolves_on_the_pinned_release() -> None:
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    if _is_sdk(alias.name) and importlib.util.find_spec(alias.name) is None:
+                    if (
+                        _is_sdk(alias.name)
+                        and importlib.util.find_spec(alias.name) is None
+                    ):
                         missing.append(f"{rel}:{node.lineno} {alias.name}")
-            elif isinstance(node, ast.ImportFrom) and node.level == 0 and _is_sdk(node.module):
+            elif (
+                isinstance(node, ast.ImportFrom)
+                and node.level == 0
+                and _is_sdk(node.module)
+            ):
                 if importlib.util.find_spec(node.module) is None:
                     missing.append(f"{rel}:{node.lineno} {node.module}")
                     continue
@@ -43,5 +50,10 @@ def test_every_scion_sdk_import_resolves_on_the_pinned_release() -> None:
                     if alias.name == "*" or hasattr(module, alias.name):
                         continue
                     if importlib.util.find_spec(f"{node.module}.{alias.name}") is None:
-                        missing.append(f"{rel}:{node.lineno} {node.module}.{alias.name}")
-    assert not missing, "scion_sdk names that do not exist on the pinned release:\n" + "\n".join(missing)
+                        missing.append(
+                            f"{rel}:{node.lineno} {node.module}.{alias.name}"
+                        )
+    assert not missing, (
+        "scion_sdk names that do not exist on the pinned release:\n"
+        + "\n".join(missing)
+    )

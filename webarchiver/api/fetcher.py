@@ -99,7 +99,8 @@ class Fetcher:
         self, url: str, origin: str, cap: int
     ) -> tuple[httpx.Response, bytes]:
         async with build_http_client(
-            self._options(origin), transport=self.transport, async_=True) as client:
+            self._options(origin), transport=self.transport, async_=True
+        ) as client:
             async with client.stream("GET", _target(url)) as response:
                 return response, await _bounded_body(response, url, cap)
 
