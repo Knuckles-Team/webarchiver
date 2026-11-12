@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 from fastmcp import Client
-from scion_sdk._turtle import RDF_TYPE, parse_graph
+from scion_sdk.turtle_reader import RDF_TYPE, parse_graph
 from scion_sdk.access_contract import parse_access_contracts
 
 from webarchiver.mcp_server import get_mcp_instance

@@ -14,7 +14,7 @@ from urllib.parse import urljoin, urlsplit
 
 import httpx
 from pydantic import BaseModel, ConfigDict
-from scion_sdk.http.client import create_async_http_client
+from scion_sdk.http.client import build_http_client
 from scion_sdk.http.egress import EgressPolicyError, PinnedEgressViolation
 from scion_sdk.http.options import HttpClientOptions
 from scion_sdk.http.retry import RetryPolicy
@@ -98,9 +98,8 @@ class Fetcher:
     async def _stream(
         self, url: str, origin: str, cap: int
     ) -> tuple[httpx.Response, bytes]:
-        async with create_async_http_client(
-            self._options(origin), transport=self.transport
-        ) as client:
+        async with build_http_client(
+            self._options(origin), transport=self.transport, async_=True) as client:
             async with client.stream("GET", _target(url)) as response:
                 return response, await _bounded_body(response, url, cap)
 
