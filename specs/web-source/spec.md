@@ -135,7 +135,7 @@ The fleet operator and the business agents rely on this behaviour of `webarchive
 
 ### User Story 14 - Ontology roll-up and tool-use contracts (Priority: P2)
 
-The fleet operator and the business agents rely on this behaviour of `webarchiver`: `webarchiver/ontology/webarchiver.ttl` must declare one class per tool result (`:FetchedWebPage`, `:ExtractedWebPage`, `:RenderedWebPage`, `:WebPageScreenshot`, `:WebLinkList`, `:WebCrawlResult`, `:WebFetchRefusal`), each a `rdfs:subClassOf` chain to the core `:WebResource`, `:WebCapture`, `:Dataset` or `:Observation`, with no `owl:imports`, no blank nodes and no stub. It is proven independently of the other stories.
+The fleet operator and the business agents rely on this behaviour of `webarchiver`: `webarchiver/ontology/webarchiver.ttl` must declare one class per tool result (`:FetchedWebPage`, `:ExtractedWebPage`, `:RenderedWebPage`, `:WebPageScreenshot`, `:WebLinkList`, `:WebCrawlResult`, `:WebFetchRefusal`), each a `rdfs:subClassOf` chain to the core `WebResource`, `WebCapture`, `Dataset` or `Observation` class in the namespace `https://knuckles-team.github.io/ontology/core#`, with no `owl:imports`, no blank nodes and no stub. It is proven independently of the other stories.
 
 **Acceptance Scenarios**:
 

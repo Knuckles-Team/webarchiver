@@ -14,12 +14,15 @@ from webarchiver.mcp_server import get_mcp_instance
 
 ONTOLOGY = Path(__file__).resolve().parents[1] / "webarchiver" / "ontology"
 KG = "http://knuckles.team/kg#"
+CORE_NS = "https://knuckles-team.github.io/ontology/core#"
 CP = "http://knuckles.team/kg/connector-pack#"
 OWL = "http://www.w3.org/2002/07/owl#"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
 
 #: The medulla core classes this pack rolls up to.
-CORE = {KG + name for name in ("WebResource", "WebCapture", "Dataset", "Observation")}
+CORE = {
+    CORE_NS + name for name in ("WebResource", "WebCapture", "Dataset", "Observation")
+}
 TOOLS = {
     "web_fetch",
     "web_extract",

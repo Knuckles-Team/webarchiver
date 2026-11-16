@@ -19,7 +19,11 @@ ENV HOST=${HOST} \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 # The render and screenshot operations drive Playwright's prebuilt Chromium
-# (downloaded, not compiled) with its system libraries.
+# (downloaded, not compiled) with its system libraries. The Playwright driver
+# is a Node binary that needs libatomic before `playwright install` can run.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libatomic1 \
+    && rm -rf /var/lib/apt/lists/*
 RUN pip install --only-binary :all: webarchiver[mcp]==1.2.5 \
     && playwright install --with-deps --only-shell chromium \
     && rm -rf /var/lib/apt/lists/* \
