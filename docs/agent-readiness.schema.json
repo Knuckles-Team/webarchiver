@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://agent-utilities.invalid/schemas/agent-readiness-v1.json",
+  "$id": "https://meristem.invalid/schemas/agent-readiness-v1.json",
   "title": "Agent Readiness Applicability",
   "type": "object",
   "additionalProperties": false,

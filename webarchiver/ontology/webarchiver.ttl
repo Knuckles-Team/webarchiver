@@ -1,5 +1,5 @@
+@prefix : <https://knuckles-team.github.io/ontology/connector/web-archive#> .
 @prefix core: <https://knuckles-team.github.io/ontology/core#> .
-@prefix : <http://knuckles.team/kg#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -123,6 +123,6 @@
     rdfs:domain :WebCrawlResult ;
     rdfs:range xsd:integer .
 
-<http://knuckles.team/kg/webarchiver> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/web-archive> a owl:Ontology ;
     rdfs:label "Webarchiver Ontology" ;
     rdfs:comment "Web fetch, extract, render, screenshot, links and crawl results of the webarchiver connector, rolled up to the medulla core web resource, web capture, dataset and observation classes." .

@@ -1,7 +1,7 @@
+@prefix : <https://knuckles-team.github.io/ontology/connector/web-archive#> .
 @prefix core: <https://knuckles-team.github.io/ontology/core#> .
-@prefix : <http://knuckles.team/kg#> .
-@prefix cp: <http://knuckles.team/kg/connector-pack#> .
-@prefix c: <http://knuckles.team/kg/connector/webarchiver#> .
+@prefix cp: <https://knuckles-team.github.io/ontology/connector-pack#> .
+@prefix c: <https://knuckles-team.github.io/ontology/connector/web-archive#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Connector surface and ingest contract of webarchiver-mcp. Tool-use
@@ -78,7 +78,7 @@ c:skill-webarchiver-web-capture a cp:Skill ;
 
 c:skill-webarchiver-market-research-capture a cp:Skill ;
     cp:componentId "webarchiver-market-research-capture" ;
-    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+    cp:appliesTo :ExtractedWebPage, core:WebSnapshot .
 
 # --- prompts (agent definitions) ---------------------------------------------
 
@@ -88,7 +88,7 @@ c:prompt-webarchiver_operator a cp:Prompt ;
 
 c:prompt-webarchiver_market_researcher a cp:Prompt ;
     cp:componentId "webarchiver_market_researcher" ;
-    cp:appliesTo :ExtractedWebPage, :WebSnapshot .
+    cp:appliesTo :ExtractedWebPage, core:WebSnapshot .
 
 # --- ingest contract ---------------------------------------------------------
 
