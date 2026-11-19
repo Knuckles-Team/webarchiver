@@ -7,20 +7,22 @@ from pathlib import Path
 
 import pytest
 from fastmcp import Client
-from scion_sdk.turtle_reader import RDF_TYPE, parse_graph
 from scion_sdk.access_contract import parse_access_contracts
+from scion_sdk.turtle_reader import RDF_TYPE, parse_graph
 
 from webarchiver.mcp_server import get_mcp_instance
 
 ONTOLOGY = Path(__file__).resolve().parents[1] / "webarchiver" / "ontology"
-KG = "https://knuckles-team.github.io/ontology/core#"
+CORE_NS = "https://knuckles-team.github.io/ontology/core#"
 CONNECTOR_NS = "https://knuckles-team.github.io/ontology/connector/web-archive#"
 CP = "https://knuckles-team.github.io/ontology/connector-pack#"
 OWL = "http://www.w3.org/2002/07/owl#"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
 
 #: The medulla core classes this pack rolls up to.
-CORE = {KG + name for name in ("WebResource", "WebCapture", "Dataset", "Observation")}
+CORE = {
+    CORE_NS + name for name in ("WebResource", "WebCapture", "Dataset", "Observation")
+}
 TOOLS = {
     "web_fetch",
     "web_extract",
@@ -101,7 +103,9 @@ def test_access_contracts_route_every_class_to_a_served_tool() -> None:
         (ONTOLOGY / "access_contracts.ttl").read_text(encoding="utf-8")
     )
     classes = set(_typed(_graph("webarchiver"), OWL + "Class"))
-    assert {c.class_iri for c in contracts} == classes - {CONNECTOR_NS + "WebFetchRefusal"}
+    assert {c.class_iri for c in contracts} == classes - {
+        CONNECTOR_NS + "WebFetchRefusal"
+    }
     assert {c.operation for c in contracts} == TOOLS
     assert {c.source_id for c in contracts} == {"webarchiver-mcp"}
     assert all(c.access_kind == "mcp_tool" and c.auth_ref is None for c in contracts)

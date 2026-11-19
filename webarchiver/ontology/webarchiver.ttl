@@ -7,8 +7,8 @@
 # Webarchiver domain model: what the web fetch, extract, render, screenshot,
 # links and crawl tools produce. Classes and properties live in the shared :
 # (kg#) namespace; only the owl:Ontology node carries the package IRI. Every
-# class rolls up to a medulla core class by rdfs:subClassOf (:WebResource,
-# :WebCapture, :Dataset, :Observation); the module never imports the engine
+# class rolls up to a medulla core class by rdfs:subClassOf (core:WebResource,
+# core:WebCapture, core:Dataset, core:Observation); the module never imports the engine
 # ontology and never redeclares a core class or property.
 #
 # Data location: webarchiver keeps no store. Each class is answered live from
