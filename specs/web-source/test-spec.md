@@ -34,3 +34,9 @@ Run `uv run pytest tests` and `pre-commit run --all-files` from the repository r
 | Requirement | Test | Observation |
 |---|---|---|
 | `CONN-WEBARCHIVER-WEB-SOURCE-R004` | `tests/test_scion_sdk_0_10_imports.py::test_every_scion_sdk_import_resolves_on_the_pinned_release` | Every `scion_sdk` import resolves on the pinned release; a removed path fails the test. |
+
+## Pack extends only the core ontology (`CONN-WEBARCHIVER-WEB-SOURCE-R005`)
+
+| Requirement | Test | Observation |
+|---|---|---|
+| `CONN-WEBARCHIVER-WEB-SOURCE-R005` | `tests/test_pack_extends_core.py::test_pack_declares_no_core_term` | No core term is redeclared, no retired IRI base remains, and features link to members by URI. |

@@ -56,7 +56,7 @@
     ac:contract :extractedWebPageAccess ; ac:property core:resourceUrl ; ac:field "url" .
 
 :extractedWebPageCanonicalBinding a ac:PropertyBinding ;
-    ac:contract :extractedWebPageAccess ; ac:property :canonicalUrl ; ac:field "canonical_url" .
+    ac:contract :extractedWebPageAccess ; ac:property core:canonicalUrl ; ac:field "canonical_url" .
 
 :extractedWebPageTitleBinding a ac:PropertyBinding ;
     ac:contract :extractedWebPageAccess ; ac:property core:title ; ac:field "title" .
