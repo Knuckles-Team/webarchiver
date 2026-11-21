@@ -87,12 +87,6 @@
     rdfs:domain core:WebResource ;
     rdfs:range xsd:string .
 
-:canonicalUrl a owl:DatatypeProperty ;
-    rdfs:label "canonical URL" ;
-    rdfs:comment "The canonical URL a page declares for itself." ;
-    rdfs:domain core:WebResource ;
-    rdfs:range xsd:string .
-
 :httpStatus a owl:DatatypeProperty ;
     rdfs:label "HTTP status" ;
     rdfs:comment "The HTTP status code of a page read." ;

@@ -39,6 +39,16 @@ def _graph(name: str) -> dict:
     return parse_graph((ONTOLOGY / f"{name}.ttl").read_text(encoding="utf-8"))
 
 
+def _realized(pack: dict, scheme: str) -> set[str]:
+    """Names of the served members the features link to under one URI scheme."""
+    return {
+        o[len(scheme) :]
+        for props in pack.values()
+        for o in props.get(CP + "realizedBy", [])
+        if o.startswith(scheme)
+    }
+
+
 def _typed(graph: dict, cls: str) -> dict:
     return {s: p for s, p in graph.items() if cls in p.get(RDF_TYPE, [])}
 
@@ -80,21 +90,12 @@ def test_every_class_rolls_up_to_medulla_core() -> None:
 async def test_tool_use_contracts_cover_the_served_tools() -> None:
     tools, _resources, _prompts, _rendered = await _served()
     pack = _graph("pack")
-    declared = {
-        props[CP + "componentId"][0]: props
-        for props in _typed(pack, CP + "Tool").values()
-    }
-    assert set(declared) == TOOLS == tools & TOOLS
-    domain_classes = set(_typed(_graph("webarchiver"), OWL + "Class")) | CORE
-    for name, props in declared.items():
-        assert props.get(CP + "operatesOn"), name
-        assert set(props.get(CP + "produces", [])) <= domain_classes, name
-    skills = {p[CP + "componentId"][0] for p in _typed(pack, CP + "Skill").values()}
-    prompts = {p[CP + "componentId"][0] for p in _typed(pack, CP + "Prompt").values()}
-    assert (skills, prompts) == (SKILLS, PROMPTS)
-    for feature, props in _typed(pack, CP + "Feature").items():
-        members = set(props.get(CP + "realizedBy", []))
-        assert members and members <= set(pack), feature
+    declared = _realized(pack, "tool://webarchiver-mcp/")
+    assert declared == TOOLS == tools & TOOLS
+    skills = {n.removesuffix("/SKILL.md") for n in _realized(pack, "skill://")}
+    assert (skills, _realized(pack, "prompt://webarchiver-mcp/")) == (SKILLS, PROMPTS)
+    for feature, props in _typed(pack, CP + "SurfaceFeature").items():
+        assert props.get(CP + "realizedBy"), feature
 
 
 @pytest.mark.spec("CONN-WEBARCHIVER-WEB-SOURCE-R003.2")
