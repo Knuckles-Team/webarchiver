@@ -2,15 +2,7 @@
 name: webarchiver-market-research-capture
 skill_type: skill
 description: >-
-  Competitor and market research capture: read competitor and market pages
-  (pricing, product, feature, about, blog and news pages) into structured
-  text, metadata and links with the webarchiver-mcp server, then file a
-  durable, tagged archive copy of each page with the archivebox-mcp server
-  (archivebox_cli_add). Use when the agent must capture what a competitor or
-  market page says on a date, build a research brief from captured pages, or
-  keep evidence of a page for later comparison. Do NOT use for a one-off page
-  read (webarchiver-web-capture) or for searching the archive
-  (archivebox-snapshot-search); prefer those.
+  Capture competitor and market pages as structured text with webarchiver-mcp, then file a tagged durable copy of each with archivebox-mcp. Use to record what a page says on a date, build a research brief, or keep evidence for comparison. Do NOT use for one-off page reads (webarchiver-web-capture) or archive search (archivebox-snapshot-search).
 license: MIT
 tags: [webarchiver, archivebox, market-research, competitor-research, capture, mcp]
 metadata:
@@ -18,6 +10,8 @@ metadata:
   version: '1.0.0'
 ---
 # Competitor and market research capture
+
+Scope: Competitor and market research capture: read competitor and market pages (pricing, product, feature, about, blog and news pages) into structured text, metadata and links with the webarchiver-mcp server, then file a durable, tagged archive copy of each page with the archivebox-mcp server (archivebox_cli_add). Use when the agent must capture what a competitor or market page says on a date, build a research brief from captured pages, or keep evidence of a page for later comparison. Do NOT use for a one-off page read (webarchiver-web-capture) or for searching the archive (archivebox-snapshot-search); prefer those.
 
 webarchiver is the primary capture path: it turns each page into structured
 text and links. archivebox-mcp keeps the durable archive copy, tagged so the
@@ -38,29 +32,23 @@ captures of one research run can be found again.
 - `urls`: the start pages. Find them with the search connector if needed.
 - `run_tag`: `market-research,<subject>,<YYYY-MM-DD>`.
 
-## Procedure
-1. **Scope.** For each start URL, call `web_links` with `same_site_only: true`.
-   Keep the pages that match the research question (pricing, plans, product,
-   features, about, news). For a whole site section use `web_crawl` with
-   `max_pages` at most 25, `max_depth` 1 and an `include` pattern such as
-   `["/pricing", "/product"]`.
-2. **Capture text.** Call `web_extract` with `request: {url}` on each kept page.
-   Keep `title`, `published_at`, `canonical_url`, `final_url`, `retrieved_at`,
-   `content_digest`, `text_markdown` and `outbound_links`.
-3. **Fallback for script-built pages.** If `web_extract` refuses with
-   `extract_empty` or the text lacks the prices or features a browser shows,
-   call `web_render` with `url` and read the content from the rendered `html`.
-4. **Visual evidence.** For pricing and plan pages, call `web_screenshot` with
-   `full_page: false`.
-5. **Durable copy.** Call `archivebox_cli_add` on archivebox-mcp once with all
-   captured URLs: `urls: [...]`, `tag: "<run_tag>"`, `depth: 0`. Do not use
-   `depth` above 0; scoping was step 1.
-6. **Verify.** Call `archivebox_get_snapshots` with `tag: "<subject>"` (or the
-   URL) and confirm one snapshot per captured URL.
-7. **Report.** Write a research brief: one section per page with the
-   canonical URL, the capture time, the key facts (prices, plans, features,
-   claims) quoted from `text_markdown`, and the archive snapshot reference.
-   Compare against an earlier run of the same `subject` when one exists.
+## Steps
+
+1. Call `web_links`(url, same_site_only=true) for each start URL, or `web_crawl`(seed_url, max_pages=25, max_depth=1, include) for a site section such as `["/pricing", "/product"]`. Verify the kept pages match the research question and `truncated` is false.
+2. Call `web_extract`(request) with `request: {url}` on each kept page. Verify each result has `title`, `canonical_url`, `retrieved_at`, `content_digest` and `text_markdown`.
+3. For a page where `web_extract` refuses with `extract_empty` or lacks the prices or features a browser shows, call `web_render`(url). Verify the rendered `html` contains them.
+4. For pricing and plan pages, call `web_screenshot`(url, full_page=false). Verify `png_base64` is present.
+5. Call `archivebox_cli_add`(urls, tag, depth=0) once with all captured URLs and the `run_tag`. Verify the response accepts every URL.
+6. Call `archivebox_get_snapshots`(tag) with the subject tag. Verify there is one snapshot per captured URL.
+7. Write the research brief with one section per page: canonical URL, capture time, key facts quoted from `text_markdown`, and the snapshot reference. Verify every fact cites a `canonical_url` and `retrieved_at` from step 2.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| `web_extract` refuses with `robots_disallowed` or `egress_denied` | The page forbids automated access or is outside egress policy | Drop the page from the run and note the refusal in the brief |
+| `archivebox_get_snapshots` shows fewer snapshots than URLs | Some URLs were not archived | Call `archivebox_cli_add`(urls, tag, depth=0) again with only the missing URLs |
+| Crawl returns far too many pages | `include` pattern is too broad | Call `web_crawl`(seed_url, max_pages=25, max_depth=1, include) with a narrower `include` list |
 
 ## Output
 - A research brief in markdown, each fact cited by `canonical_url` and
