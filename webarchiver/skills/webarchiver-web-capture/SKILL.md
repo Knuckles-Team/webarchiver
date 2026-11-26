@@ -2,15 +2,7 @@
 name: webarchiver-web-capture
 skill_type: skill
 description: >-
-  Read public web pages with the webarchiver-mcp MCP server under robots.txt,
-  a per-domain rate limit and egress policy: raw body (web_fetch), main
-  content as markdown with title, author, date, canonical URL and links
-  (web_extract), the browser-rendered DOM (web_render), a PNG screenshot
-  (web_screenshot), a page's outbound links (web_links) and a bounded
-  same-site crawl (web_crawl). Use when the agent must read, quote, compare
-  or discover web pages. Do NOT use for a durable archive copy
-  (archivebox-web-archiving) or for competitor and market research runs
-  (webarchiver-market-research-capture); prefer those.
+  Read public web pages with webarchiver-mcp under robots.txt, rate limits and egress policy: extract markdown, render the DOM, screenshot, list links, crawl one site. Use to read, quote, compare or discover pages. Do NOT use for archive copies (archivebox-web-archiving) or market research runs (webarchiver-market-research-capture).
 license: MIT
 tags: [webarchiver, web, fetch, extract, render, screenshot, crawl, mcp]
 metadata:
@@ -18,6 +10,8 @@ metadata:
   version: '1.0.0'
 ---
 # Webarchiver web capture
+
+Scope: Read public web pages with the webarchiver-mcp MCP server under robots.txt, a per-domain rate limit and egress policy: raw body (web_fetch), main content as markdown with title, author, date, canonical URL and links (web_extract), the browser-rendered DOM (web_render), a PNG screenshot (web_screenshot), a page's outbound links (web_links) and a bounded same-site crawl (web_crawl). Use when the agent must read, quote, compare or discover web pages. Do NOT use for a durable archive copy (archivebox-web-archiving) or for competitor and market research runs (webarchiver-market-research-capture); prefer those.
 
 One typed, read-only tool per operation on the `webarchiver-mcp` server. No
 credential is needed; the connector reads public pages only.
@@ -43,15 +37,21 @@ credential is needed; the connector reads public pages only.
 | `web_links` | `url`, `same_site_only` | `links: [{url, text, same_site}]` (`:WebLinkList`) |
 | `web_crawl` | `seed_url`, `same_site`, `max_pages` (1-1000), `max_depth` (0-10), `include`, `exclude` | `urls`, `skipped`, `truncated` (`:WebCrawlResult`) |
 
-## Procedure
-1. Start with `web_extract`. It is the cheapest way to get readable text.
-2. If the result is a refusal `extract_empty`, or the text is missing what a
-   browser shows, call `web_render` and read the DOM.
-3. Call `web_screenshot` with `full_page: false` when you need visual
-   evidence; full-page shots of long pages are large.
-4. To discover pages, call `web_links` on the start page, or `web_crawl` with
-   small bounds first (`max_pages` 10 to 25, `max_depth` 1), then widen.
-5. Cite `final_url`, `retrieved_at` and `content_digest` for every page you use.
+## Steps
+
+1. Call `web_extract`(request) with `request: {url}` as the first read, since it is the cheapest way to get readable text. Verify the result has non-empty `text_markdown` and a `final_url`.
+2. If the result is the refusal `extract_empty`, or the text lacks what a browser shows, call `web_render`(url). Verify the rendered `html` contains the missing content.
+3. When visual evidence is needed, call `web_screenshot`(url, full_page=false). Verify `png_base64` is present, since full-page shots of long pages are large.
+4. To discover pages, call `web_links`(url, same_site_only=true) on the start page, or `web_crawl`(seed_url, max_pages=10, max_depth=1) with small bounds first. Verify `truncated` is false before widening the bounds.
+5. Cite the page you used by `final_url`, `retrieved_at` and `content_digest`. Verify each cited page has all three values in the tool result.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Refusal `robots_disallowed`, `egress_denied`, `policy_refused` or `unsupported_type` | The page is outside robots.txt, egress policy or supported content types | Do not retry. Report the refusal reason and use another public source |
+| Refusal `rate_limited` | The per-domain rate limit is exhausted | Wait at least one second and call the same tool once more with `web_extract`(request) |
+| Refusal `size_exceeded` | The page body is larger than `max_bytes` | Call `web_fetch`(request) with a larger `max_bytes` only if the page is needed |
 
 ## Refusals
 Each refusal has one closed reason. Do not retry `robots_disallowed`,
