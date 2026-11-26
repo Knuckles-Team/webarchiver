@@ -1,9 +1,14 @@
 # Webarchiver
+## MCP
 
+![PyPI - Version](https://img.shields.io/pypi/v/webarchiver)
+![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
+![PyPI - Downloads](https://img.shields.io/pypi/dd/webarchiver)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Knuckles-Team/webarchiver)
 ![GitHub forks](https://img.shields.io/github/forks/Knuckles-Team/webarchiver)
 ![GitHub contributors](https://img.shields.io/github/contributors/Knuckles-Team/webarchiver)
-![GitHub license](https://img.shields.io/github/license/Knuckles-Team/webarchiver)
+![PyPI - License](https://img.shields.io/pypi/l/webarchiver)
+![GitHub](https://img.shields.io/github/license/Knuckles-Team/webarchiver)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Knuckles-Team/webarchiver)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Knuckles-Team/webarchiver)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Knuckles-Team/webarchiver)
@@ -12,12 +17,16 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/Knuckles-Team/webarchiver)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Knuckles-Team/webarchiver)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Knuckles-Team/webarchiver)
-![PyPI - Version](https://img.shields.io/pypi/v/webarchiver)
-![PyPI - Downloads](https://img.shields.io/pypi/dd/webarchiver)
-![PyPI - License](https://img.shields.io/pypi/l/webarchiver)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/webarchiver)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/webarchiver)
-![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
+
+> **Documentation** — Installation, deployment, and usage across the API, CLI, MCP,
+> and A2A agent interfaces are maintained in the
+> [official documentation](https://knuckles-team.github.io/webarchiver/).
+
+---
+
+## Overview
 
 Governed web fetch, extract, render, screenshot and link connector
 
@@ -25,14 +34,14 @@ The [documentation site](https://knuckles-team.github.io/webarchiver/) contains 
 full API, deployment, security, and operational reference. This README is the concise
 entry point for installation and the supported runtime surfaces.
 
-## Overview
-
 `webarchiver` is the fleet's web fetch and scrape connector. It reads public web
 pages under an explicit policy and returns typed results an agent or the graph
 can ingest: raw pages, extracted main content with document metadata, rendered
 DOMs, full-page screenshots and outbound links. It holds no credentials.
 
-## Key capabilities
+---
+
+## Key Features
 
 - **Governed fetch** — robots.txt, a per-domain rate limit, size and
   content-type caps, re-checked redirects and egress pinning that refuses
@@ -51,6 +60,8 @@ DOMs, full-page screenshots and outbound links. It holds no credentials.
   scion-sdk web-source contract's tools: the same request, page
   result and refusal reasons as every page connector, including the ArchiveBox
   connector. Each page names its `backend` (`webarchiver`).
+
+---
 
 ## Quick start
 
@@ -73,6 +84,8 @@ The networked server binds to loopback by default:
 webarchiver-mcp --transport streamable-http --host 127.0.0.1 --port 8000
 ```
 
+---
+
 ## Architecture
 
 The provider keeps the boundary between transport and domain code explicit:
@@ -89,7 +102,11 @@ contract.
 <!-- MCP-TOOLS-TABLE:START -->
 <!-- MCP-TOOLS-TABLE:END -->
 
-## MCP configuration
+---
+
+## MCP
+
+### MCP configuration
 
 The server supports local `stdio` and authenticated `streamable-http` deployments.
 Keep endpoint, credential, selector, and TLS references in SDK configuration; do not put
@@ -143,6 +160,8 @@ Deploy reviewed images by digest (`webarchiver@sha256:<digest>`) and include
 `--cap-drop=ALL` in the runtime policy. The [deployment guide](https://knuckles-team.github.io/webarchiver/deployment/)
 contains the complete transport and container examples.
 
+---
+
 ## Documentation
 
 Use the [Pages documentation](https://knuckles-team.github.io/webarchiver/) for
@@ -154,6 +173,8 @@ and the concept registry. The concise local references remain available at:
 - [Deployment](docs/deployment.md)
 - [Platform](docs/platform.md)
 - [Concept registry](docs/concepts.md)
+
+---
 
 ## Development
 
@@ -169,7 +190,28 @@ Keep MCP examples and environment documentation aligned with the implemented set
 Add focused positive and adversarial tests for every behavior change. See
 `AGENTS.md` for the current module ownership and release checks.
 
+---
+
 ## License
 
 This project is distributed under the MIT license. See [LICENSE](LICENSE) for the
 complete terms.
+
+---
+
+## Repository Owners
+
+<img width="100%" height="180em" src="https://github-readme-stats.vercel.app/api?username=example&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
+
+![GitHub followers](https://img.shields.io/github/followers/example)
+![GitHub User's stars](https://img.shields.io/github/stars/example)
+
+---
+
+## Contribute
+
+Contributions are welcome! Please ensure code quality by running local checks before submitting pull requests:
+- Format code using `ruff format .`
+- Lint code using `ruff check .`
+- Validate type-safety with `mypy .`
+- Run test suites using `pytest`
